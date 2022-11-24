@@ -49,3 +49,8 @@ evs([],[[]]).
 evs([X|H],W) :- evs(H,V), adauga(X, V, W).
 
 all_evals(X, R):-vars(X,Lvar), evs(Lvar,Etoate), evals(X,Etoate,R).
+
+%ex8
+all_ones([]).
+all_ones([1|T])-all_ones(T).
+taut(X):-all_evals(X,Y), all_ones(y).
