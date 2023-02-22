@@ -1,0 +1,37 @@
+--ex3:
+DESCRIBE jobs;
+DESCRIBE employees;
+DESCRIBE job_history;
+DESCRIBE departments;
+DESCRIBE locations;
+DESCRIBE countries;
+DESCRIBE regions;
+
+--ex4:
+SELECT * FROM jobs;
+SELECT * FROM employees;
+SELECT * FROM job_history;
+SELECT * FROM departments;
+SELECT * FROM locations;
+SELECT * FROM countries;
+SELECT * FROM regions;
+
+--ex5:
+SELECT employee_id, first_name ||' '|| last_name nume_prenume, hire_date data_angajare
+FROM employees;
+
+--ex6:
+SELECT employee_id cod, first_name ||' '|| last_name nume_prenume, hire_date AS "data angajarii"
+FROM employees;
+
+--ex7:
+--SELECT job_id
+SELECT DISTINCT job_id
+from employees;
+
+--ex8:
+
+
+
+
+
