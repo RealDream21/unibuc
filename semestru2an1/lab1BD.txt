@@ -1,3 +1,5 @@
+--A MAI RAMAS EX 23
+
 --ex3:
 DESCRIBE jobs;
 DESCRIBE employees;
@@ -30,8 +32,99 @@ SELECT DISTINCT job_id
 from employees;
 
 --ex8:
+SELECT first_name ||', '|| job_id as "Angajat si titlu"
+FROM employees;
 
+--ex9:
+SELECT employee_id ||', '|| first_name ||', '|| last_name ||', '|| email ||', '|| phone_number ||', '|| hire_date ||', '|| job_id
+||', '|| salary ||', '|| salary || ', ' || commission_pct ||', '|| manager_id || ', ' || department_id as "Informatii Complete"
+FROM employees;
 
+--ex10:
+SELECT first_name, salary
+FROM employees
+WHERE salary > 2850
+ORDER BY salary DESC;
 
+--ex11:
+SELECT first_name, department_id
+FROM employees
+WHERE employee_id = 104;
 
+--ex12:
+SELECT first_name, salary
+FROM employees
+WHERE (salary < 1500 OR salary > 2850)
+ORDER BY salary DESC;
 
+--ex13:
+SELECT first_name, job_id, hire_date
+FROM employees
+WHERE hire_date BETWEEN '20-FEB-1987' AND '1-MAY-1989';
+
+--ex14:
+SELECT first_name, department_id
+FROM employees
+WHERE department_id in (10, 30, 50);
+
+--ex15:
+SELECT first_name ||', '|| salary AS "Angajat si Salariu lunar"
+FROM employees
+WHERE salary > 1500 AND department_id IN (10, 30, 50);
+
+--ex16:
+SELECT sysdate
+FROM dual;
+
+--ex17:
+SELECT first_name, hire_date
+FROM employees
+WHERE hire_date LIKE ('%87%');
+
+SELECT first_name, hire_date
+FROM employees
+WHERE to_char(hire_date, 'YYYY') = '1987';
+
+SELECT first_name, hire_date
+FROM employees
+WHERE EXTRACT(YEAR from hire_date) = 1987;
+
+--ex18:
+DESCRIBE employees;
+SELECT first_name, last_name
+FROM employees
+WHERE to_char(hire_date, 'DD') = to_char(sysdate, 'DD');
+
+--ex19:
+SELECT first_name, job_id
+FROM employees
+WHERE manager_id IS NULL;
+
+--ex20:
+SELECT first_name, salary, commission_pct
+FROM employees
+WHERE commission_pct IS NOT NULL
+ORDER BY commission_pct DESC;
+
+--ex21:
+SELECT first_name, salary, commission_pct
+FROM employees
+ORDER BY commission_pct DESC;
+
+--ex22:
+SELECT first_name
+FROM employees
+WHERE first_name LIKE ('__a%');
+
+--ex23:
+
+--ex24:
+DESCRIBE employees;
+SELECT first_name, job_id, salary
+FROM employees
+WHERE (job_id LIKE ('%CLERK') OR job_id LIKE('%REP%')) AND salary NOT IN (1000, 2000, 3000); 
+
+--ex25:
+SELECT department_name
+FROM departments
+WHERE manager_id IS NULL;
