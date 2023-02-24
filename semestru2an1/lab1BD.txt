@@ -117,6 +117,9 @@ FROM employees
 WHERE first_name LIKE ('__a%');
 
 --ex23:
+SELECT first_name
+FROM employees
+WHERE (length(first_name) - length(replace(first_name, 'l', '')) = 2) AND (department_id = 30 or manager_id = 102);
 
 --ex24:
 DESCRIBE employees;
