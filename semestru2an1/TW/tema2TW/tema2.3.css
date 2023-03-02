@@ -1,0 +1,13 @@
+#mare {
+
+
+
+}
+
+#mic{
+    box-sizing: content-box;
+    height: 200px;
+    width: 200px;
+    background: yellow;
+    border: 100px blue;
+}
