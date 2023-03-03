@@ -1,13 +1,35 @@
-#mare {
-
-
-
+#mare{
+    margin: auto;
+    display: inline-block;
+    box-sizing: content-box;
+    border: 4vw solid red;
+    /*box-shadow: 100px 100px gray;*/
+    /*box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];*/
+    box-shadow: 0px 100px gray;
 }
 
 #mic{
     box-sizing: content-box;
-    height: 200px;
-    width: 200px;
+    height: 10vw;
+    width: 10vw;    
     background: yellow;
-    border: 100px blue;
+    border: 3vw solid black;
 }
+
+
+/*
+#mare{
+    margin: auto;
+    display: inline-block;
+    box-sizing: content-box;
+    border: 5vw solid red;
+}
+
+#mic{
+    box-sizing: content-box;
+    height: 10vw;
+    width: 10vw;
+    background: yellow;
+    border: 3vw solid black;
+}
+*/
