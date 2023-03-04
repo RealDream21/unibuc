@@ -1,0 +1,49 @@
+#titlu{
+    text-align: center;
+}
+
+p{
+    text-align: center;
+}
+
+article li{
+    font-size: large;
+    border-left: 0.1vw solid black;
+}
+
+aside img{
+    box-sizing: content-box;
+    border: 0.3vw solid black;
+    margin-right: 0.1vw;
+    margin-bottom: 0.2vw;
+}
+
+.subtitlu{
+    box-sizing: content-box;
+    border: 0.3vw solid rgb(96, 232, 232);
+    display: inline-block;
+    background-color: lightblue;
+}
+
+#inf_film{
+    font-size: larger;
+    border: 0.1vw solid salmon;
+    background-color: aliceblue;
+}
+
+.liste_informatii{
+    border: 0.2vw solid black;
+    display:inline-table;
+}
+
+.liste_informatii.informatii_generale{
+    background: 0.2vw lightgreen;
+}
+
+.liste_informatii.reviews{
+    background-color: aqua;
+}
+
+#critics{
+    list-style-type: "😎";
+}
