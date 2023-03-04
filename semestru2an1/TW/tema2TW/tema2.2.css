@@ -1,0 +1,25 @@
+.meniu{
+    box-sizing: content-box;
+    text-align: center;
+    display: inline-table;
+    width: 30%;
+    height: auto;
+    border: 0.2vw solid black;
+}
+
+ul{
+    visibility: none;
+    display: none;
+}
+
+.meniu:hover ul{
+    visibility: visible;
+    display: inline;
+    list-style-type: none;
+    text-align: left;
+}
+
+.meniu:hover li{
+    text-align: left;
+    border-top: 0.1vw solid black;
+}
