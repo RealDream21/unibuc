@@ -1,37 +1,23 @@
 #mare{
-    margin-top: 100px;
-    display: inline-block;
     box-sizing: content-box;
-    border: 4vw solid red;
-    /*box-shadow: 100px 100px gray;*/
-    /*box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];*/
-    box-shadow: 2vw 2vw 0px 2vw gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45vw;
+    width: 45vw;
+    min-width: 100px;
+    min-height: 100px;
+    background-color: red;
+    border-bottom: 5vw solid grey;
+    border-right: 50vw solid white;
 }
+
 
 #mic{
     box-sizing: content-box;
-    height: 10vw;
-    width: 10vw;  
-    background: yellow;
-    border: 3vw solid black;
+    display: flex;
+    height: 20vw;
+    width: 20vw;
+    border: 5vw solid black;
+    background-color: yellow;
 }
-
-
-
-
-/*
-#mare{
-    margin: auto;
-    display: inline-block;
-    box-sizing: content-box;
-    border: 5vw solid red;
-}
-
-#mic{
-    box-sizing: content-box;
-    height: 10vw;
-    width: 10vw;
-    background: yellow;
-    border: 3vw solid black;
-}
-*/

@@ -1,3 +1,7 @@
+body{
+    background-color: lightblue;
+}
+
 #titlu{
     text-align: center;
 }
@@ -18,6 +22,10 @@ aside img{
     margin-bottom: 0.2vw;
 }
 
+aside img:hover{
+    border: 0.5vw solid blue;
+}
+
 .subtitlu{
     box-sizing: content-box;
     border: 0.3vw solid rgb(96, 232, 232);
@@ -33,11 +41,21 @@ aside img{
 
 .liste_informatii{
     border: 0.2vw solid black;
-    display:inline-table;
+    display: inline-table;
 }
 
 .liste_informatii.informatii_generale{
-    background: 0.2vw lightgreen;
+    background-color: lightgreen;
+}
+
+#inf_film:hover{
+    background-color: lightblue;
+    border: 0.1vw hidden;
+}
+
+.liste_informatii.informatii_generale:hover{
+    background-color: lightblue;
+    border: 0.2vw hidden;
 }
 
 .liste_informatii.reviews{

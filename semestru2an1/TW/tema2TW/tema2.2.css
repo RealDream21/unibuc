@@ -16,7 +16,13 @@ ul{
     visibility: visible;
     display: inline;
     list-style-type: none;
-    text-align: left;
+    text-align: center;
+    padding: 0px;
+}
+
+.meniu:hover{
+    border: 0.2vw solid blue;
+    text-align: center;
 }
 
 .meniu:hover li{
