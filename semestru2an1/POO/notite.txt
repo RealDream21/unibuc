@@ -1,0 +1,3 @@
+:: -> operator de rezolutie
+lvalue -> modificabil
+rvalue -> nemodificabil(nr, " ", const)
