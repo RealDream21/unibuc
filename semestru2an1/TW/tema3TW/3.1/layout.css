@@ -1,0 +1,17 @@
+header{
+    height: 80px;
+    width: 100%;
+}
+
+header:first-child{
+    display: inline-flex;
+    text-align: left;
+    align-self: center;
+}
+
+header img{
+    position: relative;
+    width: 10%;
+    float: right;
+    text-align: right;
+}

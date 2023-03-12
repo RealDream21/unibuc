@@ -86,13 +86,24 @@ SELECT department_id
 FROM departments
 WHERE lower(department_name) LIKE ('%re%') AND department_id IN (SELECT department_id
                                                                 FROM employees
-                                                                WHERE lower(job_id) = 'hr_rep');
-                                                        
+                                                                WHERE lower(job_id) = 'hr_rep');                                               
 --ex14 ??
 describe employees;
 SELECT employee_id, job_id, last_name, AVG(salary)
 FROM employees
 WHERE salary > 3000;
 
+--ex17
+SELECT last_name, salary
+FROM employees
+WHERE manager_id in (SELECT DISTINCT employee_id
+        FROM employees
+        WHERE manager_id IS NULL);
+        
+--ex18???
+describe employees;
+SELECT last_name, department_id, salary
+FROM employees
+WHERE depertment_id IN (SELECT department_id, salary from employees where commission_pct is not null) and salary IN (SELECT salary
 
 
