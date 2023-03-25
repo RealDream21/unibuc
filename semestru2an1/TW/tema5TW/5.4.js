@@ -35,7 +35,6 @@ function showInfo(){
     const at_section = [...document.querySelectorAll("body section")];
     const pos_lista = at_section[0];
     const list = document.createElement("ol");
-    //pos_lista.append(list);
     for (persoana of informatiiPersoane){
         const list_element = document.createElement("li");
         list_element.innerHTML = persoana;
