@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> 
+    <script src = "6.4.js"></script>
+</head>
+<body>
+    <form id = "formular">
+        <input type="number" value = "0" id = "nr_1" />
+        <input type="number" value = "0" id = "nr_2" />
+        <div>
+            <input type = "radio" name = "operatie" id = "adunare"/>
+            <label for = "adunare">Adunare</label>
+            <input type = "radio" name = "operatie" id = "scadere"/>
+            <label for = "scadere">Scadere</label>
+            <input type = "radio" name = "operatie" id = "inmultire"/>
+            <label for = "inmultire">Inmultire</label>
+            <input type = "radio" name = "operatie" id = "impartire"/>
+            <label for = "impartire">Impartire</label>
+            <input type = "radio" name = "operatie" id = "ridicare"/>
+            <label for = "ridicare">Ridicare la putere</label>
+        </div>
+        <input type = "submit"/>
+        <input type = "reset"/>
+    </form>
+    <script>
+        function adunare (numar1, numar2){
+            return parseInt(numar1) + parseInt(numar2);
+        }
+        function scadere (numar1, numar2){
+            return parseInt(numar1) - parseInt(numar2);
+        }
+        function inmultire (numar1, numar2){
+            return parseInt(numar1) * parseInt(numar2);
+        }
+        function impartire (numar1, numar2){
+            return parseInt(numar1) / parseInt(numar2);
+        }
+        function ridicare (numar1, numar2){
+            return parseInt(numar1) ** parseInt(numar2);
+        }
+
+        function calculeaza(){
+            event.preventDefault();
+            let numar1 = document.querySelector("#nr_1").value;
+            let numar2 = document.querySelector("#nr_2").value;
+            let operatie = document.querySelector("#formular input[type = 'radio']:checked").value;
+            let rezultat = 0;
+            switch(operatie){
+                case "adunare":
+                    rezultat = adunare(numar1, numar2);
+                    break;
+                case "scadere":
+                    rezultat = scadere(numar1, numar2);
+                    break;
+                case "inmultire":
+                    rezultat = inmultire(numar1, numar2);
+                    break;
+                case "impartire":
+                    rezultat = impartire(numar1, numar2);
+                    break;
+                case "ridicare":
+                    rezultat = ridicare(numar1, numar2);
+                    break;
+            }
+            let newText = document.createElement("p");
+            newText.innerHTML = rezultat;
+            document.body.append(newText);
+        }
+        document.querySelector("#formular").addEventListener("submit", calculeaza);
+    </script>
+</body>
+</html>
