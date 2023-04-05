@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Form</title>
+</head>
+<body>
+    <form id="formular">
+        <input type="submit" name="Adauga" value="Adauga">
+    </form>
+    <div id="newInputs">
+    </div>
+    <script>
+        function addElement(event){
+            event.preventDefault();
+
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "colorTextInput";
+            input.value = "scrie o culoare(hexa)";
+            input.addEventListener("input", function() {
+                var color = input.value;
+                input.style.backgroundColor = color;
+
+            });
+            document.getElementById("newInputs").appendChild(input);
+        }
+
+        window.onload = function() {
+            document.getElementById("formular").addEventListener("submit", addElement);
+        };
+    </script>
+</body>
+</html>

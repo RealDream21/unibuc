@@ -27,50 +27,70 @@
         <input type = "reset"/>
     </form>
     <script>
-        function adunare (numar1, numar2){
-            return parseInt(numar1) + parseInt(numar2);
-        }
-        function scadere (numar1, numar2){
-            return parseInt(numar1) - parseInt(numar2);
-        }
-        function inmultire (numar1, numar2){
-            return parseInt(numar1) * parseInt(numar2);
-        }
-        function impartire (numar1, numar2){
-            return parseInt(numar1) / parseInt(numar2);
-        }
-        function ridicare (numar1, numar2){
-            return parseInt(numar1) ** parseInt(numar2);
+        function textOperatie(operatie){
+            if(operatie == "adunare"){
+                return "+";
+            }
+            else if(operatie == "scadere"){
+                return "-";
+            }
+            else if(operatie == "inmultire"){
+                return "*";
+            }
+            else if(operatie == "impartire"){
+                return "/";
+            }
+            else if(operatie == "ridicare"){
+                return "**";
+            }
         }
 
-        function calculeaza(){
-            event.preventDefault();
-            let numar1 = document.querySelector("#nr_1").value;
-            let numar2 = document.querySelector("#nr_2").value;
-            let operatie = document.querySelector("#formular input[type = 'radio']:checked").value;
+        function calculeaza(form){
+            // console.log(form);
+            let numar1 = document.getElementById("nr_1").value;
+            let numar2 = document.getElementById("nr_2").value;
+            let adunare = document.getElementById("adunare");
+            let scadere = document.getElementById("scadere");
+            let inmultire = document.getElementById("inmultire");
+            let impartire = document.getElementById("impartire");
+            let ridicare = document.getElementById("ridicare");
             let rezultat = 0;
-            switch(operatie){
-                case "adunare":
-                    rezultat = adunare(numar1, numar2);
-                    break;
-                case "scadere":
-                    rezultat = scadere(numar1, numar2);
-                    break;
-                case "inmultire":
-                    rezultat = inmultire(numar1, numar2);
-                    break;
-                case "impartire":
-                    rezultat = impartire(numar1, numar2);
-                    break;
-                case "ridicare":
-                    rezultat = ridicare(numar1, numar2);
-                    break;
+            let operatie = "";
+            if(adunare.checked){
+                rezultat = parseInt(numar1) + parseInt(numar2);
+                operatie = textOperatie("adunare");
             }
-            let newText = document.createElement("p");
-            newText.innerHTML = rezultat;
-            document.body.append(newText);
+            else if(scadere.checked){
+                rezultat = parseInt(numar1) - parseInt(numar2);
+                operatie = textOperatie("scadere");
+            }
+            else if(inmultire.checked){
+                rezultat = parseInt(numar1) * parseInt(numar2);
+                operatie = textOperatie("inmultire");
+            }
+            else if(impartire.checked){
+                rezultat = parseInt(numar1) / parseInt(numar2);
+                operatie = textOperatie("impartire");
+            }    
+            else if(ridicare.checked){
+                rezultat = parseInt(numar1) ** parseInt(numar2);
+                operatie = textOperatie("ridicare");
+            }
+            else{
+                alert("Selectati o operatie");
+            }
+            let newText = document.createTextNode(numar1 + operatie + numar2 + "=" + rezultat);
+            let newDiv = document.createElement("div");
+            newDiv.appendChild(newText);
+            document.body.appendChild(newDiv);
         }
-        document.querySelector("#formular").addEventListener("submit", calculeaza);
+
+        window.onload = () => {
+            document.getElementById("formular").addEventListener("submit", function (e) {
+                e.preventDefault();
+                calculeaza(e);
+            });
+        }
     </script>
 </body>
 </html>
