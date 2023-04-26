@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1681902127 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019\statie.cpp
+	"statie.h"
+
+1681901691 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019\statie.h
+	<iostream>
+	<cstring>
+
+1681902157 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019\main.cpp
+	"statie.h"
+
