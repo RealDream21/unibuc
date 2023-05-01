@@ -1,19 +1,27 @@
 1. Intr-un sat (!locuiesc!) mai multe (!familii!), fiecare la (!casa!) ei. (!Copiii!) acestor
 familii merg la (!gradinita, scoala sau liceu!) si se afla intr-o anumita (!clasa!). Satul are si o (!primarie! + !angajati!) care organizeaza
 periodic (!evenimente(culturale/ artistice/ ...)!), colaborand cu (!firme de organizare!). Primaria satului oficializeaza
-(!contractele de negot!) dintre familiile de fermieri locali si (!cumparatori!), percepand o taxa.
+(!contractele de negot!) dintre familiile de fermieri locali si (!cumparatori!), percepand o taxa. Toate cladirile din sat
+se afla pe o (!strada!) la un anumit (!numar!).
+
+Utilitate: Modelarea comertului si investitiilor intr-un sat
+
+Reguli de functionare = constrangeri??
 
 2. Restrictii:
+la primarie lucreaza cel putin un angajat
+exista doar o primarie
+
 copiii trebuie inscrisi la o forma de invatamant
 clasa nu are mai mult de 25 copii deodata
 taxa perceputa nu poate sa fie 0
 intr o familie sunt mai mult de 0 persoane
-varsta copiilor nu are cum sa fie mai mare de 20 ani
-varsta adultilor trebuie sa fie mai mare de 20 ani
+varsta copiilor nu are cum sa fie mai mare de 18 ani
+varsta adultilor trebuie sa fie mai mare sau egala de 18 ani
 
-3 + 5: Entitati:
+3. Entitati:
 Familie: cod_familie#, numar_persoane, 
-Locuitor: cod_locuitor#, sex,
+Locuitor: cod_locuitor#, 
 Copiii: is a LOCUITOR, varsta
 Adult: is a LOCUITOR, varsta
 Clasa: cod_clasa#(sau an_scolar#, clasa#), 
@@ -26,4 +34,8 @@ Contract_de_negot(relatie asociativa): cod_familie#, cod_cumparator#, taxa
 Cumparator: cod_cumparator#
 
 
-4.
+4. Dupa tabele
+
+5. Dupa tabele
+
+6. Diagrama E/R
