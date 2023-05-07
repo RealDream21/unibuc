@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1683459874 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\main.cpp
+	"retea.h"
+
+1683459619 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\abonamente.h
+	<iostream>
+
+1683459787 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\abonamente.cpp
+	"abonamente.h"
+
+1683456174 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\abonat.h
+	"abonamente.h"
+	<string>
+	<memory>
+
+1683459796 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\abonat.cpp
+	"abonat.h"
+
+1683459864 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\retea.cpp
+	"retea.h"
+
+1683459726 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019restanta\retea.h
+	<vector>
+	"retea.h"
+	"abonamente.h"
+	"abonat.h"
+
