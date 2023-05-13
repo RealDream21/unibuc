@@ -36,6 +36,7 @@ Cumparator: cod_cumparator#
 
 4. Dupa tabele
 
+
 5. Dupa tabele
 
 6. Diagrama E/R
