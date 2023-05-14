@@ -1,21 +1,22 @@
 # depslib dependency file v1.0
-1683985317 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\activitate.cpp
+1684068350 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\activitate.cpp
 	"activitate.h"
 
-1683985496 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\activitate.h
+1684068341 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\activitate.h
 	"participant.h"
 
-1683987409 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\participant.h
+1684066167 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\participant.h
 	<string>
 	<exception>
 	<iostream>
 	<vector>
+	<memory>
 
-1683987637 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\main.cpp
+1684068458 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\main.cpp
 	<iostream>
 	"activitate.h"
 	"participant.h"
 
-1683987604 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\participant.cpp
+1684066019 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017\participant.cpp
 	"participant.h"
 

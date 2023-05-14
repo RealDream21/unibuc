@@ -4,6 +4,7 @@
 #include <exception>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 class InvalidCnp: public std::exception
 {
@@ -23,6 +24,10 @@ public:
     Participant(const std::string& numeInit, const std::string& cnpInit, const int rezultatConcursInit);
     Participant(std::string& numeInit, std::string& cnpInit);
     Participant();
+    friend std::ostream& operator<<(std::ostream&, const Participant&);
+};
+
+class ParticipantConcursTematic: public Participant{
 };
 
 #endif // PARTICIPANT_H

@@ -38,6 +38,7 @@ Participant::Participant(std::string& numeInit, std::string& cnpInit): nume(nume
             }
         cnp = cnpInit;
         cnp_util.push_back(cnp);
+        varsta = (23 - ((cnpInit[1]) - '0') * 10 + cnpInit[2] - '0');
     }
 }
 
@@ -52,5 +53,13 @@ Participant::Participant(const std::string& numeInit,const std::string& cnpInit,
             }
         cnp = cnpInit;
         cnp_util.push_back(cnp);
+        varsta = (23 - ((cnpInit[1]) - '0') * 10 + cnpInit[2] - '0');
     }
+}
+
+std::ostream& operator<<(std::ostream& os , const Participant& part)
+{
+    os << "NUME: " << part.nume << std::endl;
+    os << "CNP: " << part.cnp << std::endl;
+    os << "VARSTA: " << part.varsta << std::endl;
 }
