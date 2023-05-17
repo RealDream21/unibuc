@@ -93,4 +93,34 @@ WHERE dd.department_id IN(SELECT d.department_id
                         HAVING max(e.salary) > 3000)
 GROUP by dd.department_id;
 
+--Ex 20
+SELECT min(medii.suma), job_id
+FROM employees e, (SELECT ROUND(sum(salary)/ count(employee_id), 2) suma
+                    FROM employees
+                    GROUP BY job_id) medii
+GROUP BY e.job_id
+HAVING ROUND(sum(salary)/ count(employee_id), 2) = min(medii.suma);
 
+--Ex 21
+SELECT sum(salary), e.department_id, d.department_name
+FROM employees e JOIN departments d on e.department_id = d.department_id
+GROUP BY e.department_id, d.department_id, d.department_name;
+
+--Ex 22
+SELECT max(medii.sum)
+FROM (SELECT ROUND(avg(salary), 2) sum
+        FROM employees
+        GROUP BY department_id) medii;
+
+--Ex 23
+SELECT j.job_title titlu, e.job_id
+FROM employees e JOIN jobs j ON e.job_id = j.job_id, (SELECT avg(salary) suma, job_id jobid
+                                                        FROM employees
+                                                        GROUP BY job_id) medii
+GROUP BY e.job_id, j.job_title
+HAVING avg(e.salary) = min(medii.suma);
+
+--Ex 24
+SELECT avg(salary)
+FROM employees
+HAVING avg(salary) > 2500;
