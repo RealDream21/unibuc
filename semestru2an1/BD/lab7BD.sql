@@ -97,6 +97,64 @@ SELECT e.job_id, sum(e.salary), e.department_id, db.department_name, l.city
 FROM employees e JOIN departamente_bune db ON e.department_id = db.department_id JOIN locations l ON db.location_id = l.location_id
 GROUP BY e.job_id, e.department_id, db.department_name, db.location_id, l.city;
 
+--Ex 10
+WITH ang_nr_joburi as(
+    SELECT employee_id, count(job_id) nr
+    FROM job_history
+    GROUP BY employee_id)
+SELECT e.last_name, e.employee_id
+FROM employees e JOIN ang_nr_joburi anj ON e.employee_id = anj.employee_id
+where anj.nr >= 2;
 
+--Ex 11
+SELECT AVG(nvl(commission_pct, 0))
+FROM employees;
 
+SELECT SUM(commission_pct)/COUNT(*)
+FROM employees;
 
+--Ex 12
+SELECT job_id, NVL(SUM(DECODE(department_id, 30, salary)), 0) Dep30,
+                NVL(SUM(DECODE(department_id, 50, salary)), 0) Dep50,
+                NVL(SUM(DECODE(department_id, 80, salary)), 0) Dep80, sum(salary) Total
+FROM (SELECT * FROM employees where department_id = 30 OR department_id = 50 OR department_id = 80)
+GROUP BY job_id;
+
+--Ex 13
+WITH manevra AS(
+    SELECT to_char(hire_date, 'YYYY') an, count(*) nr
+    FROM employees
+    GROUP BY hire_date)
+SELECT  NVL(SUM(DECODE(manevra.an, 1997, manevra.nr)), 0) AS "1997",
+        NVL(SUM(DECODE(manevra.an, 1998, manevra.nr)), 0) AS "1998",
+        NVL(SUM(DECODE(manevra.an, 1999, manevra.nr)), 0) AS "1999",
+        NVL(SUM(DECODE(manevra.an, 2000, manevra.nr)), 0) AS "2000", sum(manevra.nr)
+FROM manevra;
+
+--Ex 14
+WITH suma_dept AS(
+        SELECT sum(salary) suma, department_id
+        FROM employees
+        GROUP BY department_id)
+SELECT sd.suma, d.department_id, d.department_name
+FROM suma_dept sd, departments d
+WHERE d.department_id = sd.department_id;
+
+--Ex 15 + 16
+with inf_job AS(
+        SELECT job_id id, avg(salary) medie, avg(salary) - (max(salary) - min(salary)) dif, count(employee_id) nr_ang
+        FROM employees
+        GROUP BY job_id)
+SELECT j.job_title, ij.medie, ij.dif, ij.nr_ang
+FROM inf_job ij JOIN jobs j ON ij.id = j.job_id;
+
+--Ex 17
+WITH min_sal_dept AS(
+        SELECT min(e.salary) minsal, e.department_id, d.department_name
+        FROM employees e JOIN departments d on e.department_id = d.department_id
+        GROUP BY e.department_id, d.department_name)
+SELECT d.department_name, last_name, e.salary
+FROM employees e JOIN departments d on e.department_id = d.department_id
+WHERE e.salary = (SELECT msd.minsal
+                    FROM min_sal_dept msd
+                    WHERE msd.department_id = e.department_id);
