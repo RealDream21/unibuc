@@ -127,6 +127,63 @@ WHERE total > (SELECT medie
 ORDER BY department_name;
 
 
+--Ex 11
+WITH emp_sk AS(
+        SELECT employee_id, first_name, last_name, hire_date
+        FROM employees
+        WHERE manager_id = (SELECT employee_id
+                            FROM employees
+                            WHERE manager_id is null)
+        ORDER BY 4 asc)
+SELECT *
+FROM emp_sk es
+WHERE ROWNUM = 1;
+
+--Ex 12
+WITH top_salarii AS(
+        SELECT job_id, last_name, salary
+        FROM employees
+        ORDER BY 3 desc)
+SELECT *
+FROM top_salarii
+WHERE rownum <= 10;
+
+--Ex 13
+WITH medii_salariu AS(
+            SELECT job_id, avg(salary)
+            FROM employees
+            GROUP BY job_id
+            ORDER BY 2 asc)
+SELECT *
+FROM medii_salariu
+WHERE rownum <= 3;
+
+--Ex 14
+SELECT job_id, avg(salary)
+FROM employees
+GROUP BY job_id
+HAVING lower(job_id) like 's%';
+
+WITH top_salarii AS (
+  SELECT job_id, MAX(salary) AS max_salary
+  FROM employees
+  GROUP BY job_id
+  ORDER BY max_salary DESC
+)
+SELECT e.job_id, AVG(e.salary) AS average_salary
+FROM employees e
+JOIN top_salarii ts ON e.job_id = ts.job_id
+WHERE e.job_id = (SELECT job_id FROM top_salarii WHERE ROWNUM = 1)
+GROUP BY e.job_id;
+
+WITH min_salarii AS(
+        SELECT job_id jid, min(salary) ms
+        FROM employees
+        GROUP BY job_id)
+SELECT min(e.salary), e.job_id
+FROM employees e JOIN min_salarii ms ON e.job_id = ms.jid
+WHERE e.job_id = (SELECT jid FROM min_salarii WHERE ROWNUM = 1)
+GROUP BY e.job_id;
 
 
 

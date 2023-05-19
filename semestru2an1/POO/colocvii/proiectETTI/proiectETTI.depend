@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1684486414 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\proiectetti\buffs.cpp
+	"buffs.h"
+
+1684485947 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\proiectetti\buffs.h
+	<string>
+	<iostream>
+
+1684490144 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\proiectetti\main.cpp
+	<iostream>
+	"characters.h"
+
+1684490818 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\proiectetti\characters.h
+	"buffs.h"
+	<iostream>
+	<vector>
+	<string>
+	<memory>
+
+1684490856 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\proiectetti\characters.cpp
+	"characters.h"
+
