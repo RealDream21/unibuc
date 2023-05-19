@@ -1,0 +1,53 @@
+9 -> normalizare pana la FN3 ?? dunno what that is
+10 -> inserare cu counter de secventa(REALLY EASY)
+11 -> 50% done
+12 -> 5 cereri doable
+13 -> 2 update + 1 delete -> really easy
+
+
+9.Exemplu de NO FN2: Locuitor cu atributele id_familie si nume. Numele depinde de id_familie, id_familie nefiind cheie primara
+TAXA NU DEPINDE DE SUMA. Daca depindea => incalca fn2
+
+integritate: Daca se schimba id-ul strazii pe care e primaria. Se schimba si numarul???
+
+
+
+!!!!!!!!!DE ADAUGAT TABELA LOCATIE in care pregenerez o strada si niste numere
+
+Aducand in forma normala 2 observam la primarie o dependenta de o un atribut care nu este o cheie
+primara (numar_strada este dependent de id_strada)
+
++vorbesc despre ce atribute apar in noua tabela
+
+adaug si la casa un id
+
+BEFORE:
+	FORMA_DE_INVATAMANT( id_forma#, tip_forma_invatamant)
+	CICLU_INVATAMANT (id_forma_invatamant#, id_locuitor#, an_invatamant)
+	LOCUITOR (id_locuitor#, id_familie, sex, nume, prenume, data_nastere)
+	FAMILIE (id_familie#, id_primarie)
+	FAMILIE_CASA (id_familie#, id_strada#, numar#, data_mutare)
+	CASA (id_strada#, numar#, incaperi, spatiu)
+	STRADA (id_strada#, nume_strada)
+	CONTRACT_CUMPARARE (id_primarie#, id_cumparator#, id_familie#, suma, taxa)
+	CUMPARATOR (id_cumparator#, nume_cumparator)
+	PRIMARIE (id_primarie#, id_strada, numar_strada)
+	PRIMARIE_FIRMA_ORGANIZARE (id_primarie#, id_firma#)
+	FIRMA_ORGANIZARE (id_firma#, nume_firma)
+	EVENIMENT_CULTURAL (id_eveniment#, id_firma, nume_eveniment)
+
+AFTER:
+	FORMA_DE_INVATAMANT( id_forma#, tip_forma_invatamant)
+	CICLU_INVATAMANT (id_forma_invatamant#, id_locuitor#, an_invatamant)
+	LOCUITOR (id_locuitor#, id_familie, sex, prenume, data_nastere)
+	FAMILIE (id_familie#, id_primarie)
+	FAMILIE_CASA (id_familie#, id_locatie#, data_mutare)
+	CASA (id_locatie#, incaperi, spatiu)
+	STRADA (id_strada#, nume_strada)
+	LOCATIE(id_locatie#, id_strada#, id_numar#)
+	CONTRACT_CUMPARARE (id_primarie#, id_cumparator#, id_familie#, suma, taxa)
+	CUMPARATOR (id_cumparator#, nume_cumparator)
+	PRIMARIE (id_primarie#, id_locatie)
+	PRIMARIE_FIRMA_ORGANIZARE (id_primarie#, id_firma#)
+	FIRMA_ORGANIZARE (id_firma#, nume_firma)
+	EVENIMENT_CULTURAL (id_eveniment#, id_firma, nume_eveniment)

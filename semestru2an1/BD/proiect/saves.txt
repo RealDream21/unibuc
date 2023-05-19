@@ -3,29 +3,34 @@ CREATE TABLE STRADA(
     nume_strada VARCHAR(100) NOT NULL
     );
     
-CREATE TABLE INSTITUTIE_INVATAMANT(
+CREATE TABLE LOCATIE(
+    id_locatie NUMBER(3) PRIMARY KEY,
+    id_strada REFERENCES STRADA,
+    numar NUMBER(3) NOT NULL,
+    CONSTRAINT unic_nr_strada UNIQUE (id_strada, numar)
+    );
+    
+CREATE TABLE INSTITUTIE_INVATAMANT (
     id_forma NUMBER(3) PRIMARY KEY,
     nume VARCHAR(50) NOT NULL,
     tip_forma_invatamant CHAR(40) NOT NULL,
-    id_strada REFERENCES strada,
-    numar NUMBER(2) NOT NULL,
-    CONSTRAINT unic_numar_strada UNIQUE (id_strada, numar)
+    id_locatie NUMBER(3) REFERENCES LOCATIE (id_locatie),
+    CONSTRAINT unic_nr_strada UNIQUE (id_locatie)
     );
-    
-CREATE TABLE CASA(
-    id_strada REFERENCES strada,
-    numar NUMBER(3)NOT NULL,
+
+CREATE TABLE CASA (
+    id_casa NUMBER(4) PRIMARY KEY,
     camere NUMBER(2) DEFAULT 1 NOT NULL,
     dimensiune NUMBER(4) NOT NULL,
-    PRIMARY KEY (id_strada, numar)
+    id_locatie NUMBER(3) REFERENCES LOCATIE(id_locatie),
+    CONSTRAINT unic_numar_strada UNIQUE (id_locatie)
     );
-    
+
 CREATE TABLE PRIMARIE (
     id_primarie NUMBER(3) PRIMARY KEY,
-    id_strada REFERENCES strada,
-    numar NUMBER(3) NOT NULL,
     nume VARCHAR(100) NOT NULL,
-    CONSTRAINT unic_strada_numar UNIQUE (id_strada, numar)
+    id_locatie NUMBER(3) REFERENCES LOCATIE(id_locatie),
+    CONSTRAINT primarie_locatie_unic UNIQUE (id_locatie)
     );
 
 CREATE TABLE FAMILIE(
@@ -75,15 +80,11 @@ CREATE TABLE CONTRACT_CUMPARARE(
     PRIMARY KEY (id_primarie, id_cumparator, id_familie, data_cumparare)
     );
 
-DROP TABLE CONTRACT_CUMPARARE;
-
 CREATE TABLE FAMILIE_CASA(
     id_familie NUMBER(4),
-    id_strada NUMBER(3),
-    numar NUMBER(3),
+    id_locatie REFERENCES LOCATIE,
     data_mutare DATE NOT NULL,
-    PRIMARY KEY (id_strada, numar, data_mutare),
-    FOREIGN KEY (id_strada, numar) REFERENCES CASA (id_strada, numar),
+    PRIMARY KEY (id_locatie, id_familie, data_mutare),
     FOREIGN KEY (id_familie) REFERENCES FAMILIE (id_familie)
 );
 
@@ -106,7 +107,9 @@ DROP TABLE FAMILIE_CASA;
 DROP TABLE FAMILIE;
 DROP TABLE CASA;
 DROP TABLE PRIMARIE;
+DROP TABLE LOCATIE;
 DROP TABLE STRADA;
+
 
 INSERT INTO STRADA
 VALUES(10, 'Teilor');
@@ -121,25 +124,86 @@ VALUES(14, 'Tineretului');
 INSERT INTO STRADA
 VALUES(15, 'Eroilor');
 
+DROP SEQUENCE locatie_seq;
+CREATE SEQUENCE locatie_seq
+START with 1
+INCREMENT BY 5
+NOCACHE;
+INSERT INTO locatie
+VALUES(locatie_seq.nextval, 14, 3);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 14, 2);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 10, 1);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 10, 2);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 12, 20);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 15, 1);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 14, 4);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 15, 20);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 12, 1);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 13, 4);
+INSERT INTO LOCATIE
+VALUES(locatie_seq.nextval, 13, 5);
+
+
+SELECT *
+FROM locatie;
+describe casa;
 INSERT INTO CASA
-VALUES(14, 3, 5, 420);
-INSERT INTO CASA(id_strada, numar, dimensiune)
-VALUES(14, 2, 210);
+VALUES(1, 5, 420, 1);
 INSERT INTO CASA
-VALUES(10, 1, 1, 100);
+VALUES(2, 2, 210, 31);
 INSERT INTO CASA
-VALUES(10, 2, 3, 250);
+VALUES(3, 1, 100, 11);
 INSERT INTO CASA
-VALUES(12, 20, 2, 160);
+VALUES(4, 3, 250, 21);
+INSERT INTO CASA
+VALUES(5, 2, 260, 26);
+
+describe locatie;
+describe strada;
+SELECT l.id_locatie, s.nume_strada
+FROM locatie l JOIN strada s ON l.id_strada = s.id_strada;
+SELECT * from casa;
+SELECT* FROM primarie;
+SELECT *
+FROM primarie p
+WHERE p.id_locatie IN ( SELECT id_locatie
+                        FROM casa);
+
+--se vor insera primariile pe primul loc liber de pe strada aferenta
+INSERT INTO PRIMARIE (id_primarie, nume, id_locatie)
+SELECT 10, 'Un nume de primarie', ll.id_locatie
+FROM LOCATIE ll
+WHERE NOT EXISTS (
+    SELECT 'x'
+    FROM casa c JOIN locatie l ON c.id_locatie = l.id_locatie
+    WHERE l.id_strada = ll.id_strada AND l.numar = ll.numar
+);
+
+describe primarie;
+
+select*
+from locatie;
+
+
+select*
+from locatie;
+
 
 INSERT INTO PRIMARIE
-VALUES(10, 10, 5, 'Primaria Teilor');
+VALUES(16, 16, 'Primaria Viilor');
 INSERT INTO PRIMARIE
-VALUES(25, 12, 42, 'Primaria Viilor');
+VALUES(15, 11, 'Primaria Tineretului');
 INSERT INTO PRIMARIE
-VALUES(15, 14, 20, 'Primaria Tineretului');
-INSERT INTO PRIMARIE
-VALUES(20, 13, 1, 'Primaria Crinului');
+VALUES(, 13, 'Primaria Crinului');
 INSERT INTO PRIMARIE
 VALUES(30, 15, 12, 'Primaria Eroilor');
 
@@ -275,11 +339,3 @@ INSERT INTO CONTRACT_CUMPARARE
 VALUES(25, 1, 25, '19-oct-2022', 4, 7000);
 INSERT INTO CONTRACT_CUMPARARE
 VALUES(10, 3, 15, '18-nov-2022', 10, 19500);
-
-
-
-
-
-
-
-
