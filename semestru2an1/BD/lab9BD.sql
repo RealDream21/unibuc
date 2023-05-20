@@ -81,5 +81,58 @@ FROM employees e
 WHERE e.department_id NOT IN (SELECT e1.department_id FROM employees e1 WHERE e1.employee_id IN (SELECT * FROM manager_proiect));
 
 --Ex 9
+SELECT department_id, round(avg(salary),2)
+FROM employees
+GROUP BY department_id
+HAVING avg(salary) > &p;
+
+--Ex 10
+SELECT e.last_name, e.salary, count(project_id) nr_proiecte
+FROM project p JOIN employees e on e.employee_id = p.project_manager
+GROUP BY project_manager, e.last_name, e.salary
+HAVING count(project_id) = 2;
+
+--Ex 11
+SELECT employee_id, project_manager
+FROM works_on w JOIN project p ON w.project_id = p.project_id
+WHERE p.project_manager = 102;
+
+--Ex 12
+--a)
+WITH not_proiecte_ang_200 AS(
+        SELECT w.project_id
+        from works_on w JOIN project p ON w.project_id = p.project_id
+        WHERE w.employee_id = 200)
+SELECT DISTINCT e.last_name, e.employee_id
+FROM works_on w JOIN employees e ON w.employee_id = e.employee_id
+WHERE NOT EXISTS(SELECT * FROM not_proiecte_ang_200 MINUS SELECT ww.project_id FROM works_on ww WHERE ww.employee_id = w.employee_id);
+
+--b)
+WITH proiecte_ang_200 AS(
+        SELECT w.project_id
+        from works_on w JOIN project p ON w.project_id = p.project_id
+        WHERE w.employee_id = 200)
+SELECT DISTINCT w.employee_id, e.last_name
+FROM works_on w JOIN employees e ON w.employee_id = e.employee_id
+WHERE EXISTS(SELECT ww.project_id FROM works_on ww WHERE ww.employee_id = w.employee_id MINUS SELECT * FROM proiecte_ang_200)
+    OR NOT EXISTS(SELECT ww.project_id FROM works_on ww WHERE ww.employee_id = w.employee_id MINUS SELECT ww.project_id FROM works_on ww WHERE ww.project_id IN (SELECT * FROM proiecte_ang_200)); 
+
+--Ex 13
+WITH proiecte_ang_200 AS(
+        SELECT w.project_id
+        from works_on w JOIN project p ON w.project_id = p.project_id
+        WHERE w.employee_id = 200)
+SELECT w.employee_id
+FROM works_on w JOIN project p ON w.project_id = p.project_id
+WHERE NOT EXISTS(SELECT ww.project_id FROM works_on ww WHERE ww.employee_id = w.employee_id MINUS SELECT * FROM proiecte_ang_200)
+    AND NOT EXISTS(SELECT * FROM proiecte_ang_200 MINUS SELECT ww.project_Id FROM works_on ww WHERE ww.employee_id = w.employee_id);
+
+--Ex 14
+--a)
+describe job_grades;
+--b)
+SELECT e.last_name, j.grade_level
+FROM employees e, job_grades j
+WHERE salary BETWEEN j.lowest_sal AND j.highest_sal;
 
 

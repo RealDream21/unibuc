@@ -3,34 +3,26 @@ CREATE TABLE STRADA(
     nume_strada VARCHAR(100) NOT NULL
     );
     
-CREATE TABLE LOCATIE(
-    id_locatie NUMBER(3) PRIMARY KEY,
-    id_strada REFERENCES STRADA,
-    numar NUMBER(3) NOT NULL,
-    CONSTRAINT unic_nr_strada UNIQUE (id_strada, numar)
-    );
-    
 CREATE TABLE INSTITUTIE_INVATAMANT (
     id_forma NUMBER(3) PRIMARY KEY,
     nume VARCHAR(50) NOT NULL,
     tip_forma_invatamant CHAR(40) NOT NULL,
-    id_locatie NUMBER(3) REFERENCES LOCATIE (id_locatie),
-    CONSTRAINT unic_nr_strada UNIQUE (id_locatie)
+    id_strada REFERENCES STRADA
     );
 
 CREATE TABLE CASA (
-    id_casa NUMBER(4) PRIMARY KEY,
+    id_strada REFERENCES STRADA,
+    numar NUMBER(3) NOT NULL,
     camere NUMBER(2) DEFAULT 1 NOT NULL,
     dimensiune NUMBER(4) NOT NULL,
-    id_locatie NUMBER(3) REFERENCES LOCATIE(id_locatie),
-    CONSTRAINT unic_numar_strada UNIQUE (id_locatie)
+    PRIMARY KEY(id_strada, numar)
     );
 
 CREATE TABLE PRIMARIE (
     id_primarie NUMBER(3) PRIMARY KEY,
     nume VARCHAR(100) NOT NULL,
-    id_locatie NUMBER(3) REFERENCES LOCATIE(id_locatie),
-    CONSTRAINT primarie_locatie_unic UNIQUE (id_locatie)
+    id_strada REFERENCES STRADA,
+    CONSTRAINT primarie_locatie_unic UNIQUE (id_strada)
     );
 
 CREATE TABLE FAMILIE(
@@ -81,23 +73,25 @@ CREATE TABLE CONTRACT_CUMPARARE(
     );
 
 CREATE TABLE FAMILIE_CASA(
-    id_familie NUMBER(4),
-    id_locatie REFERENCES LOCATIE,
+    id_familie NUMBER(4) NOT NULL,
+    id_strada NUMBER(3),
+    numar NUMBER(3),
     data_mutare DATE NOT NULL,
-    PRIMARY KEY (id_locatie, id_familie, data_mutare),
-    FOREIGN KEY (id_familie) REFERENCES FAMILIE (id_familie)
-);
+    PRIMARY KEY (id_familie, id_strada, numar, data_mutare),
+    FOREIGN KEY (id_strada, numar) REFERENCES CASA(id_strada, numar),
+    FOREIGN KEY (id_familie) REFERENCES FAMILIE(id_familie)
+    );
 
-CREATE TABLE PRIMARIE_FIRMA_ORGANIZARE(
+CREATE TABLE PRIMARIE_EVENIMENT(
     id_primarie REFERENCES PRIMARIE,
-    id_firma REFERENCES FIRMA_ORGANIZARE,
-    data_contract DATE NOT NULL,
-    PRIMARY KEY (id_primarie, id_firma, data_contract)
+    id_eveniment REFERENCES EVENIMENT_CULTURAL,
+    data_eveniment DATE NOT NULL,
+    PRIMARY KEY(id_primarie, id_eveniment, data_eveniment)
     );
 
 DROP TABLE CONTRACT_CUMPARARE;
 DROP TABLE CUMPARATOR;
-DROP TABLE PRIMARIE_FIRMA_ORGANIZARE;
+DROP TABLE PRIMARIE_EVENIMENT;
 DROP TABLE EVENIMENT_CULTURAL;
 DROP TABLE FIRMA_ORGANIZARE;
 DROP TABLE CICLU_INVATAMANT;
@@ -107,116 +101,58 @@ DROP TABLE FAMILIE_CASA;
 DROP TABLE FAMILIE;
 DROP TABLE CASA;
 DROP TABLE PRIMARIE;
-DROP TABLE LOCATIE;
 DROP TABLE STRADA;
 
-
-INSERT INTO STRADA
-VALUES(10, 'Teilor');
-INSERT INTO STRADA
-VALUES(11, 'Libertatii');
-INSERT INTO STRADA
-VALUES(12, 'Viilor');
-INSERT INTO STRADA
-VALUES(13, 'Crinului');
-INSERT INTO STRADA
-VALUES(14, 'Tineretului');
-INSERT INTO STRADA
-VALUES(15, 'Eroilor');
-
-DROP SEQUENCE locatie_seq;
-CREATE SEQUENCE locatie_seq
+DROP SEQUENCE strada_seq;
+CREATE SEQUENCE strada_seq
 START with 1
 INCREMENT BY 5
 NOCACHE;
-INSERT INTO locatie
-VALUES(locatie_seq.nextval, 14, 3);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 14, 2);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 10, 1);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 10, 2);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 12, 20);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 15, 1);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 14, 4);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 15, 20);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 12, 1);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 13, 4);
-INSERT INTO LOCATIE
-VALUES(locatie_seq.nextval, 13, 5);
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Teilor');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval1, 'Libertatii');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Viilor');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Crinului');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Tineretului');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Eroilor');
 
-
-SELECT *
-FROM locatie;
-describe casa;
 INSERT INTO CASA
-VALUES(1, 5, 420, 1);
+VALUES(1, 1, 5, 420);
 INSERT INTO CASA
-VALUES(2, 2, 210, 31);
+VALUES(11, 2, 2, 210);
 INSERT INTO CASA
-VALUES(3, 1, 100, 11);
+VALUES(16, 14, 1, 100);
 INSERT INTO CASA
-VALUES(4, 3, 250, 21);
+VALUES(21, 4, 3, 250);
 INSERT INTO CASA
-VALUES(5, 2, 260, 26);
-
-describe locatie;
-describe strada;
-SELECT l.id_locatie, s.nume_strada
-FROM locatie l JOIN strada s ON l.id_strada = s.id_strada;
-SELECT * from casa;
-SELECT* FROM primarie;
-SELECT *
-FROM primarie p
-WHERE p.id_locatie IN ( SELECT id_locatie
-                        FROM casa);
-
---se vor insera primariile pe primul loc liber de pe strada aferenta
-INSERT INTO PRIMARIE (id_primarie, nume, id_locatie)
-SELECT 10, 'Un nume de primarie', ll.id_locatie
-FROM LOCATIE ll
-WHERE NOT EXISTS (
-    SELECT 'x'
-    FROM casa c JOIN locatie l ON c.id_locatie = l.id_locatie
-    WHERE l.id_strada = ll.id_strada AND l.numar = ll.numar
-);
-
-describe primarie;
-
-select*
-from locatie;
-
-
-select*
-from locatie;
-
+VALUES(21, 5, 2, 260);
 
 INSERT INTO PRIMARIE
-VALUES(16, 16, 'Primaria Viilor');
+VALUES(1, 'Primaria Viilor', 6);
 INSERT INTO PRIMARIE
-VALUES(15, 11, 'Primaria Tineretului');
+VALUES(2, 'Primaria Tineretului', 16);
 INSERT INTO PRIMARIE
-VALUES(, 13, 'Primaria Crinului');
+VALUES(3, 'Primaria Crinului', 11);
 INSERT INTO PRIMARIE
-VALUES(30, 15, 12, 'Primaria Eroilor');
+VALUES(4, 'Primaria Eroilor', 21);
+INSERT INTO PRIMARIE
+VALUES(5, 'Primaria Teilor', 1);
 
 INSERT INTO FAMILIE
-VALUES(5, 10, 'Popescu');
+VALUES(5, 4, 'Popescu');
 INSERT INTO FAMILIE
-VALUES(10, 10, 'Ionescu');
+VALUES(10, 1, 'Ionescu');
 INSERT INTO FAMILIE
-VALUES(15, 10, 'Popa');
+VALUES(15, 1, 'Popa');
 INSERT INTO FAMILIE
-VALUES(20, 30, 'Constantinescu');
+VALUES(20, 4, 'Constantinescu');
 INSERT INTO FAMILIE
-VALUES(25, 25, 'Lupescu');
+VALUES(25, 5, 'Lupescu');
 
 INSERT INTO LOCUITOR 
 VALUES (1, 5, 'Ion', 1);
@@ -230,15 +166,15 @@ INSERT INTO LOCUITOR
 VALUES (5, 20, 'Elena', 2);
 
 INSERT INTO INSTITUTIE_INVATAMANT
-VALUES (1, 'Scoala Gimnaziala Nr. 1', 'Scoala Gimnaziala', 10, 5);
+VALUES (1, 'Scoala Gimnaziala Nr. 1', 'Scoala Gimnaziala', 1);
 INSERT INTO INSTITUTIE_INVATAMANT
-VALUES (2, 'Liceul Teoretic "Mihai Eminescu"', 'Liceu', 11, 14);
+VALUES (2, 'Liceul Teoretic "Mihai Eminescu"', 'Liceu', 1);
 INSERT INTO INSTITUTIE_INVATAMANT
-VALUES (3, 'Scoala Gimnaziala Nr. 2', 'Scoala Gimnaziala', 14, 20);
+VALUES (3, 'Scoala Gimnaziala Nr. 2', 'Scoala Gimnaziala', 6);
 INSERT INTO INSTITUTIE_INVATAMANT
-VALUES (4, 'Colegiul National "Gheorghe Lazar"', 'Colegiu', 15, 10);
+VALUES (4, 'Colegiul National "Gheorghe Lazar"', 'Colegiu', 16);
 INSERT INTO INSTITUTIE_INVATAMANT
-VALUES (5, 'Liceul Tehnic', 'Liceu', 12, 20);
+VALUES (5, 'Liceul Tehnic', 'Liceu', 21);
 
 INSERT INTO CUMPARATOR
 VALUES (1, 'ABC Company');
@@ -294,48 +230,79 @@ VALUES(3, 5, '11-sep-2002');
 INSERT INTO CICLU_INVATAMANT
 VALUES(5, 5, '19-sep-2010');
 
-describe familie_casa;
 INSERT INTO FAMILIE_CASA
-VALUES(5, 14, 3, '10-may-1980');
+VALUES(5, 16, 14, '10-may-1980');
 INSERT INTO FAMILIE_CASA
-VALUES(10, 14, 3, '10-april-1985');
+VALUES(10, 11, 2, '10-april-1985');
 INSERT INTO FAMILIE_CASA
-VALUES(5, 14, 2, '9-april-1985');
+VALUES(5, 21, 4, '9-april-1985');
 INSERT INTO FAMILIE_CASA
-VALUES(20, 10, 2, '29-aug-2003');
+VALUES(20, 21, 5, '29-aug-2003');
 INSERT INTO FAMILIE_CASA
-VALUES(15, 12, 20, '15-feb-1995');
+VALUES(15, 21, 4, '15-feb-1995');
 INSERT INTO FAMILIE_CASA
-VALUES(15, 10, 2,'20-jan-1997');
+VALUES(15, 1, 1,'20-jan-1997');
 INSERT INTO FAMILIE_CASA
-VALUES(10, 10, 2, '14-jan-2001');
+VALUES(10, 1, 1, '14-jan-2001');
 INSERT INTO FAMILIE_CASA
-VALUES(15, 10, 1, '10-june-2000'); 
+VALUES(15, 11, 2, '10-june-2000'); 
 INSERT INTO FAMILIE_CASA
-VALUES(20, 14, 3, '19-jul-2005');
+VALUES(20, 21, 5, '19-jul-2005');
 INSERT INTO FAMILIE_CASA
-VALUES(20, 10, 2, '20-march-2002');
+VALUES(20, 1, 1, '20-march-2002');
 INSERT INTO FAMILIE_CASA
-VALUES(10, 14, 3, '15-march-2002');
+VALUES(10, 21, 4, '15-march-2002');
 
-describe contract_cumparare;
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(10, 1, 5, '15-sep-1990', 15, 120000); 
+VALUES(1, 1, 5, '15-sep-1990', 15, 120000); 
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(10, 2, 5, '20-jan-1985', 20, 17000);
+VALUES(1, 2, 5, '20-jan-1985', 20, 17000);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(30, 1, 20, '15-aug-2019', 5, 7000);
+VALUES(3, 1, 20, '15-aug-2019', 5, 7000);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(25, 5, 25,'14-sep-2023', 40, 800000);
+VALUES(2, 5, 25,'14-sep-2023', 40, 800000);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(30, 4, 20, '19-jul-2021', 14, 75189); 
+VALUES(3, 4, 20, '19-jul-2021', 14, 75189); 
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(25, 2, 25, '11-june-2021', 10, 10000);
+VALUES(2, 2, 25, '11-june-2021', 10, 10000);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(10, 1, 5, '15-sep-2004', 5, 6510);
+VALUES(1, 1, 5, '15-sep-2004', 5, 6510);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(30, 2, 20, '14-sep-2022', 10, 19000);
+VALUES(3, 2, 20, '14-sep-2022', 10, 19000);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(25, 1, 25, '19-oct-2022', 4, 7000);
+VALUES(2, 1, 25, '19-oct-2022', 4, 7000);
 INSERT INTO CONTRACT_CUMPARARE
-VALUES(10, 3, 15, '18-nov-2022', 10, 19500);
+VALUES(1, 3, 15, '18-nov-2022', 10, 19500);
+
+CREATE SEQUENCE id_prim
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 5
+    CYCLE
+    NOCACHE;
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 1, '12-july-1998');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 5, '6-november-2006');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 3, '20-september-1993');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 2, '3-may-2014');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 1, '18-january-2002');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 3, '9-october-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 5, '28-march-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 4, '14-june-2007');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 2, '27-august-1992');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 1, '01-may-2011');
+
+---------------CERERI---------------
+--1. Afisati locuitorii care au fost implicati intr-un comert si suma cu care si-au vandut produsele
+
+

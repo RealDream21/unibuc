@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1684564347 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\jucarie.cpp
+	"jucarie.h"
+
+1684564292 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\jucarie.h
+	<string>
+	<iostream>
+
+1684566771 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\main.cpp
+	<iostream>
+	"container.h"
+
+1684566077 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\copii.h
+	"jucarie.h"
+	<memory>
+	<vector>
+
+1684566054 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\copii.cpp
+	"copii.h"
+
+1684565990 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\container.h
+	"copii.h"
+
+1684566207 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\simulare\container.cpp
+	"container.h"
+
