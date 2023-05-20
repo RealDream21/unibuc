@@ -12,8 +12,8 @@ int main()
         std::cout << "1. Add a new character\n";
         std::cout << "2. See all characters\n";
         std::cout << "3. See all player characters\n";
-        std::cout << "4.Modify an existing character given a name\n";
-        std::cout << "5.Delete a character given a name\n";
+        std::cout << "4. Modify an existing character given a name\n";
+        std::cout << "5. Delete a character given a name\n";
         std::cout << "6. Exit\n";
         std::cin >> menuItem;
         if(menuItem == "1"){

@@ -1,6 +1,4 @@
 9 -> normalizare pana la FN3 ?? dunno what that is
-10 -> inserare cu counter de secventa(REALLY EASY)
-11 -> 50% done
 12 -> 5 cereri doable
 13 -> 2 update + 1 delete -> really easy
 
