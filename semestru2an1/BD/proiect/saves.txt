@@ -120,6 +120,8 @@ INSERT INTO STRADA
 VALUES(strada_seq.nextval, 'Tineretului');
 INSERT INTO STRADA
 VALUES(strada_seq.nextval, 'Eroilor');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Singuratatii');
 
 INSERT INTO CASA
 VALUES(1, 1, 5, 420);
@@ -145,6 +147,9 @@ INSERT INTO PRIMARIE
 VALUES(4, 'Primaria Eroilor', 21);
 INSERT INTO PRIMARIE
 VALUES(5, 'Primaria Teilor', 1);
+INSERT INTO PRIMARIE
+VALUES(6, 'Primaria Degeaba', 26);
+
 
 INSERT INTO FAMILIE
 VALUES(5, 4, 'Popescu');
@@ -322,6 +327,10 @@ INSERT INTO PRIMARIE_EVENIMENT
 VALUES(id_prim.nextval, 2, '27-august-1992');
 INSERT INTO PRIMARIE_EVENIMENT
 VALUES(id_prim.nextval, 1, '01-may-2011');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 2, '05-aug-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 3, '29-sep-2022');
 
 ---------------CERERI---------------
 --1. Afisati numele institutiilor de invatamant a persoanelor din familia care a avut cel mai scump contract de vanzare,
@@ -352,13 +361,9 @@ WHERE fc.data_mutare = (SELECT max(data_mutare) --functie grup + subcerere nesin
                         AND s.id_strada 
                         IN (SELECT ss.id_strada FROM strada ss WHERE SUBSTR(lower(ss.nume_strada),1, 1) = SUBSTR(lower(f.nume_familie),1, 1)));
 
-describe id_strada;
 --3. Afisati numele(avand toate literele mari), prenumele(eliminand eventualele spatii), numarul de persoane din familie
 --si un mesaj in functie de sumele contractelor de vanzare
 -- pentru contractele trecut de anul 2000 si pentru familiile care au prefixul pop
-
-describe contract_cumparare;
-describe familie;
 WITH vanzari_familie_2000 AS(
     SELECT fam.nume_familie nume_familie, contr.suma suma, nr_loc_fam.nr_membrii
     FROM (SELECT * FROM familie WHERE trim(lower(nume_familie)) like ('pop%')) fam JOIN --2 functii pe siruri de caractere + subcereri nesincronizate in from
@@ -377,15 +382,23 @@ CASE
 END AS "Tip suma"
 FROM vanzari_familie_2000;
 
---4
-WITH max_vanzare_familie AS( --clausa with
-    SELECT max(sum(suma))
-    FROM contract_cumparare --group by 
-    GROUP BY id_familie)
-SELECT f.id_familie, s.nume_strada, fc.numar
-FROM familie f JOIN (SELECT id_familie FROM contract_cumparare GROUP BY id_familie HAVING sum(suma) = (SELECT * FROM max_vanzare_familie)) aux on aux.id_familie = f.id_familie --subcerere in FROM
-    JOIN familie_casa fc ON fc.id_familie = f.id_familie JOIN strada s ON s.id_strada = fc.id_strada
-WHERE fc.data_mutare = (SELECT max(data_mutare) --functie grup
-                        FROM familie_casa fc2
-                        WHERE fc2.id_familie = f.id_familie); --subcerere sincronizata
+--4.  Afisati cate evenimente culturale au avut loc in anul 2022 
+--sunt luate in considerare doar cele care au capacitatea > minimul capacitatii din randul tuturor evenimentelor conduse de firma cu id 5
+WITH an_eveniment AS(
+        SELECT to_char(data_eveniment, 'YYYY') data_ev,  id_eveniment id_ev --functie pe data calendaristica
+        FROM primarie_eveniment
+        )
+SELECT sum(aux.nr) "Totalul evenimentelor"
+FROM (SELECT count(nume_eveniment) nr FROM an_eveniment ae JOIN (SELECT * FROM eveniment_cultural) ec ON ae.id_ev = ec.id_eveniment 
+        GROUP BY data_ev, ec.nume_eveniment, ec.capacitate HAVING (data_ev) = '2022' --grupari de date, subcereri nesincronizate cu 3 tabele
+        AND ec.capacitate > (SELECT MIN(capacitate) FROM eveniment_cultural GROUP BY id_firma HAVING id_firma = 5)) aux; --filtrare la nivel de grupuri + functie grup
+        
+--5. Afisati numele tuturor evenimentelor, impreuna cu capacitatea si primaria care le a organizat, in ordine descrescatoare
+--in functie de capacitate. Se vor afisa si primariile care nu au organizat evenimente 
+SELECT DECODE(nvl(ec.capacitate, 0), 0, 'Primaria nu a organizat niciun eveniment', ec.nume_eveniment), DECODE(nvl(ec.capacitate, 0), 0, 0, ec.capacitate), p.nume --decode + nvl
+FROM eveniment_cultural ec JOIN primarie_eveniment pe ON ec.id_eveniment = pe.id_eveniment RIGHT OUTER JOIN primarie p ON p.id_primarie = pe.id_primarie 
+ORDER BY 2 desc; --ordonari
+
+
+
 
