@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1685087632 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\main.cpp
+	"manager.h"
+
+1685084350 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\proprietate.cpp
+	"proprietate.h"
+
+1685082149 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\proprietate.h
+	<string>
+	<iostream>
+
+1685083279 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\contract.cpp
+	"contract.h"
+
+1685082960 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\contract.h
+	"proprietate.h"
+	<memory>
+
+1685087406 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\manager.cpp
+	"manager.h"
+
+1685087569 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2017vara\manager.h
+	"contract.h"
+	<vector>
+

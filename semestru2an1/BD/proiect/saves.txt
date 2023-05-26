@@ -136,7 +136,6 @@ VALUES(21, 5, 2, 260);
 INSERT INTO CASA
 VALUES(16, 25, 3, 420);
 
-describe casa;
 INSERT INTO PRIMARIE
 VALUES(1, 'Primaria Viilor', 6);
 INSERT INTO PRIMARIE
@@ -149,7 +148,6 @@ INSERT INTO PRIMARIE
 VALUES(5, 'Primaria Teilor', 1);
 INSERT INTO PRIMARIE
 VALUES(6, 'Primaria Degeaba', 26);
-
 
 INSERT INTO FAMILIE
 VALUES(5, 4, 'Popescu');
@@ -180,7 +178,6 @@ INSERT INTO LOCUITOR
 VALUES(7, 25, 'Mihaela', 2);
 INSERT INTO LOCUITOR
 VALUES(8, 30, 'Ramon', 1);
-
 
 INSERT INTO INSTITUTIE_INVATAMANT
 VALUES (1, 'Scoala Gimnaziala Nr. 1', 'Scoala Gimnaziala', 1);
@@ -333,8 +330,10 @@ INSERT INTO PRIMARIE_EVENIMENT
 VALUES(id_prim.nextval, 3, '29-sep-2022');
 
 ---------------CERERI---------------
+--12
 --1. Afisati numele institutiilor de invatamant a persoanelor din familia care a avut cel mai scump contract de vanzare,
 --precum si luna in care au inceput studiul
+--elemente folosite: bloc de cerere cu with, functie pe data calendaristica, decode + nvl
 WITH max_vanzare AS(  --bloc cerere cu with
     SELECT max(suma)
     FROM contract_cumparare)
@@ -347,6 +346,8 @@ WHERE f.id_familie = (SELECT id_familie
 
 --2. Gasiti casa la care locuieste familia care a facut cei mai multi bani din vanzari de pe o strada care are 
 --prima litera din numele acestei familii drept nume
+--with + functie group + filtru la group by + subcerere nesincronizata cu cel putin 3 tabele  + subcerere nesincronizata in from
+--+ functie pe sir de caractere
 WITH max_vanzare_familie AS( --clausa with
     SELECT max(sum(suma)) --functie grup
     FROM contract_cumparare cc JOIN familie f ON cc.id_familie = f.id_familie --group by 
@@ -364,6 +365,8 @@ WHERE fc.data_mutare = (SELECT max(data_mutare) --functie grup + subcerere nesin
 --3. Afisati numele(avand toate literele mari), prenumele(eliminand eventualele spatii), numarul de persoane din familie
 --si un mesaj in functie de sumele contractelor de vanzare
 -- pentru contractele trecut de anul 2000 si pentru familiile care au prefixul pop
+--subcerere necorelata in clauza from + functie pe data calendaristica + grupare de date + functie pe siruri de caractere
+-- + case 
 WITH vanzari_familie_2000 AS(
     SELECT fam.nume_familie nume_familie, contr.suma suma, nr_loc_fam.nr_membrii
     FROM (SELECT * FROM familie WHERE trim(lower(nume_familie)) like ('pop%')) fam JOIN --2 functii pe siruri de caractere + subcereri nesincronizate in from
@@ -384,6 +387,7 @@ FROM vanzari_familie_2000;
 
 --4.  Afisati cate evenimente culturale au avut loc in anul 2022 
 --sunt luate in considerare doar cele care au capacitatea > minimul capacitatii din randul tuturor evenimentelor conduse de firma cu id 5
+--functie pe data calendaristica + functie group + grupari de date cu subcereri nesincronizate cu 3 tabele + filtrare la nivel de grupuri
 WITH an_eveniment AS(
         SELECT to_char(data_eveniment, 'YYYY') data_ev,  id_eveniment id_ev --functie pe data calendaristica
         FROM primarie_eveniment
@@ -395,10 +399,25 @@ FROM (SELECT count(nume_eveniment) nr FROM an_eveniment ae JOIN (SELECT * FROM e
         
 --5. Afisati numele tuturor evenimentelor, impreuna cu capacitatea si primaria care le a organizat, in ordine descrescatoare
 --in functie de capacitate. Se vor afisa si primariile care nu au organizat evenimente 
+--ordonare + decode + nvl 
 SELECT DECODE(nvl(ec.capacitate, 0), 0, 'Primaria nu a organizat niciun eveniment', ec.nume_eveniment), DECODE(nvl(ec.capacitate, 0), 0, 0, ec.capacitate), p.nume --decode + nvl
 FROM eveniment_cultural ec JOIN primarie_eveniment pe ON ec.id_eveniment = pe.id_eveniment RIGHT OUTER JOIN primarie p ON p.id_primarie = pe.id_primarie 
 ORDER BY 2 desc; --ordonari
 
+--13.
+--1. Cresteti capacitatea tuturor evenimentelor cu id > 3 cu 150 de locuri fata de media tuturor evenimentelorcu id < 3
+UPDATE eveniment_cultural
+SET capacitate = capacitate + 150
+WHERE id_eveniment IN (SELECT id_eveniment FROM eveniment_cultural WHERE id_eveniment > 3);
+
+--2. Cresteti taxa cu 2 procente tuturor contractelor pentru familiile ce au '%escu%' in nume;
+UPDATE contract_cumparare
+SET taxa = taxa + 2
+WHERE id_familie IN (SELECT id_familie FROM familie WHERE lower(nume_familie) LIKE '%escu%');
 
 
+--3. Stergeti toate contractele cu suma mai mica de 7500
+DELETE
+FROM contract_cumparare
+WHERE (id_primarie, id_cumparator, id_familie) IN (SELECT id_primarie, id_cumparator, id_familie FROM contract_cumparare WHERE suma <= 7500);
 
