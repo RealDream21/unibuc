@@ -1,0 +1,5 @@
+pagina de parseInt
+pagina de CSSStyleDeclaration
+pagina de e.target.tagName
+pagina de get valori din formular https://www.w3schools.com/jsref/prop_text_value.asp
+parse si stringify la laboratorul 7 la interfata response

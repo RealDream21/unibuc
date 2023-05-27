@@ -1,68 +1,57 @@
-const people = [
+const cities = [
     {
-      "nume": "Ion",
-      "sex": "m",
-      "varsta": 3
+      nume: "Aa",
+      populatie: 14000,
+      capitala: true
     },
     {
-      "nume": "Oana",
-      "sex": "f",
-      "varsta": 23
+      nume: "Bb",
+      populatie: 7000,
+      capitala: false
     },
     {
-      "nume": "Daria",
-      "sex": "f",
-      "varsta": 10
+      nume: "Cc",
+      populatie: 19000,
+      capitala: false
     },
     {
-      "nume": "Mihai",
-      "sex": "m",
-      "varsta": 19
+      nume: "Dd",
+      populatie: 5000,
+      capitala: false
     },
     {
-      "nume": "Gabriel",
-      "sex": "m",
-      "varsta": 22
+      nume: "Ee",
+      populatie: 8000,
+      capitala: true
     },
     {
-      "nume": "Simona",
-      "sex": "f",
-      "varsta": 11
+      nume: "Ff",
+      populatie: 12000,
+      capitala: false
     },
     {
-      "nume": "Bogdan",
-      "sex": "m",
-      "varsta": 28
+      nume: "Gg",
+      populatie: 20000,
+      capitala: true
     }
   ]
 
-function VerifyFunc() {
-    const formular = document.querySelector('form');
-    formular.addEventListener('submit', () => {
-        event.preventDefault();
-        const dateFormular = new FormData(formular);
-        const nume = dateFormular.get('nume');
-        let found = false;
-        for(let i = 0; i < people.length; i++){
-            if(people[i]["nume"] == nume){
-                if(people[i]["varsta"] < 18){
-                    let newP = document.createElement('p');
-                    newP.innerText = `${nume} este minor`;
-                    document.getElementById('raspunsuri').appendChild(newP);
-                }
-                else{
-                    let newP = document.createElement('p');
-                    newP.innerText = `${nume} este major`;
-                    document.getElementById('raspunsuri').appendChild(newP);
-                }
-                found = true;
-            }
-        }
-        if(found == false)
-            alert('Nu a fost gasita persoana');
-    });
-}
+const express = require('express');
+const app = express();
 
-window.onload = () => {
-    VerifyFunc();
-}
+app.get('/', function(req, res){
+    res.sendFile('C:/Users/Fabi/Desktop/unibuc folder/unibuc/semestru2an1/TW/pregatire examen/ex4.html');
+});
+
+app.post('/', (req, res) =>{
+
+    console.log(req.body);
+    const {dimensiune, tip_oras} = req.body;
+    console.log(dimensiune);
+
+    res.send('sal');
+});
+
+
+
+app.listen(3000);

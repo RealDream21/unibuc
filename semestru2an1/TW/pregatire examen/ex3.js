@@ -1,42 +1,44 @@
-function myFunc () {
-    const input =  document.getElementById('date');
-    const d = new Date();
-    let text = d.toDateString();
-    input.setAttribute('value', text);
-    const culori = document.getElementById('culori');
+function MyFunc() {
+    const numarFormular = document.getElementById('numar').value;
 
-    let ultima = JSON.parse(localStorage.getItem('lastColor'));
-    if(ultima)
-        input.style.color = ultima
-    else
-        input.style.color = culori.value;
-    
-    let culoricycle = [];
-    for(let i = 0; i < culori.length; i++){
-        culoricycle.push(culori[i].value);
+    const paragrafe = document.querySelectorAll('p');
+
+    toRemove = [];
+
+    for (paragraf of paragrafe){
+        let text = paragraf.innerHTML.split(" ");
+        console.log(text.length);
+        if(text.length > numarFormular)
+            toRemove.push(paragraf);
     }
-    let cnt = 0;
+    console.log(toRemove);
 
-    document.addEventListener(('keypress'), () =>{
-        if(event.key == 's'){
-            clearInterval(myinterval);
-            console.log('logged s');
+    const corp = document.getElementById("continut");
+    corp.removeChild(toRemove[0]);
+    let k = 0;
+    setInterval(() =>{
+        if(toRemove){
+            corp.removeChild(toRemove[toRemove.length - 1]);
+            toRemove.pop();
+            k++;
         }
-    });
-
-    let myinterval = setInterval(() =>{
-        cnt = (cnt + 1) % culoricycle.length;
-        input.style.color = culoricycle[cnt];
-        localStorage.setItem('lastColor', JSON.stringify(input.style.color));
-    },3000);
-
-    culori.addEventListener('change', () =>{
-        input.style.color = culori.value;
-        localStorage.setItem('lastColor', JSON.stringify(input.style.color));
-    });
-
+        localStorage.setItem('last', JSON.stringify(k));
+    }, 1000);
 }
 
 window.onload = () => {
-    myFunc();
+    let lastNumber = 0;
+    try{
+        lastNumber = JSON.parse(localStorage.getItem('last'));
+    }
+    catch(erro){
+        lastNumber = 0;
+    }
+    document.getElementById("numar").value = lastNumber;
+
+
+    document.addEventListener("keypress" , (e) =>{
+        if(e.key == 's')
+            MyFunc();
+    })
 }

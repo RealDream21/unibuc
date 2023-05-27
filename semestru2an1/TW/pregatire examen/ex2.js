@@ -1,33 +1,33 @@
-function renderParagrafe () {
-    var now = new Date();
-    var minutes = now.getMinutes();
-    const N = Math.max(10, minutes);
-    const clase = ['c1', 'c2', 'c3', 'c4', 'c5'];
-    const prenume = "Fabian-Andrei";
+function LoadDivs() {
+    const locDivuri = document.getElementById('dreptunghiuri');
+    for(let i = 0; i < 10; i++){
+        let newDiv = document.createElement('div');
+        newDiv.className = 'dreptunghi';
+    
+        locDivuri.appendChild(newDiv);
 
-    const sectiune = document.getElementById('paragrafe');
+        var elem, style;
+        elem = document.querySelector('.dreptunghi');
+        style = getComputedStyle(elem);
 
-    for(let i = 0; i < N; i++){
-        let randomClass = Math.floor(Math.random() * clase.length);
-        
-        let newP = document.createElement('p');
-        newP.classList.add(clase[randomClass]);
-        newP.className = clase[randomClass];
-        newP.textContent = prenume;
-        newP.addEventListener('click', ()=>{
-            toRemove = [];
-            for(let i = 0; i < [...sectiune.children].length; i++){
-                if(sectiune.childNodes[i].className == newP.className){
-                    toRemove.push(sectiune.childNodes[i]);
+        newDiv.addEventListener('click', () =>{
+            event.preventDefault();
+            newDiv.style.height = '60px';
+        });
+    }
+    document.addEventListener('click', (e) =>{
+        if(e.target.tagName == 'HTML'){
+            for(let i = 0; i <= locDivuri.childElementCount; i++){
+                var declaration = locDivuri.childNodes[i].style;
+                if(declaration){
+                    declaration.setProperty("height", "50px");
                 }
             }
-            for(let i = 0; i < toRemove.length; i++)
-                sectiune.removeChild(toRemove[i]);
-        });
-        sectiune.appendChild(newP);
-    }
+        }
+    })
 }
 
-window.onload = () => {
-    renderParagrafe();
+
+window.onload = () =>{
+    LoadDivs();
 }

@@ -5,14 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src = "ex4.js"></script>
 </head>
 <body>
-    <form>
-        <input type = "text" name = "nume"/>
-        <button type = "submit" id = 'buton_trimitere'>Trimite</button>
+    <form method = "POST">
+        <select name = "dimensiune">
+            <option value = "mic">Mic</option>
+            <option value = "mare">Mare</option>
+        </select>
+        <div>
+            <input type="radio" name="tip_oras" id="capitala"/>
+            <label for="capitala">E capitala</label>
+            <input type="radio" name="tip_oras" id="necapitala"/>
+            <label for="necapitala">Nu e capitala</label>
+            <input type = "submit" id = "buton">
+          </div>
     </form>
-    <div id = "raspunsuri">
-    </div>
 </body>
 </html>
