@@ -1,0 +1,51 @@
+.container{
+    height: 50vh;
+    width: 250px;
+    border:dotted blue;
+    display:grid;
+    grid-template-rows: (3, 1fr);
+    grid-template-columns: (3, 1fr);
+    grid-template-areas: 
+    ". div2 div5"
+    "div1 div3 div5"
+    ". div4 div5";
+}
+
+.container div{
+
+    border:double rgb(0, 0, 0) 5px;
+}
+#div1{
+    grid-area: div1;
+}
+#div2{
+    grid-area: div2;
+}
+#div3{
+    grid-area: div3;
+}
+#div4{
+    grid-area: div4;
+}
+#div5{
+    grid-area: div5;
+}
+
+@media screen and (max-width: 600px) and (max-height: 500px){
+    .container{
+        display:inline-flex;
+        flex-direction: column;
+    }
+    .container div{
+        font-size: 15px;
+        flex-grow: 1;
+        width:auto;
+        height:fit-content;
+        overflow:hidden;
+        transition: font-size 3s;
+    }
+    .container div:hover{
+        font-size: 30px;
+        transition: font-size 3s;
+    }
+}

@@ -1,0 +1,12 @@
+#dreptunghiuri{
+    display:flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.dreptunghi{
+    border: 5px solid black;
+    background-color: lightblue;
+    width: 100px;
+    height: 50px;
+}

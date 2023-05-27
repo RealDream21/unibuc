@@ -1,44 +1,51 @@
 function MyFunc() {
-    const numarFormular = document.getElementById('numar').value;
+    const whereButoane = document.getElementById('butoane');
 
-    const paragrafe = document.querySelectorAll('p');
-
-    toRemove = [];
-
-    for (paragraf of paragrafe){
-        let text = paragraf.innerHTML.split(" ");
-        console.log(text.length);
-        if(text.length > numarFormular)
-            toRemove.push(paragraf);
+    for(let i = 0; i <= 9; i++){
+        let newButton = document.createElement('button');
+        newButton.innerHTML = i.toString();
+        whereButoane.appendChild(newButton);
     }
-    console.log(toRemove);
+}
 
-    const corp = document.getElementById("continut");
-    corp.removeChild(toRemove[0]);
-    let k = 0;
-    setInterval(() =>{
-        if(toRemove){
-            corp.removeChild(toRemove[toRemove.length - 1]);
-            toRemove.pop();
-            k++;
+function ApasareTasta(){
+    document.addEventListener('keypress', (e) =>{
+        if(e.key >= 0 && e.key <= 9){
+            const culoareSelectata = document.getElementById('culoare').value;
+            
+            const butoane = document.getElementById('butoane');
+
+            let toChange = [];
+            for(let i = 0; i <= 9; i++){
+                if(i % 2 == e.key % 2){
+                    toChange.push(butoane.childNodes[i]);
+                }
+            }
+            setInterval(() => {
+                try{
+                    toChange[toChange.length - 1].style.backgroundColor = culoareSelectata;
+                    toChange.pop();
+                }
+                catch(err){
+                    return;
+                }
+            },3000);
         }
-        localStorage.setItem('last', JSON.stringify(k));
-    }, 1000);
+    });
 }
 
 window.onload = () => {
-    let lastNumber = 0;
-    try{
-        lastNumber = JSON.parse(localStorage.getItem('last'));
-    }
-    catch(erro){
-        lastNumber = 0;
-    }
-    document.getElementById("numar").value = lastNumber;
 
+    let MyCuloare = JSON.parse(localStorage.getItem('lastCuloare'));
+    if(MyCuloare){
+        document.querySelector('body').style.backgroundColor = MyCuloare;
 
-    document.addEventListener("keypress" , (e) =>{
-        if(e.key == 's')
-            MyFunc();
-    })
+    }
+    MyFunc();
+    ApasareTasta();
+    document.getElementById('culoare').addEventListener('change', () => {
+        const inputCuloare = document.getElementById('culoare');
+        let lastColor = inputCuloare.value;
+        localStorage.setItem('lastCuloare', JSON.stringify(lastColor));
+    });
 }

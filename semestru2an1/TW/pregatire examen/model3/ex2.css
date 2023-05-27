@@ -1,0 +1,43 @@
+#container{
+    display:grid;
+    border: 1px solid black;
+    height: 100px;
+    grid-template-columns: (3, 1fr);
+    grid-template-rows: (3, 1fr);
+    grid-template-areas:
+    "div1 div2 div3"
+    "div1 div2 div4"
+    "div1 div2 div5";
+}
+div{
+    border: 3px solid blue;
+}
+
+#div1{
+    grid-area: div1;
+}
+#div2{
+    grid-area: div2;
+}
+#div3{
+    grid-area: div3;
+}
+#div4{
+    grid-area: div4;
+}
+#div5{
+    grid-area: div5;
+}
+
+@media screen and (max-height: 500px){
+    div{
+        width: 50vw;
+    }
+    #container{
+        display:flex;
+        flex-direction: column;
+    }
+    #div3{
+        display:none;
+    }
+}

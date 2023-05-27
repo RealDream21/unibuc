@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1685347942 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\28mai2019\main.cpp
+	"mijloc.h"
+
+1685348475 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\28mai2019\statiee.cpp
+	"statiee.h"
+
+1685348469 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\28mai2019\statiee.h
+	<iostream>
+	<string>
+	<vector>
+
+1685348521 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\28mai2019\mijloc.cpp
+	"mijloc.h"
+
+1685348304 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\28mai2019\mijloc.h
+	"statiee.h"
+	<memory>
+

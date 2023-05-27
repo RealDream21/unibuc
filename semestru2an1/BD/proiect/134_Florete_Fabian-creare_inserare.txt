@@ -97,7 +97,7 @@ NOCACHE;
 INSERT INTO STRADA
 VALUES(strada_seq.nextval, 'Teilor');
 INSERT INTO STRADA
-VALUES(strada_seq.nextval1, 'Libertatii');
+VALUES(strada_seq.nextval, 'Libertatii');
 INSERT INTO STRADA
 VALUES(strada_seq.nextval, 'Viilor');
 INSERT INTO STRADA

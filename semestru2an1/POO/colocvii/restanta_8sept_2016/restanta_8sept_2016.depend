@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1685340528 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\main.cpp
+	"containerAirline.h"
+
+1685342882 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\zbor.cpp
+	"zbor.h"
+
+1685342902 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\zbor.h
+	<string>
+	<iostream>
+
+1685338287 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\ruta.cpp
+	"ruta.h"
+	"zbor.h"
+	<memory>
+
+1685337962 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\ruta.h
+
+1685341248 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\containerairline.cpp
+	"containerAirline.h"
+
+1685341146 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\restanta_8sept_2016\containerairline.h
+	"zbor.h"
+	<vector>
+	<memory>
+

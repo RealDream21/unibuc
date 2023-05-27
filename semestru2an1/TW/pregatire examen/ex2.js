@@ -1,33 +1,33 @@
-function LoadDivs() {
-    const locDivuri = document.getElementById('dreptunghiuri');
-    for(let i = 0; i < 10; i++){
+function MyFunc(){
+    const n = Math.floor(5 + Math.random() * 5);
+    console.log(n);
+
+    const unde = document.getElementById('patrate');
+
+    for(let i = 0; i < n; i++){
         let newDiv = document.createElement('div');
-        newDiv.className = 'dreptunghi';
-    
-        locDivuri.appendChild(newDiv);
+        newDiv.className = 'patrat';
 
-        var elem, style;
-        elem = document.querySelector('.dreptunghi');
-        style = getComputedStyle(elem);
-
-        newDiv.addEventListener('click', () =>{
-            event.preventDefault();
-            newDiv.style.height = '60px';
+        newDiv.addEventListener('click', (e) => {
+            e.preventDefault();
+            let stil = getComputedStyle(newDiv);
+            let stanga = parseInt(stil.marginLeft);
+            stanga += 10;
+            newDiv.style.setProperty('margin-left', stanga.toString() + 'px');
+            console.log(newDiv.style.marginLeft);
         });
+        unde.appendChild(newDiv);
     }
-    document.addEventListener('click', (e) =>{
-        if(e.target.tagName == 'HTML'){
-            for(let i = 0; i <= locDivuri.childElementCount; i++){
-                var declaration = locDivuri.childNodes[i].style;
-                if(declaration){
-                    declaration.setProperty("height", "50px");
-                }
-            }
-        }
-    })
 }
 
-
-window.onload = () =>{
-    LoadDivs();
+window.onload = () => {
+    MyFunc();
+    document.addEventListener('click', (e) => {
+        if(e.target.tagName == 'SECTION' || e.target.tagName == 'HTML'){
+            const patrate = document.querySelectorAll('.patrat');
+            for(patrat of patrate){
+                patrat.style.marginLeft = 0;
+            }
+        }
+    });
 }
