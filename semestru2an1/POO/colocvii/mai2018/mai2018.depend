@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1685181418 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\mai2018\main.cpp
+	"companie.h"
+
+1685185974 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\mai2018\companie.cpp
+	"companie.h"
+
+1685186102 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\mai2018\companie.h
+	<string>
+	<iostream>
+	<vector>
+	"servicii.h"
+
+1685185454 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\mai2018\servicii.cpp
+	"servicii.h"
+
+1685186069 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\mai2018\servicii.h
+	<string>
+	<iostream>
+	<memory>
+
