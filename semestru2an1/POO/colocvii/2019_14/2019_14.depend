@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1685191435 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\main.cpp
+	"manager.h"
+
+1685190804 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\bilet.cpp
+	"bilet.h"
+
+1685190526 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\bilet.h
+	<string>
+	<iostream>
+
+1685190836 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\tren.cpp
+	"tren.h"
+
+1685190762 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\tren.h
+	"bilet.h"
+	<vector>
+	<memory>
+
+1685191382 c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\manager.h
+	"tren.h"
+
+1685191425 source:c:\users\fabi\desktop\unibuc folder\unibuc\semestru2an1\poo\colocvii\2019_14\manager.cpp
+	"manager.h"
+
