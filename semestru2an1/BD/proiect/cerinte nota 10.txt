@@ -1,0 +1,42 @@
+------------TO BE ADDED---------
+SELECT * FROM STRADA;
+INSERT INTO STRADA
+VALUES(64, 'Metalurgiei');
+
+SELECT * FROM CASA;
+INSERT INTO CASA
+VALUES(64, 13, 2, 140);
+describe familie;
+
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 4, '1-may-2001');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 5, '16-aug-2023');
+
+--15
+--Cerere cu outer join
+--afisati istoricul tuturor caselor la care au stat familii, inclusiv cele la care nu au stat nimeni, precum si primariile acestora,
+--iar daca nu au primarie afisati 'In constructie'. De asemenea, afisati institutiile de invatamant prin care au locuitorii
+--daca nu au trecut afisati 'Nu are studii la acest nivel'
+SELECT UNIQUE DECODE(nvl(id_forma, 0), 0, 'Nu are studi la acest nivel', id_forma) id_studii, 
+        fc.id_familie familie, c.id_strada strada, c.numar numar, DECODE(nvl(p.id_primarie, 0), 0, 'In constructie', p.nume) primarie
+FROM CICLU_INVATAMANT ci RIGHT OUTER JOIN LOCUITOR l ON ci.id_locuitor = id_familie
+        JOIN FAMILIE_CASA fc ON l.id_familie = fc.id_familie
+        RIGHT OUTER JOIN CASA c ON (fc.id_strada = c.id_strada AND fc.numar = c.numar)
+        LEFT OUTER JOIN PRIMARIE p ON c.id_strada = p.id_strada;
+
+--Cerere cu division
+--Afisati primariile care au organizat toate tipurile de evenimente
+SELECT p.nume
+FROM (SELECT DISTINCT id_eveniment, id_primarie FROM PRIMARIE_EVENIMENT) pe JOIN PRIMARIE p ON pe.id_primarie = p.id_primarie
+GROUP BY pe.id_primarie, p.nume
+HAVING COUNT(pe.id_eveniment) = (SELECT COUNT(*) FROM EVENIMENt_CULTURAL);
+
+--Cerere cu analiza top-n
+--afisati numele familiilor cu primele 5 cele mai scumpe contracte, precum si primaria de care apartin
+WITH sume_sortate AS(
+    SELECT * FROM contract_cumparare
+    ORDER BY SUMA desc)
+SELECT f.nume_familie, p.nume, suma
+FROM sume_sortate ss JOIN familie f on ss.id_familie = f.id_familie JOIN primarie p on f.id_primarie = p.id_primarie
+WHERE ROWNUM <= 5;
