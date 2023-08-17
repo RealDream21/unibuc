@@ -40,3 +40,17 @@ WITH sume_sortate AS(
 SELECT f.nume_familie, p.nume, suma
 FROM sume_sortate ss JOIN familie f on ss.id_familie = f.id_familie JOIN primarie p on f.id_primarie = p.id_primarie
 WHERE ROWNUM <= 5;
+
+
+--16
+--Cererea optimizata este:
+--Derivata de la cererea 4 complexa
+WITH an_eveniment AS(
+        SELECT to_char(data_eveniment, 'YYYY') data_ev,  id_eveniment id_ev --functie pe data calendaristica
+        FROM primarie_eveniment
+        WHERE to_char(data_eveniment, 'YYYY') = '2022'
+        )
+SELECT sum(aux.nr) "Totalul evenimentelor"
+FROM (SELECT count(nume_eveniment) nr FROM an_eveniment ae JOIN eveniment_cultural ec ON ae.id_ev = ec.id_eveniment 
+        GROUP BY data_ev, ec.nume_eveniment, ec.capacitate --grupari de date, subcereri nesincronizate cu 3 tabele
+        HAVING ec.capacitate > (SELECT MIN(capacitate) FROM eveniment_cultural GROUP BY id_firma HAVING id_firma = 5)) aux; 
