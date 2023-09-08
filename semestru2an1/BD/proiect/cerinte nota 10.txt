@@ -1,0 +1,82 @@
+------------TO BE ADDED---------
+SELECT * FROM STRADA;
+INSERT INTO STRADA
+VALUES(64, 'Metalurgiei');
+
+SELECT * FROM CASA;
+INSERT INTO CASA
+VALUES(64, 13, 2, 140);
+describe familie;
+
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 4, '1-may-2001');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 5, '16-aug-2023');
+
+--15
+--Cerere cu outer join
+--afisati istoricul tuturor caselor la care au stat familii, inclusiv cele la care nu au stat nimeni, precum si primariile acestora,
+--iar daca nu au primarie afisati 'In constructie'. De asemenea, afisati institutiile de invatamant prin care au locuitorii
+--daca nu au trecut afisati 'Nu are studii la acest nivel'
+SELECT UNIQUE DECODE(nvl(id_forma, 0), 0, 'Nu are studi la acest nivel', id_forma) id_studii, 
+        fc.id_familie familie, c.id_strada strada, c.numar numar, DECODE(nvl(p.id_primarie, 0), 0, 'In constructie', p.nume) primarie
+FROM CICLU_INVATAMANT ci RIGHT OUTER JOIN LOCUITOR l ON ci.id_locuitor = id_familie
+        JOIN FAMILIE_CASA fc ON l.id_familie = fc.id_familie
+        RIGHT OUTER JOIN CASA c ON (fc.id_strada = c.id_strada AND fc.numar = c.numar)
+        LEFT OUTER JOIN PRIMARIE p ON c.id_strada = p.id_strada;
+
+--Cerere cu division
+--Afisati primariile care au organizat toate tipurile de evenimente
+SELECT p.nume
+FROM (SELECT DISTINCT id_eveniment, id_primarie FROM PRIMARIE_EVENIMENT) pe JOIN PRIMARIE p ON pe.id_primarie = p.id_primarie
+GROUP BY pe.id_primarie, p.nume
+HAVING COUNT(pe.id_eveniment) = (SELECT COUNT(*) FROM EVENIMENt_CULTURAL);
+
+--Cerere cu analiza top-n
+--afisati numele familiilor cu primele 5 cele mai scumpe contracte, precum si primaria de care apartin
+WITH sume_sortate AS(
+    SELECT * FROM contract_cumparare
+    ORDER BY SUMA desc)
+SELECT f.nume_familie, p.nume, suma
+FROM sume_sortate ss JOIN familie f on ss.id_familie = f.id_familie JOIN primarie p on f.id_primarie = p.id_primarie
+WHERE ROWNUM <= 5;
+
+
+--16
+--Cererea optimizata este:
+--Derivata de la cererea 4 complexa
+WITH an_eveniment AS(
+        SELECT to_char(data_eveniment, 'YYYY') data_ev,  id_eveniment id_ev --functie pe data calendaristica
+        FROM primarie_eveniment
+        WHERE to_char(data_eveniment, 'YYYY') = '2022'
+        )
+SELECT sum(aux.nr) "Totalul evenimentelor"
+FROM (SELECT count(nume_eveniment) nr FROM an_eveniment ae JOIN eveniment_cultural ec ON ae.id_ev = ec.id_eveniment 
+        GROUP BY data_ev, ec.nume_eveniment, ec.capacitate --grupari de date, subcereri nesincronizate cu 3 tabele
+        HAVING ec.capacitate > (SELECT MIN(capacitate) FROM eveniment_cultural GROUP BY id_firma HAVING id_firma = 5)) aux; 
+
+
+
+
+
+--17
+BCNF:
+Incalcarea formei normale BCNF se produce atunci când dintr-un atribut non-cheie se poate deduce un atribut cheie. Un exemplu din diagramă ce contravine
+acestei convenții ar putea fi, de exemplu, ca în tabela FAMILIE, id-ul familiei să depindă de nume_familie. Pentru a rezolva această problema am putea
+creea un nou tabel in care numele de familie este cheie primara, iar din el s-ar deduce id_familie.
+
+FN4:(seamana cu FN1 ??)
+
+Forma normală 4 reprezinta aparitia unor perechi de cheie-atribut duplicate. De exemplu, acest lucru s-ar intampla in diagrama proiectată daca, am avea
+in tabela PRIMARIE atributul facilitati (Ex: (31, Primaria X, 3, 'Cladire iluminata'), (31, Primaria X, 3, 'Spatiu verde')). Pentru a rezolva aceasta problema
+cel mai bine este sa creem un tabel nou, intitluat, de exemplu, Primarie_facilitati in care sa notam pentru fiecare primarie facilitatile(Ex: (31, 'Cladire Iluminata'), (31, 'Spatiu verde'))
+
+//sau exemplu cu eveniment cultural si nume_eveniment care poate sa fie la fel. La fel si capacitatea
+
+FN5:
+
+Forma normala 5 spune că daca un tabel, in urma descompunerii in alte tabele mai mici isi pierde din informatii, atunci acesta nu ar trebui descompus.
+Un exemplu de astfel de tabel este CONTRACT_CUMAPARARE. Daca acesta ar fi descompus in alte doua tabele de exemplu PRIMARIE_CUMPARATOR si CUMPARATOR_FAMILIE s-ar pierde informatia de primaria
+care a asistat la cumparator in tranzactia cu familia.
+
+
