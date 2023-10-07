@@ -1,0 +1,22 @@
+ctgionut.catalin@gmail.com
+
+Cerinte laborator:
+prezenta
+3 teme
+
+Traduceri:
+Omega = spatiu de evenimente (spatiu cu care ne putem intalni)
+P = probabilitatea sa se intample ceva
+X(x curbat) = sigma-algebra = ce putem masura
+	1) Omega apartine X
+	2) evenimentul A apartine X => A^c apartine X
+	3) (An) n>0 apartine X => reuniunea An apartine X
+A^c = complement
+A\B = diferenta
+reuniune = evenimentele se intampla separat(sau)
+intersectie = evenimente se intampla impreuna(si)
+
+P(A^c) = 1 - P(A)
+
+Anaconda pt python
+"jupiter lab" in linia de comanda la anaconda
