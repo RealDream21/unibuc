@@ -56,22 +56,17 @@ FROM (SELECT count(nume_eveniment) nr FROM an_eveniment ae JOIN eveniment_cultur
         HAVING ec.capacitate > (SELECT MIN(capacitate) FROM eveniment_cultural GROUP BY id_firma HAVING id_firma = 5)) aux; 
 
 
-
-
-
 --17
 BCNF:
 Incalcarea formei normale BCNF se produce atunci când dintr-un atribut non-cheie se poate deduce un atribut cheie. Un exemplu din diagramă ce contravine
 acestei convenții ar putea fi, de exemplu, ca în tabela FAMILIE, id-ul familiei să depindă de nume_familie. Pentru a rezolva această problema am putea
 creea un nou tabel in care numele de familie este cheie primara, iar din el s-ar deduce id_familie.
 
-FN4:(seamana cu FN1 ??)
+FN4:
 
 Forma normală 4 reprezinta aparitia unor perechi de cheie-atribut duplicate. De exemplu, acest lucru s-ar intampla in diagrama proiectată daca, am avea
-in tabela PRIMARIE atributul facilitati (Ex: (31, Primaria X, 3, 'Cladire iluminata'), (31, Primaria X, 3, 'Spatiu verde')). Pentru a rezolva aceasta problema
+in tabela PRIMARIE atributul facilitati (Ex: (31, 'Primaria X', 3, 'Cladire iluminata'), (31, 'Primaria X', 3, 'Spatiu verde')). Pentru a rezolva aceasta problema
 cel mai bine este sa creem un tabel nou, intitluat, de exemplu, Primarie_facilitati in care sa notam pentru fiecare primarie facilitatile(Ex: (31, 'Cladire Iluminata'), (31, 'Spatiu verde'))
-
-//sau exemplu cu eveniment cultural si nume_eveniment care poate sa fie la fel. La fel si capacitatea
 
 FN5:
 

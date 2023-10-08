@@ -1,0 +1,49 @@
+import Data.List
+
+myInt = 31415926535897932384626433832795028841971693993751058209749445923
+yourInt = 31
+
+double :: Integer -> Integer
+double x = x+x
+triple :: Integer -> Integer
+triple x = x+x+x
+
+
+--maxim :: Integer -> Integer -> Integer
+maxim x y = if (x > y)
+               then x
+          else y
+
+max3 x y z = let
+             u = maxim x y
+             in (maxim  u z)
+max4 :: Integer -> Integer -> Integer -> Integer -> Integer
+max4 x y z t = let
+		u = max3 x y z
+		in (maxim u t)
+
+
+--ex8
+--a
+square :: Integer -> Integer -> Integer
+square x y = x*x + y*y
+
+--b
+paritate :: Integer -> [Char]
+paritate x = if(x `mod` 2 == 1) then "Impar" else "Par"
+
+--c
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial 1 = 1
+factorial x = let y = factorial (x - 1) in x * y
+
+--d
+paramCheck :: Integer -> Integer -> Bool
+paramCheck x y = if(x > double y) then True else False
+
+--e
+maxList :: [Integer] -> Integer
+maxList [a] = a
+maxList (x:xs) = maxim x (maxList xs)
+
