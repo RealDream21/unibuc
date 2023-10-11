@@ -1,0 +1,14 @@
+C:\Users\Fabi\source\repos\Laborator\Laborator\bin\Debug\net6.0\Laborator.exe
+C:\Users\Fabi\source\repos\Laborator\Laborator\bin\Debug\net6.0\Laborator.deps.json
+C:\Users\Fabi\source\repos\Laborator\Laborator\bin\Debug\net6.0\Laborator.runtimeconfig.json
+C:\Users\Fabi\source\repos\Laborator\Laborator\bin\Debug\net6.0\Laborator.dll
+C:\Users\Fabi\source\repos\Laborator\Laborator\bin\Debug\net6.0\Laborator.pdb
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.AssemblyInfoInputs.cache
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.AssemblyInfo.cs
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.csproj.CoreCompileInputs.cache
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.dll
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\refint\Laborator.dll
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.pdb
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\Laborator.genruntimeconfig.cache
+C:\Users\Fabi\source\repos\Laborator\Laborator\obj\Debug\net6.0\ref\Laborator.dll
