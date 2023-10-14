@@ -8,7 +8,7 @@ using namespace std;
 ifstream fin("BT.in");
 ofstream fout("BT.out");
 
-const int NMAX = 1e5;
+const int NMAX = 1e7;
 int col[NMAX + 1];
 vector<int> G[NMAX + 1];
 
@@ -27,7 +27,7 @@ bool bipartit(int x){
                 q.push(next);
                 col[next] = 3 - col[x];
             }
-            else if(col[next] == 3 - col[x])
+            else if(col[next] == col[x])
                 return false;
         }
     }
@@ -42,9 +42,9 @@ int main()
     int x, y;
     for(int i = 1; i <= m; i++)
     {
-        fin >> x >> y;
+        cin >> x >> y;
         G[x].push_back(y);
-        //G[y].push_back(x);
+        G[y].push_back(x);
     }
 
     for(int i = 1; i <= n; i++)
@@ -59,6 +59,6 @@ int main()
             cout << col[i] << " ";
     }
     else
-        cout << "Nu";
+        cout << "IMPOSSIBLE";
     return 0;
 }
