@@ -13,7 +13,7 @@ int main(int nargs, char** args)
     int fd_file1 = open(args[1], O_RDONLY);
     if(fd_file1 < 0 || fstat(fd_file1, &stat_file1))
     {
-        perror("First file didn't open corectly");w
+        perror("First file didn't open corectly");
         return errno;
     }
 
