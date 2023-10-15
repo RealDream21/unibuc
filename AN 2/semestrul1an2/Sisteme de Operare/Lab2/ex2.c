@@ -13,7 +13,7 @@ int main(int nargs, char** args)
     int fd_file1 = open(args[1], O_RDONLY);
     if(fd_file1 < 0 || fstat(fd_file1, &stat_file1))
     {
-        perror("First file didn't open corectly");
+        perror("First file didn't open corectly");w
         return errno;
     }
 
@@ -32,10 +32,21 @@ int main(int nargs, char** args)
     {
         char* buf = (char*)malloc(toCopy);
         int actualRead = read(fd_file1, buf, toCopy);
+        if(actualRead < 0)
+        {
+            perror("read error");
+            return errno;
+        }
         int written = 0;
         while(written < actualRead)
         {
-            written += write(fd_file2, buf, toCopy);
+            int toWrite = write(fd_file2, buf, toCopy);
+            if(toWrite < 0)
+            {
+                perror("write error");
+                return errno;            
+            }
+            written += toWrite;
         }
         totalCopied += written;
         printf("Written %d byes out of %d bytes\n", totalCopied, toCopy);
