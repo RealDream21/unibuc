@@ -28,5 +28,23 @@ SELECT
         WHEN (t.title_id, tc.copy_id)  NOT IN (SELECT * FROM STATUS_CORECT) THEN 'Unavailable'
     END, t.title
 FROM title_copy tc JOIN title t ON tc.title_id = t.title_id; 
+
+
+--12 b
+SELECT to_date(book_date) zi, count(copy_id) carti_imprumutate
+FROM rental
+WHERE EXTRACT(month from book_date) = EXTRACT(month FROM to_date(sysdate))
+GROUP by to_date(book_date);
+
+--12 c
+with zile_din_luna AS(
+    SELECT to_char(trunc(sysdate, 'MONTH') + (LEVEL - 1), 'DD-MM-YYYY') zi
+    FROM DUAL
+    CONNECT BY LEVEL <= EXTRACT (DAY FROM LAST_DAY(sysdate))
+    )
+SELECT zi, count(copy_id) carti_imprumutate
+FROM rental r RIGHT JOIN zile_din_luna z ON to_char(r.book_date, 'DD-MM-YYYY') = z.zi
+GROUP BY zi
+ORDER BY zi asc;
     
     
