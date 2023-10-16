@@ -9,7 +9,14 @@ class Solution {
 public:
     bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
         queue<int> nodeq;
-        unordered_map<int, int> team;
+        unordered_map<int, vector<int>> listaVecini;
+        unordered_map<int, int> team(0);
+
+        for(int i = 0; i < dislikes.size(); i++){
+                listaVecini[dislikes[i][0]].push_back(dislikes[i][1]);
+                listaVecini[dislikes[i][1]].push_back(dislikes[i][0]);
+        }
+
         for(int i = 1; i <= n; i++)
         {
             nodeq.push(i);
@@ -19,7 +26,7 @@ public:
             {
                 int next = nodeq.front();
                 nodeq.pop();
-                for(auto p : dislikes[next])
+                for(auto p : listaVecini[next])
                 {
                     if(!team[p])
                     {
@@ -38,8 +45,8 @@ public:
 int main()
 {
     Solution p;
-    int n = 4;
-    vector<vector<int>> dislikes = {{1,2},{1,3},{2,4}};
+    int n = 3;
+    vector<vector<int>> dislikes = {{1,2},{1,3},{2,3}};
     cout << p.possibleBipartition(n, dislikes);
     return 0;
 }
