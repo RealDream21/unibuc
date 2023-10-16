@@ -1,4 +1,5 @@
 import Data.Char
+import Data.List
 
 cateVocale :: String -> Int
 cateVocale [] = 0
@@ -60,3 +61,9 @@ multList (x:xs) = x * multList xs
 
 multDigitsComp :: String -> Int
 multDigitsComp xs = multList [digitToInt(x) | x <- xs, x `elem` ['1'..'9']]
+
+permutari :: [Int] -> [[Int]]
+permutari xs = permutations xs
+
+combinariK :: [Int] -> Int -> [[Int]]
+combinariK 
