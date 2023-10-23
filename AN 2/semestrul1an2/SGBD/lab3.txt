@@ -1,0 +1,23 @@
+PL/SQL -> 3 parti
+
+DECLARAE
+	v.NUME varchar(50) := 'A1';
+
+BEGIN
+	v.nume := 'A2';
+	DBMS.output.put_line('Hello' || v);	
+
+EXCEPTION
+
+END;
+/
+
+Ex 1)
+a)2
+b)'text 2'
+c)'text 3 agaugat in sub-bloc'
+d)101
+e)'text 1 adaugat in blocul principal'
+f)'text 2 adaugat in blocul principal'
+
+TEMA -> ex2, 4, 5, 6
