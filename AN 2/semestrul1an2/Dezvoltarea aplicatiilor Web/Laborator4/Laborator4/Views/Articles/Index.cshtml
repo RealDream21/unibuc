@@ -1,0 +1,20 @@
+﻿@{
+    //Partea de Razor
+    ViewBag.PageName = "Pagina Index";
+    //@-ul de mai jos afiseaza variabile
+}
+
+<h2>@ViewBag.PageName</h2>
+
+@foreach(var item in ViewBag.Articles)
+{
+    <h1>@item.Title</h1>
+    <p1>@item.Content</p1>
+    <small>@item.Date</small>
+
+    <a href = "/Articles/Show/@item.Id">Afisare articol</a>
+
+    <br />
+    <hr />
+    <br />
+}
