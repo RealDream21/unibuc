@@ -5,6 +5,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
+//PENTRU OPTIMIZARE DE INCEPUT DINTR O COADA CU TOATE NODURILE SAU DOAR DIN MARGINI SI NU TREC DE 2 ORI PESTE ACELASI
+
 class Solution {
     void mapIsland(int i, int j, vector<vector<int>>& grid){
         if(i < 0 || i >= grid.size() || j < 0 || j >= grid.size())

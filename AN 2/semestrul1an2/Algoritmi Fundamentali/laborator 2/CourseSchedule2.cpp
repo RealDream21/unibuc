@@ -1,12 +1,12 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
-#include <unordered_map>
+#include <queue>
 
 using namespace std;
 
-//idee: incep cu un nod si ma uit ce cursuri trebuie sa fac pentru el
-//continui ducandu ma la acele cursuri pana dau de unu gratis
-//daca am facut bucla => fail
+ifstream fin("date.in");
+
 
 class Solution {
     vector<int> G[2005];
@@ -49,12 +49,11 @@ public:
 
 int main()
 {
-    Solution p;
-    int n = 2;
-    vector<vector<int>> pres = {{1, 0}, {0, 1}};
-    vector<int> t = p.findOrder(n, pres);
-    for(auto p: t)
-        cout << p << " ";
-
+    Solution s;
+    int n = 4;
+    vector<vector<int>> pres = {{1,0},{2,0},{3,1},{3,2}};
+    vector<int> t = s.findOrder(n, pres);
+    for(int i = 0; i < t.size(); i++)
+        cout << t[i] << " ";
     return 0;
 }
