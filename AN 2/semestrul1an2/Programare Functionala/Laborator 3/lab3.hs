@@ -65,5 +65,5 @@ multDigitsComp xs = multList [digitToInt(x) | x <- xs, x `elem` ['1'..'9']]
 permutari :: [Int] -> [[Int]]
 permutari xs = permutations xs
 
-combinariK :: [Int] -> Int -> [[Int]]
-combinariK 
+aranjamenteK :: [Int] -> Int -> [[Int]]
+aranjamenteK xs k = take k permuta
