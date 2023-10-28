@@ -14,9 +14,9 @@ vector<int> G[nmax];
 bool marked[nmax];
 int dist[nmax];
 
-void resetValues()
+void resetValues(int n)
 {
-    for(int i = 0; i < nmax; i++)
+    for(int i = 0; i <= n; i++)
     {
         G[i].clear();
         marked[i] = false;
@@ -24,9 +24,9 @@ void resetValues()
     }
 }
 
-void resetSearchValues()
+void resetSearchValues(int n)
 {
-    for(int i = 0; i < nmax; i++)
+    for(int i = 0; i <= n; i++)
     {
         dist[i] = 0;
     }
@@ -73,7 +73,7 @@ int main()
     {
         int n, k;
         cin >> n >> k;
-        resetValues();
+        resetValues(n);
         int start;
         for(int i = 0; i < k; i++)
         {
@@ -97,7 +97,7 @@ int main()
         }
         int l;
         start = furthestNode(start, l);
-        resetSearchValues();
+        resetSearchValues(n);
         furthestNode(start, l);
         cout << l/2 << endl;
         t--;
