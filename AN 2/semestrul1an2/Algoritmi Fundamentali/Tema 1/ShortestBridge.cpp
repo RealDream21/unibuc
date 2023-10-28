@@ -22,74 +22,81 @@ class Solution {
         mapIsland(i, j - 1, grid);
     }
 
-    int searchBridge(int i, int j, vector<vector<int>>& grid, int length, map<pair<int, int>, bool>& seen){
-        if(i < 0 || i >= grid.size() || j < 0 || j >= grid.size())
-            return INT_MAX;
-        if(seen[pair<int, int>(i, j)])
-            return INT_MAX;
-        seen[pair<int, int>(i, j)] = true;
-        if(grid[i][j] == 2)
-            return INT_MAX;
-        if(grid[i][j] == 1)
-            return length;
-        length++;
-        int sus = searchBridge(i - 1, j, grid, length, seen);
-        int jos = searchBridge(i + 1, j, grid, length, seen);
-        int stanga = searchBridge(i, j - 1, grid, length, seen);
-        int dreapta = searchBridge(i, j + 1, grid, length, seen);
-        seen[pair<int, int>(i, j)] = false;
-        return min({sus, jos, stanga, dreapta});
+    int min_dist_between_islands(queue<pair<int, int>> & nodeq, vector<vector<int>> & grid)
+    {
+        int n = grid.size();
+        int dist[n][n];
+        memset(dist, 0, n*n*sizeof(int));
+
+        int dx[4] = {0, -1, 0, 1};
+        int dy[4] = {-1, 0, 1, 0};// => sus stanga jos dreapta
+
+        while(!nodeq.empty())
+        {
+            pair<int, int> node = nodeq.front();
+            nodeq.pop();
+            int i = node.first;
+            int j = node.second;
+
+            if(grid[i][j] == 1)
+                return dist[i][j] - 2;
+            else if(grid[i][j] == 2)
+                dist[i][j] = 1;
+
+            for(int k = 0; k < 4; k++)
+            {
+                int newi = i + dx[k];
+                int newj = j + dy[k];
+                if(newi >= 0 && newi < n && newj >= 0 && newj < n && dist[newi][newj] == 0)
+                {
+                    if(grid[newi][newj] == 2)
+                        dist[newi][newj] = 1;
+                    else
+                        dist[newi][newj] = dist[i][j] + 1;
+                    nodeq.push(make_pair(newi, newj));
+                }
+            }
+        }
+        return -1;
     }
+
 
 public:
     int shortestBridge(vector<vector<int>>& grid) {
         bool mapped = false;
-        int starti, startj;
-        for(int i = 0; i < grid.size(); i++)
+        for(int i = 0; i < grid.size() && !mapped; i++)
         {
-            for(int j = 0; j < grid[i].size(); j++)
-                if(grid[i][j] != 0)
+            for(int j = 0; j < grid[i].size() && !mapped; j++)
+                if(grid[i][j] == 1)
                 {
-                    mapIsland(i, j, grid);
+                    mapIsland(i, j ,grid);
                     mapped = true;
-                    starti = i;
-                    startj = j;
-                    break;
                 }
-            if(mapped == true)
-                break;
         }
-        int min_bridge = grid.size();
+
+        queue<pair<int, int>> nodeq;
         for(int i = 0; i < grid.size(); i++)
         {
             for(int j = 0; j < grid[i].size(); j++)
             {
                 if(grid[i][j] == 2)
                 {
-                    if((i > 0 && j > 0 && i < grid.size() - 1 && j < grid.size() - 1) && !(grid[i - 1][j] == 0 || grid[i + 1][j] == 0 || grid[i][j - 1] == 0 || grid[i][j + 1] == 0))
-                        continue;
-                    map<pair<int, int>, bool> seen;
-                    int sus = searchBridge(i - 1, j, grid, 0, seen);
-                    seen.clear();
-                    int jos = searchBridge(i + 1, j, grid, 0, seen);
-                    seen.clear();
-                    int stanga = searchBridge(i, j - 1, grid, 0, seen);
-                    seen.clear();
-                    int dreapta = searchBridge(i, j + 1, grid, 0, seen);
-                    seen.clear();
-                    min_bridge = min({min_bridge, sus, jos, stanga, dreapta});
+                    if(i == 0 || j == 0 || i == grid.size() - 1 || j == grid.size() - 1)
+                        nodeq.push(make_pair(i, j));
+                    else if(grid[i - 1][j] == 0 || grid[i + 1][j] == 0 || grid[i][j - 1] == 0 || grid[i][j + 1] == 0)
+                        nodeq.push(make_pair(i, j));
                 }
             }
         }
 
-        return min_bridge;
+        return min_dist_between_islands(nodeq, grid);
     }
 };
 
 int main()
 {
     Solution p;
-    vector<vector<int>> grid = {{0,0,0,1,1,0,0},{0,0,0,1,0,0,0},{0,0,0,1,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,1,0,0,0,0,0},{0,1,1,0,0,0,0}};
+    vector<vector<int>> grid = {{0, 1}, {1, 0}};
     cout << p.shortestBridge(grid);
 
     return 0;
