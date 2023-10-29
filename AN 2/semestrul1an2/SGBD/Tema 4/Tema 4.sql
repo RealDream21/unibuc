@@ -31,13 +31,14 @@ BEGIN
 END;
 /
 
---ex 4
-
+--ex 4 + 5
 DECLARE
     v_nrFilme number(10);
-    v_nume member.last_name%type := &nume;
-    v_prenume member.first_name%type := &prenume;
+    v_nume member.last_name%type := '&nume';
+    v_prenume member.first_name%type := '&prenume';
     v_memID member.member_id%type;
+    v_titluriTotale number(10);
+    v_procentaj FLOAT(10);
 BEGIN
     SELECT member_id 
     INTO v_memID
@@ -50,6 +51,35 @@ BEGIN
     GROUP BY member_id
     HAVING member_id = v_memID;
     DBMS_OUTPUT.PUT_LINE(v_nrFilme);
+
+    SELECT count(copy_id)
+    INTO v_titluriTotale
+    FROM rental;
+    
+    v_procentaj := v_nrFilme/v_titluriTotale;
+    DBMS_OUTPUT.PUT_LINE(v_procentaj);
+    
+    IF v_procentaj >= 0.75 THEN
+        DBMS_OUTPUT.PUT_LINE('A imprumutat mai mult de 75% din titlurile existente');
+        UPDATE member_ffa
+        SET discount = 0.1
+        WHERE member_id = v_memID;
+        DBMS_OUTPUT.PUT_LINE('A fost aplicat un discount de 10%');
+    ELSIF v_procentaj >= 0.50 THEN
+        DBMS_OUTPUT.PUT_LINE('A imprumutat mai mult de 50% din titlurile existente');
+        UPDATE member_ffa
+        SET discount = 0.05
+        WHERE member_id = v_memID;
+        DBMS_OUTPUT.PUT_LINE('A fost aplicat un discount de 5%');
+    ELSIF v_procentaj >= 0.25 THEN
+        DBMS_OUTPUT.PUT_LINE('A imprumutat mai mult de 25% din titlurile existente');
+        UPDATE member_ffa
+        SET discount = 0.03
+        WHERE member_id = v_memID;
+        DBMS_OUTPUT.PUT_LINE('A fost aplicat un discount de 3%');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Altfel');
+    END IF;
     
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -61,5 +91,5 @@ EXCEPTION
 END;
 /
 
-SELECT *
-FROM rental r JOIN member m ON r.member_id = m.member_id; 
+
+
