@@ -27,6 +27,7 @@ namespace Laborator4.Controllers
         }
 
         //[HttpGet] - se executa GET implicit
+        //[ActionName("listare")] NU MERGE?????
         public IActionResult Index()
         {
             Article[] articles = GetArticles();
@@ -61,9 +62,33 @@ namespace Laborator4.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            Article[] articles = GetArticles();
+            try
+            {
+                ViewBag.Article = articles[(int)id];
+                return View();
+            }
+            catch(Exception e)
+            {
+                ViewBag.Exception = e.Message;
+                return View("Error");
+            }
+        }
 
-        
+        [HttpPost]
+        public IActionResult Edit(Article article)
+        {
+            return View("EditMethod");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int? id)
+        {
+            return Content("Articolul a fost sters din baza de date");
+        }
 
     }
 }
