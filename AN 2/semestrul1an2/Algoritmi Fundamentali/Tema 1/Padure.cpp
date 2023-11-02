@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <utility>
+#include <map>
 #include <queue>
 
 using namespace std;
@@ -30,6 +31,7 @@ int main()
     cost[is][ij] = 0;
 
     queue<pair<int,int>> nodeq;
+
     nodeq.push(make_pair(is, ij));
 
     while(!nodeq.empty())
@@ -51,7 +53,9 @@ int main()
                 cost[nexti][nextj] = min(cost[nexti][nextj], 1 + cost[i][j]);
             }
             if(aux != cost[nexti][nextj])
+            {
                 nodeq.push(make_pair(nexti, nextj));
+            }
         }
     }
 
