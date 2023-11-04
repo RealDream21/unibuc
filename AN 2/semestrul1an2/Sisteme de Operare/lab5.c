@@ -79,7 +79,6 @@ int main(int argc, char** argv)
     int t = 0;
     int* v = (int*)shm_ptr;
     bool write = 0;
-    int n = 0;
 
     while(t < shm_size)
     {
@@ -88,7 +87,6 @@ int main(int argc, char** argv)
             write = !write;
         if(write != x && write == false){
             printf("\n");
-            n++;
         }
         if(write && v[t] != INT_MAX)
             printf("%d ", v[t]);
