@@ -1,0 +1,21 @@
+﻿ViewBag.Articles
+
+<h3 class ="text-center">Afisare articole</h3>
+<br />
+@foreach (var article in ViewBag.Articles)
+{
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">@article.Title</h5>
+            <p class="card-text">@article.Content</p>
+            <div>@article.Category.CategoryName</div>
+
+            <a href="/Articles/Show/@article.Id" class="btn btn-success">Afisare articol</a>
+
+            <span>@article.Date</span>
+            <br />
+            <br />
+        </div>
+    </div>
+
+}
