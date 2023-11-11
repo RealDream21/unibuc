@@ -1,0 +1,68 @@
+CURS 1
+-- => comentariu pe un rand
+{-
+-} => comentarii pe mai multe randuri
+let .. in .. => EXPRESIE ce creeaza un domeniu de vizib local -> [let y = 8 in y, 9] -> MERGE
+...where... => CLAUZA, disponibila doar la nivel de definitie [y where y = 8, 9] -> NU merge
+; => este doar un rand nou
+
+!!!!!! NU MERGE let x = 3, y = 4 in x * y (TREBUIE ; IN LOC DE , ((let x = 3; y = 4 in x * y ca si cum ar fi pe un alt rand)))
+
+
+CURS 2
+LAZY => evaluat DOAR cand este necesar si CAT este necesar
+=> o expresie poate da eroare, dar daca nu o evaluam nu pica programul
+[1, head[], 3] !! 0 -> MERGE
+[1, head[], 3] !! 1 -> NU MERGE (este evaluat head[] care da eroare)
+daca la o sectiune nu se poate evalua TOT argumentul predefinit => eroare
+(+ 3*4) -> OK, se poate evalua 3*4
+(*3 + 4) -> NU OK, nu se poate evalua 3 +4 ptr ca e *3
+(*3*4) -> TOT NU OK, este asociativa la stanga
+(3*4*) -> OK, se poate evalua inainte
+
+CURS 3
+curry ((a, b) -> c) -> a -> b -> c
+uncurry (a -> b -> c) -> (a, b) -> c
+map ($ x) [f1,...,fn] == [f1 x,..., fn x]
+filter p xs = [x | x <- xs, p x]
+
+CURS 4
+foldr :: (a −> b −> b) −> b −> [a] −> b
+
+CURS 5
+foldr -> poate fi folosita pe lista infinite uneori
+foldl -> NU poate fi folosita NICIODATA pe liste infinite
+
+CURS 6
+data Bool = False | True
+Bool -> constructor de TIP
+False si True -> constructori de DATE
+
+data Point a b = Pt a b
+Point -> constructor de TIP (tip de date PRODUS, definit prin COMBINARA tipurilor a si b)
+Pt -> constructor de DATE
+Pt : : a −> b −> Point a b (!!!constructorul de date este o operatie => :t Pt 1 ==== b -> Point a b)
+type => redenumim tipuri deja existente
+type tip1 = string
+type tip2 = string
+data ConstrTip = ConstrTip tip1 tip2
+
+ALT CHESTII:
+tuplu => exista tip de tuplu cand ai tipuri diferite
+lista => eroare cand ai chestii diferite
+!!reverse . take 3 [1..10] -> NU MERGE (prea multe argumente la take. Cu dolare merge)
+flip la foldl => schimba ca sa mearga bine accumulatorul(este pe stanga si trebuie pus pe dreapta)
+
+
+FUNCTII:
+lines "prog\ndec " => ["prog" , "dec"]
+words "pr og \nde cl" => ["pr", "og", "de", "cl"]
+"aa"++"bb" => "aabb"
+"aabb" !! 2 => 'b'
+map :: (a −> b) −> [a] −> [b]
+map f xs = [f x | x <- xs]
+filter p xs = [x | x <- xs, p x]
+foldr :: (a −> b −> b) −> b(acumulator) −> [a](lista parcursa) −> b
+foldl :: (b −> a −> b) −> b −> [a] −> b
+flip f x y = f y x
+
