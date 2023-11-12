@@ -6,12 +6,68 @@
 #include <algorithm>
 #include <iomanip>
 
-
 using namespace std;
 
 ifstream fin("cablaj.in");
 ofstream fout("cablaj.out");
 
+class DisjointSetUnion{
+private:
+    int n;
+    int* parinti;
+    int* inaltime;
+    DisjointSetUnion() = delete;
+public:
+    DisjointSetUnion(int n)
+    {
+        this->n = n;
+        this->parinti = new int[n + 1];
+        this->inaltime = new int[n + 1];
+        for(int i = 0; i <= n; i++)
+        {
+            parinti[i] = i;
+            inaltime[i] = 1;
+        }
+    }
+    ~DisjointSetUnion()
+    {
+        delete[] parinti;
+        delete[] inaltime;
+    }
+
+    int find_set(int u)
+    {
+        while(parinti[u] != u)
+            u = parinti[u];
+        return u;
+    }
+
+    void unite(int u, int v)
+    {
+        int setU = find_set(u);
+        int setV = find_set(v);
+        if(inaltime[setU] > inaltime[setV])
+            parinti[setV] = setU;
+        else{
+            parinti[setU] = setV;
+            if(inaltime[setU] == inaltime[setV])
+                inaltime[setV] = inaltime[setV] + 1;
+        }
+    }
+
+    int find_distinct_sets()
+    {
+        bool cnt_multimi[n + 1];
+        int multimi_distincte = 0;
+        for(int i = 0; i <= n; i++)
+            cnt_multimi[i] = false;
+        for(int i = 0; i <= n; i++)
+            cnt_multimi[find_set(i)] = true;
+        for(int i = 0; i <= n; i++)
+            multimi_distincte += bool(cnt_multimi[i]);
+        return multimi_distincte;
+    }
+};
 
 double calculeaza_distanta(double x1, double y1, double x2, double y2)
 {
@@ -57,9 +113,7 @@ int main()
     }
     sort(distante.begin(), distante.end(), comparareDrumuri);
 
-    int multime[n + 1]; //pentru union find ca sa vad daca inchide ciclu
-    for(int i = 0; i < n; i++)
-        multime[i] = i;
+    DisjointSetUnion myset(n);
 
     double s = 0;
     for(int i = 0; i < distante.size(); i++)
@@ -69,16 +123,16 @@ int main()
         int y = distante[i].first.second;
         double len = distante[i].second;
 
-        int multimeX = gasesteMultime(multime, x);
-        int multimeY = gasesteMultime(multime, y);
+        int multimeX = myset.find_set(x);
+        int multimeY = myset.find_set(y);
         if(multimeX != multimeY)
         {
             s += len;
-            multime[multimeX] = multimeY;
+            myset.unite(x, y);
         }
     }
 
-    cout << setprecision(2) << s << endl;
+    cout << setprecision(4) << s << endl;
 
     return 0;
 }

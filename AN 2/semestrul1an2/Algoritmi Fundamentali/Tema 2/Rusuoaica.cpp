@@ -3,24 +3,76 @@
 #include <utility>
 #include <vector>
 #include <algorithm>
-#include <set>
 
 using namespace std;
 
 ifstream fin("rusuoaica.in");
 ofstream fout("rusuoaica.out");
 
+class DisjointSetUnion{
+private:
+    int n;
+    int* parinti;
+    int* inaltime;
+    DisjointSetUnion() = delete;
+public:
+    DisjointSetUnion(int n)
+    {
+        this->n = n;
+        this->parinti = new int[n + 5];
+        this->inaltime = new int[n + 5];
+        for(int i = 0; i <= n; i++)
+        {
+            parinti[i] = i;
+            inaltime[i] = 1;
+        }
+    }
+    ~DisjointSetUnion()
+    {
+        delete[] parinti;
+        delete[] inaltime;
+    }
+
+    int find_set(int u)
+    {
+        while(parinti[u] != u)
+            u = parinti[u];
+        return u;
+    }
+
+    void unite(int u, int v)
+    {
+        int setU = find_set(u);
+        int setV = find_set(v);
+        if(inaltime[setU] > inaltime[setV])
+            parinti[setV] = setU;
+        else{
+            parinti[setU] = setV;
+            if(inaltime[setU] == inaltime[setV])
+                inaltime[setV] = inaltime[setV] + 1;
+        }
+    }
+
+    int find_distinct_sets()
+    {
+        int cnt_multimi[n + 1];
+        int multimi_distincte = 0;
+        for(int i = 0; i <= n; i++)
+            cnt_multimi[i] = 0;
+        for(int i = 0; i <= n; i++)
+            cnt_multimi[find_set(i)]++;
+        for(int i = 0; i <= n; i++)
+            multimi_distincte += bool(cnt_multimi[i]);
+        return multimi_distincte;
+    }
+};
+
+
 bool cmpCosturi(pair<pair<int, int>, int> drum1, pair<pair<int, int>, int> drum2)
 {
     return drum1.second < drum2.second;
 }
 
-int gasesteMultime(vector<int>& multime, int elem)
-{
-    while(elem != multime[elem])
-        elem = multime[elem];
-    return elem;
-}
 
 int main()
 {
@@ -39,26 +91,23 @@ int main()
 
     sort(costuri.begin(), costuri.end(), cmpCosturi);
 
-    vector<int> multime;
-    for(int i = 0; i <= n + 1; i++)
-        multime.push_back(i);
-
+    DisjointSetUnion myset(n);
     int costTotal = 0;
     for(int i = 0; i < costuri.size(); i++)
     {
         bool construit = false;
         int x = costuri[i].first.first;
         int y = costuri[i].first.second;
-        int multimeX = gasesteMultime(multime, x);
-        int multimeY = gasesteMultime(multime, y);
+        int multimeX = myset.find_set(x);
+        int multimeY = myset.find_set(y);
         int cost = costuri[i].second;
 
-        if(cost <= 5)
+        if(cost <= a)
         {
             //cazul in care poate pun drumul
             if(multimeX != multimeY)
             {
-                multime[multimeX] = multimeY;
+                myset.unite(x, y);
                 costTotal += cost;
                 construit = true;
             }
@@ -68,7 +117,7 @@ int main()
             //sterg drumul si pun unul mai ieftin, facand profit
             if(multimeX != multimeY)
             {
-                multime[multimeX] = multimeY;
+                myset.unite(x, y);
                 costTotal += (a - cost);
                 construit = true;
             }
@@ -76,15 +125,8 @@ int main()
         if(!construit)
             costTotal -= cost;
     }
-
-    for(int i = 1; i < multime.size(); i++)
-        multime[i] = gasesteMultime(multime, i);
-
-
-
-    vector<int>::iterator it;
-    it = unique(multime.begin() + 1, multime.end());
-    fout << costTotal + a * (multime.end() - it - 1);
+    int multimiDistincte = myset.find_distinct_sets() - 1;
+    fout << costTotal + a * (multimiDistincte - 1);
 
     return 0;
 }
