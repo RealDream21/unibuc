@@ -52,7 +52,7 @@ tuplu => exista tip de tuplu cand ai tipuri diferite
 lista => eroare cand ai chestii diferite
 !!reverse . take 3 [1..10] -> NU MERGE (prea multe argumente la take. Cu dolare merge)
 flip la foldl => schimba ca sa mearga bine accumulatorul(este pe stanga si trebuie pus pe dreapta)
-
+predicat = returneaza Bool
 
 FUNCTII:
 lines "prog\ndec " => ["prog" , "dec"]
@@ -61,6 +61,7 @@ words "pr og \nde cl" => ["pr", "og", "de", "cl"]
 "aabb" !! 2 => 'b'
 map :: (a −> b) −> [a] −> [b]
 map f xs = [f x | x <- xs]
+filter :: (a -> Bool) -> [a] -> [a]
 filter p xs = [x | x <- xs, p x]
 foldr :: (a −> b −> b) −> b(acumulator) −> [a](lista parcursa) −> b
 foldl :: (b −> a −> b) −> b −> [a] −> b
