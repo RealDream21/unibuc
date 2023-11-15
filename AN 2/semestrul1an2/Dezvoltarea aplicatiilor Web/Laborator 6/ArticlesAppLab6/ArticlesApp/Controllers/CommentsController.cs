@@ -56,7 +56,7 @@ namespace ArticlesApp.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Comment requestComment)
         {
-            Comment comm = db.Comments.Find(id);
+            Comment comm = db.Comments.Find(id);//salutare
             try
             {
 
