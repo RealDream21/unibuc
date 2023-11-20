@@ -26,9 +26,11 @@ int main()
         fin >> x >> y >> gdrum;
         if(g > gdrum){
             graf[x].push_back(make_pair(y, 1));
+            graf[y].push_back(make_pair(x, 1));
         }
         else{
             graf[x].push_back(make_pair(y, 0));
+            graf[y].push_back(make_pair(x, 0));
         }
     }
 
@@ -36,27 +38,25 @@ int main()
     int start = 1;
     int dist[n + 1];
     int parinte[n + 1];
-    bool inQ[n + 1];
-    priority_queue<pair<int, int>, vector<pair<int, int>>, Compare> heap;//1 daca exista, 2 daca trebuie sa creasca capacitatea
+    priority_queue<pair<int, int>, vector<pair<int, int>>, Compare> heap;
 
     dist[start] = 0;
     parinte[start] = 0;
     for(int i = 2; i <= n; i++)
     {
-        inQ[i] = false;
         dist[i] = INF;
         parinte[i] = 0;
     }
 
-    inQ[start] = true;
-    heap.push(make_pair(start, dist[start]));
+    for(int i = 1 ; i <= n; i++)
+        heap.push(make_pair(i, dist[i]));
 
     while(!heap.empty())
     {
         pair<int, int> elem = heap.top();
         heap.pop();
         int u = elem.first;
-        if(elem.second != dist[u])
+        if(dist[u] != elem.second)
             continue;
         for(int i = 0; i < graf[u].size(); i++)
         {
@@ -71,8 +71,7 @@ int main()
             }
         }
     }
-
-    cout << dist[n];
+    fout << dist[n];
 
     return 0;
 }
