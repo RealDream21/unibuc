@@ -17,14 +17,13 @@ void barrier_point()
 	ajunse_la_bariera++;
 	pthread_mutex_unlock(&mtx);
 	
-	if(ajunse_la_bariera >= S - 1)
+	if(ajunse_la_bariera >= S)
 	{
 		sem_post(&sem);
 	}
 	
 	sem_wait(&sem);
 	sem_post(&sem);
-	
 }
 
 void* tfun(void* v)
@@ -40,7 +39,7 @@ void* tfun(void* v)
 
 int main()
 {
-	sem_init(&sem, 0, -4);
+	sem_init(&sem, 0, 0);
 	pthread_mutex_init(&mtx, NULL);
 	int thread_nrs[] = {1,2,3,4,5};
 	pthread_t threads[10];
