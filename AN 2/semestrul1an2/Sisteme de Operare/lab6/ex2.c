@@ -27,6 +27,7 @@ void* matrix_mult(void* params)
     }
     int* to_return = malloc(sizeof(int));
     (*to_return) = rez;
+    free(tp);
     return to_return;
 }
 
