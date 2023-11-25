@@ -1,82 +1,86 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-//ifstream fin("date.in");
+ifstream fin("date.in");
 
-const int INF = INT_MAX;
+const int NMAX = 3 * 1e5;
 
-class Compare
-{
-public:
-    bool operator()(pair<int, int> drum1, pair<int, int> drum2)
-    {
-        return drum1.second < drum2.second;
-    }
-};
+vector<pair<int, long long>> g[NMAX];
+long long d[NMAX];
+long long track[NMAX];
+bool vis[NMAX];
+bool train_to[NMAX];
 
 int main()
 {
     int n, m, k;
     cin >> n >> m >> k;
-    int train_route[n + 1];
-    vector<pair<int, int>> graf[n + 1];
-    for(int i = 0; i < m; i++)
+    for(int i = 1; i <= m; i++)
     {
-        int x, y, w;
-        cin >> x >> y >> w;
-        graf[x].push_back(make_pair(y, w));
-        graf[y].push_back(make_pair(x, w));
+        int u, v;
+        long long x;
+        cin >> u >> v >> x;
+        g[u].push_back({v, x});
+        g[v].push_back({u, x});
     }
-    for(int i = 0; i < k; i++)
+    for(int i = 1; i <= k; i++)
     {
-        int y, w;
-        cin >>y >> w;
-        graf[1].push_back(make_pair(y, w));
-        train_route[y] = w;
+        int y;
+        long long c;
+        cin >> y >> c;
+        g[1].push_back({y, c});
+        track[y] = c;
     }
 
-    priority_queue<pair<int, int>, vector<pair<int, int>>, Compare> heap;
+    for(int i = 1; i <= n; i++)
+        d[i] = LONG_LONG_MAX;
 
-    int dist[n + 1];
-    int start = 1;
-    dist[start] = 0;
-    heap.push(make_pair(start, dist[start]));
-    for(int i = 2; i <= n; i++)
-        dist[i] = INF;
+    set<pair<int, int>> s;
+    d[1] = 0;
+    s.insert(make_pair(d[1], 1));
 
-
-    while(!heap.empty())
+    while(!s.empty())
     {
-        pair<int, int> elem = heap.top();
-        heap.pop();
-        int u = elem.first;
-        if(dist[u] != elem.second)
+        auto it = s.begin();
+        s.erase(it);
+        int node = (*it).second;
+        if(vis[node])
             continue;
-        for(int i = 0; i < graf[u].size(); i++)
+        vis[node] = 1;
+        for(int i = 0; i < g[node].size(); i++)
         {
-            int v = graf[u][i].first;
-            int alt = dist[u] + graf[u][i].second;
-            if(alt < dist[v])
+            auto next = g[node][i];
+            if(!vis[next.first] && d[next.first] > d[node] + next.second)
             {
-                dist[v] = alt;
-                heap.push(make_pair(v, dist[v]));
+                if(node == 1 && i >= g[node].size() - k) // e sina de tren
+                {
+                        train_to[next.first] = true;
+                }
+                else
+                    train_to[next.first] = false;
+                d[next.first] = next.second + d[node];
+                s.insert({d[next.first], next.first});
             }
         }
     }
 
-    int sine_scoase = 0;
-    for(int i = 0; i < graf[1].size() - k; i++)
+    int sine_ramase = 0;
+    for(int i = 0; i < g[1].size() - k; i++)
     {
-        int v = graf[1][i].first;
-        if(train_route[v] != 0)
-        {
-            if(dist[v] < train_route[v])
-                sine_scoase++;
-        }
+        int v = g[1][i].first;
+        int c = g[1][i].second;
+        if(c == track[v] && train_to[v] == true)
+            train_to[v] = false;
     }
-    cout << sine_scoase;
 
+    for(int i = 2; i <= n; i++)
+    {
+        sine_ramase += train_to[i];
+    }
+
+
+    cout << k - sine_ramase;
 
     return 0;
 }
