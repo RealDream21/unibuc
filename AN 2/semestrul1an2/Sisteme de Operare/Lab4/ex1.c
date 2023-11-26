@@ -16,7 +16,11 @@ int main(int argc, char** argv)
     {
         printf("My PID =  %d, Child PID = %d\n", getppid(), getpid());
         //sunt in copil
-        execve("/usr/bin/ls", NULL, NULL);
+        if(execve("/usr/bin/ls", NULL, NULL) < 0)
+        {
+            perror("Nu a fost gasit executabilul\n");
+            return errno;
+        }
     }
     else
     {
