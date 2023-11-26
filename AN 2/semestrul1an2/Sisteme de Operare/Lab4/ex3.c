@@ -30,7 +30,11 @@ int main(int argc, char** argv)
         else if(pid == 0)
         {
             char* argnew[] = {"collatz", argv[i], NULL};
-            execve("/home/fabian/Desktop/Lab3/collatz", argnew, NULL);
+            if(execve("collatz", argnew, NULL) < 0)
+            {
+                perror("Executabilul collatz nu a fost gasit\n");
+                return errno;            
+            }
         }
         else
         {
