@@ -6,9 +6,9 @@ ifstream fin("date.in");
 
 const int NMAX = 3 * 1e5;
 
-vector<pair<int, long long>> g[NMAX];
+vector<pair<long long, int>> g[NMAX];
 long long d[NMAX];
-long long track[NMAX];
+bool inq[NMAX];
 bool vis[NMAX];
 bool train_to[NMAX];
 
@@ -30,13 +30,12 @@ int main()
         long long c;
         cin >> y >> c;
         g[1].push_back({y, c});
-        track[y] = c;
     }
 
     for(int i = 1; i <= n; i++)
         d[i] = LONG_LONG_MAX;
 
-    set<pair<int, int>> s;
+    set<pair<long long, int>> s;
     d[1] = 0;
     s.insert(make_pair(d[1], 1));
 
@@ -66,19 +65,11 @@ int main()
     }
 
     int sine_ramase = 0;
-    for(int i = 0; i < g[1].size() - k; i++)
-    {
-        int v = g[1][i].first;
-        int c = g[1][i].second;
-        if(c == track[v] && train_to[v] == true)
-            train_to[v] = false;
-    }
 
     for(int i = 2; i <= n; i++)
     {
         sine_ramase += train_to[i];
     }
-
 
     cout << k - sine_ramase;
 
