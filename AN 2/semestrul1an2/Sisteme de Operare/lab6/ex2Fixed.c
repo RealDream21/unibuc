@@ -41,11 +41,11 @@ void* thread_routine(void* arg)
 int main(int argc, char**argv)
 {
 	char* ret;
-  void* ret_ptr;
+  	void* ret_ptr;
 	pthread_t thread;
 	pthread_create(&thread, NULL, thread_routine, argv[1]);
 	pthread_join(thread, &ret_ptr);
-    ret = (char*)(ret_ptr);
+   	ret = (char*)(ret_ptr);
 	printf("%s", ret);
 	return 0;
 }
