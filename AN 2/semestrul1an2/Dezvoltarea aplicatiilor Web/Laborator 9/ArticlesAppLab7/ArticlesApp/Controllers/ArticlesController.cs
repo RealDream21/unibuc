@@ -1,5 +1,7 @@
 ﻿using ArticlesApp.Data;
 using ArticlesApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +11,23 @@ namespace ArticlesApp.Controllers
     public class ArticlesController : Controller
     {
         private readonly ApplicationDbContext db;
-        public ArticlesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public ArticlesController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager
+            )
         {
             db = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         // Se afiseaza lista tuturor articolelor impreuna cu categoria 
         // din care fac parte
         // HttpGet implicit
+        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index()
         {
             var articles = db.Articles.Include("Category");
@@ -70,11 +81,13 @@ namespace ArticlesApp.Controllers
         }
 
         // Se adauga articolul in baza de date
+        [Authorize(Roles = "Editor,Admin")]
         [HttpPost]
         public IActionResult New(Article article)
         {
             article.Date = DateTime.Now;
             article.Categ = GetAllCategories();
+            article.UserId = _userManager.GetUserId(User);
 
             if(ModelState.IsValid)
             {
@@ -121,7 +134,15 @@ namespace ArticlesApp.Controllers
 
                 article.Categ = GetAllCategories();
 
-                return View(article);
+                if(article.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                {
+                    return View(article);
+                }
+                else
+                {
+                    TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine";
+                    return RedirectToAction("Index");
+                }
         
 
 

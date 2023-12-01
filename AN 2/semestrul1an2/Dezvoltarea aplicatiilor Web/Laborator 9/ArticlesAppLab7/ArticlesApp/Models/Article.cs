@@ -24,6 +24,8 @@ namespace ArticlesApp.Models
 
         public virtual Category? Category { get; set; }
 
+
+        public virtual String UserId {  get; set; }
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Comment>? Comments { get; set; }
