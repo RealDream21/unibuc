@@ -1,0 +1,11 @@
+Restrictiile problemei permit ca o rezolvare de complexitate O(N * Q) sau O(N * Q * log*N) sa treaca toate testele.
+Observam ca raspunsul pentru o anumita muchie de query (x y) este costul maxim al unei muchii pe drumul x -> y in APM-ul initial, din care scadem o unitate.
+Pentru a demonstra acest lucru, ne folosim de urmatoarea proprietate a APM-ului: Daca o muchie (x y) inafara APM-ului inchide ciclu cu APM-ul, muchia aceasta este maxima pe ciclul in discutie. Revenind la problema noastra, daca asociem costul maxim - 1 muchiei noastre de query, aceasta formeaza acum un ciclu pe care nu este muchie maxima, deci va fi in APM. Pentru o idee mai intuitiva, ganditi-va ce se intampla cand rulam agloritmul lui Kruskal.
+
+Avand aceste observatii se contureaza 2 solutii care intra in timp:
+1. Pentru fiecare muchie de query se efectueaza un df pe APM-ul initial pentru muchia maxima pe drumul (x y). Complexitate O(M log M + N * Q);
+2. Raspundem la query-uri in timpul constructiei APM-ului initial astfel: De fiecare data cand unim 2 componente conexe (adaugam o muchie in APM) , verificam pentru fiecare muchie de query daca acum are capetele in aceeasi componenta. In caz afirmativ, raspunsul este costul muchiei adaugate - 1. Complexitate O(M log M + N * Q * log*N);
+
+Problema admite solutii mai rapide: O(M log M + N log N + Q log N) sau O(M log M + (Q + M) log M). S-a considerat ca aceste solutii sunt prea complicate pentru un concurs cu acest format, insa invitam utilizatorii sa le gaseasca ca exercitiu.
+
+https://www.infoarena.ro/monthly-2012/runda-1/solutii
