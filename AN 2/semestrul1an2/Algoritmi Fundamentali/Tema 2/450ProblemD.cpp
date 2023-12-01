@@ -4,7 +4,7 @@ using namespace std;
 
 ifstream fin("date.in");
 
-const int NMAX = 3 * 1e5;
+const int NMAX = 1e6 + 5;
 
 vector<pair<long long, int>> g[NMAX];
 long long d[NMAX];
