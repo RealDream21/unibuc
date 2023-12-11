@@ -9,7 +9,7 @@ const long long INF = LONG_LONG_MAX;
 const int NMAX = 100005;
 int n;
 
-vector<pair<int, int>> graf[NMAX];
+vector<pair<int, long long>> graf[NMAX];
 
 class Compare
 {
@@ -43,8 +43,8 @@ void dijkstra(int* parinte, long long* dist, int start)
         for(int i = 0; i < graf[u].size(); i++)
         {
             int v = graf[u][i].first;
-            int distXY = graf[u][i].second;
-            int alt = dist[u] + distXY;
+            long long distXY = graf[u][i].second;
+            long long alt = dist[u] + distXY;
             if(alt < dist[v])
             {
                 dist[v] = alt;
