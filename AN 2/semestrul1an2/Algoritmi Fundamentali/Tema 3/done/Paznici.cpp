@@ -11,6 +11,7 @@ const int nmax = 60;
 unordered_map<int, int> capacitate[nmax];
 int tati[nmax];
 vector<int> graf[nmax];
+bool pastrat[nmax];
 
 void bfs(int s, int t)
 {
@@ -37,8 +38,10 @@ void bfs(int s, int t)
     }
 }
 
+
 void augment(int& total_flow, int s, int t)
 {
+    int st = 0, dr = 0;
     if (tati[t] != -1)
     {
         int maxflow = INT_MAX;
@@ -58,6 +61,31 @@ void augment(int& total_flow, int s, int t)
 }
 
 
+void taietura()
+{
+    int node = 0;
+    queue<int>q;
+    pastrat[node] = true;
+    q.push(node);
+
+    while(!q.empty())
+    {
+        node = q.front();
+        q.pop();
+        for(int i = 0; i < graf[node].size(); i++)
+        {
+            int next = graf[node][i];
+            //int flow = 1 - capacitate[next][node];
+            if(capacitate[node][next] == 1 && !pastrat[next])
+            {
+                pastrat[next] = true;
+                q.push(next);
+            }
+        }
+    }
+}
+
+
 int main()
 {
 
@@ -71,14 +99,29 @@ int main()
     fin.get();
     for(int i = 1; i <= n; i++)
     {
+        string input;
         fin >> input;
-        fin.get();
-        cout << input;
+        graf[0].push_back(i);
+        graf[i].push_back(0);
+        capacitate[0][i] = 1;
+        for(int j = 0; j < input.size(); j++)
+        {
+            if(input[j] == '1')
+            {
+                capacitate[i][n + j + 1] = 1;
+                graf[i].push_back(n + j + 1);
+                graf[n + j + 1].push_back(i);
+            }
+        }
+    }
+    for(int i = n + 1; i <= t; i++)
+    {
+        graf[i].push_back(t);
+        graf[t].push_back(i);
+        capacitate[i][t] = 1;
     }
 
     int total_flow = 0;
-
-    cout << "DA";
     do{
         bfs(s, t);
         if(tati[t] == -1)
@@ -86,7 +129,19 @@ int main()
         augment(total_flow, s, t);
     }while(tati[t] != -1);
 
-    fout << total_flow;
+    //cout << total_flow << endl;
+    taietura();
+    for(int i = 1; i <= n; i++)
+    {
+        if(!pastrat[i])
+            fout << char('A' + i - 1);
+    }
+    for(int j = n + 1; j < t; j++)
+    {
+        if(pastrat[j])
+            fout << char('a' + j - n - 1);
+    }
+
 
     return 0;
 }
