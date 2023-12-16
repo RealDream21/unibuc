@@ -77,6 +77,7 @@ void taietura()
             //int flow = capacitate[next][node];
             if(capacitate[node][next] == 1 && !pastrat[next])
             {
+                //cout << node << " " << next << endl;
                 pastrat[next] = true;
                 q.push(next);
             }
@@ -108,13 +109,13 @@ int main()
         while(numere_stream >> nr)
         {
             graf[nr].push_back(i);
-            //graf[i].push_back(nr);
+            graf[i].push_back(nr);
             capacitate[nr][i] = 1;
         }
         //-cout << endl;
     }
 
-    for(int i = n + 1; i <= t; i++)
+    for(int i = n + 1; i <= n + m; i++)
     {
         graf[i].push_back(t);
         graf[t].push_back(i);
@@ -147,12 +148,25 @@ int main()
     }*/
 
 
-    for(int i = 1; i <= n; i++)
+    /*for(int i = 1; i <= n; i++)
     {
         if(!pastrat[i])
-            fout << i << endl;
-    }
+            cout << i << endl;
+    }*/
 
+    for(int i = n + 1; i <= n + m; i++)
+    {
+        for(int j = 0; j < graf[i].size(); j++)
+        {
+            int u = graf[i][j];
+            if(u != t && capacitate[i][u] == 1)
+                fout << u << endl;
+
+
+        }
+
+
+    }
 
     return 0;
 }
