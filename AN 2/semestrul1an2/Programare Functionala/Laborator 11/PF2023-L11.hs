@@ -2,6 +2,7 @@
 class Functor f where
 fmap : : ( a -> b ) -> f a -> f b
 -}
+
 newtype Identity a = Identity a
 instance Functor Identity where
     fmap g (Identity a) = Identity (g a)
