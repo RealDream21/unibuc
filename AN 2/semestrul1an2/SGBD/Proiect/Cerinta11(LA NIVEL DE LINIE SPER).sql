@@ -1,5 +1,5 @@
 --Fac un declansator care nu las ca valoarea unui contract sa fie marita cu mai mult de 50% din valoarea acestuia
-CREATE OR REPLACE TRIGGER trigger_cerinta_10
+CREATE OR REPLACE TRIGGER trigger_cerinta_11
     BEFORE UPDATE ON contract_cumparare
     FOR EACH ROW
 DECLARE
