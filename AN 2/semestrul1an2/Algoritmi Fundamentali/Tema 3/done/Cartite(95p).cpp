@@ -87,7 +87,7 @@ void solve_cerinta1()
         int i = node.first;
         int j = node.second;
 
-        if(graf[i][j] == 2)
+        if(graf[i][j] >= 2)//e galerie
         {
             fout << i << " " << j << " " << dist[i][j];
             return;
