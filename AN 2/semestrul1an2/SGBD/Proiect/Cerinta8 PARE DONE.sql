@@ -4,13 +4,26 @@ CREATE OR REPLACE FUNCTION f_cerinta8
     RETURN strada.nume_strada%TYPE
     IS
         v_nume_strada strada.nume_strada%type;
+        v_cnt_familie NUMBER(2);
         v_id_strada strada.id_strada%type;
         v_numar_casa familie_casa.numar%type;
         v_data familie_casa.data_mutare%type;
         v_data2 familie_casa.data_mutare%type;
         ex_casa_ocupata EXCEPTION; -- prima exceptie, in caz ca sta cineva in casa lor deja
+        ex_familie_negasita EXCEPTION;
         PRAGMA EXCEPTION_INIT(ex_casa_ocupata, -20001);
+        PRAGMA EXCEPTION_INIT(ex_familie_negasita, -20002);
     BEGIN
+
+    --prima data verific daca exita familia sau mai multe chiar cu acelasi nume
+    SELECT count(nume_familie) INTO v_cnt_familie
+    FROM familie
+    WHERE lower(nume_familie) = lower(v_nume);
+    
+    IF v_cnt_familie = 0 THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Nu a fost gasita o familie cu acest nume');
+    END IF;
+
 
     WITH aux AS(
         SELECT ss.id_strada, fc.numar, fc.data_mutare
@@ -37,15 +50,6 @@ CREATE OR REPLACE FUNCTION f_cerinta8
         RAISE_APPLICATION_ERROR(-20001, 'O familie deja sta la aceasta casa');
     END IF;
     
-    ---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!---
-    
-    --aici mai trebuie introdusa o exceptie
-    
-    ---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!---
-    
-    
-    
-    
     SELECT nume_strada INTO v_nume_strada
     FROM strada
     WHERE id_strada = v_id_strada;
@@ -53,11 +57,11 @@ CREATE OR REPLACE FUNCTION f_cerinta8
     return v_nume_strada;
     
     EXCEPTION
+        WHEN EX_FAMILIE_NEGASITA THEN
+            DBMS_OUTPUT.PUT_LINE('Nu a fost gasita o familie cu acest nume');
+            return -1;
         WHEN EX_CASA_OCUPATA THEN
             DBMS_OUTPUT.PUT_LINE('A aparut o eroare la data casei');
-            return -1;
-        WHEN TOO_MANY_ROWS THEN
-            DBMS_OUTPUT.PUT_LINE('Prea multe case');
             return -1;
         WHEN NO_DATA_FOUND THEN
             DBMS_OUTPUT.PUT_LINE('Nu a fost gasita familia/casa');
@@ -71,18 +75,6 @@ END f_cerinta8;
 BEGIN
     DBMS_output.put_line(f_cerinta8('Popescu')); --exemplu care produce eroare
     DBMS_output.put_line(f_cerinta8('Constantinescu')); -- exemplu care merge bine
+    DBMS_output.put_line(f_cerinta8('haha')); --exemplu in care nu exista familia
 END;
 /
-
-
-
-SELECT * FROM familie_casa;
-SELECT * FROM familie_casa;
-select * from familie;
-SELECT * FROM USER_TABLES;
-describe locuitor;
-describe strada;
-describe familie_casa;
-describe institutie_invatamant;
-describe familie;
-describe casa;
