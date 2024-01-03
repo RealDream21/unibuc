@@ -1,5 +1,6 @@
 import Data.String (IsString)
 import Distribution.Compat.Lens (_1)
+import Data.List (intersect)
 --ex1 suma patratelor elementelor impare
 cerinta_1 :: [Int] -> Int
 cerinta_1 xs = foldl (\a b -> b * b + a) 0 (filter (\t -> t `mod` 2 == 1) xs) -- a este elementul neutru
@@ -48,6 +49,33 @@ rmCharsRec (s:str1) str2 = rmCharsRec str1 (rmChar s str2)
 --c
 rmCharsFold :: String -> String -> String
 rmCharsFold str1 str2 = foldr (\a e -> (rmChar a e)) str2 str1
-    
+
+--ex8
+myReverse :: [Int] -> [Int]
+myReverse list = foldl (\e a -> a: e) [] list
+
+--ex9
+myElem :: Int -> [Int] -> Bool
+myElem a [] = False
+myElem a (x:xs)
+    | a == x = True
+    | otherwise = myElem a xs
+
+--ex10
 myUnzip :: [(a, b)] -> ([a], [b])
-myUnzip = undefined
+myUnzip [] = ([], [])
+myUnzip list = foldr (\el e -> ([fst el] ++ fst e, [snd el] ++ snd e)) ([], []) list
+
+--ex11
+faux :: Eq a => a -> [a] -> [a]
+faux el e
+    | el `elem` e = e
+    | otherwise = el:e
+union :: [Int] -> [Int] -> [Int]
+union list1 list2 = foldr (\el e -> faux el e) list1 list2
+
+
+--ex12
+ffaux el e list
+    | (el not `elem` list) = e
+    | (el `elem` list) && (el not `elem` e) = el:e
