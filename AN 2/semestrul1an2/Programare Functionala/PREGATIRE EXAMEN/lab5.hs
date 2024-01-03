@@ -76,6 +76,8 @@ union list1 list2 = foldr (\el e -> faux el e) list1 list2
 
 
 --ex12
-ffaux el e list
-    | (el not `elem` list) = e
-    | (el `elem` list) && (el not `elem` e) = el:e
+intersect' :: [Int] -> [Int] -> [Int]
+intersect' [] _ = []
+intersect' (x:xs) l
+    | elem x l = x : intersect' xs l
+    | otherwise = intersect' xs l
