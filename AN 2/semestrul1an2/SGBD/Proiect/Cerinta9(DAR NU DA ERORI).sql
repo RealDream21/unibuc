@@ -26,7 +26,6 @@ CREATE OR REPLACE PROCEDURE procedura_cerinta_9
         DBMS_OUTPUT.PUT_LINE('Nu a fost gasita vreo institutie de invatamant');
     END IF;
     
-    ---NU DA ERORI??????????????---
     EXCEPTION
         WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('A aparut o eroare');
@@ -35,9 +34,22 @@ CREATE OR REPLACE PROCEDURE procedura_cerinta_9
 /
 
 BEGIN
-    procedura_cerinta_9('Global Solutions'); -- ar trebui sa dea eroare, dar nu da
+    procedura_cerinta_9('Global Solutions'); 
 END;
 /
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO CONTRACT_CUMPARARE
 VALUES (2, 5, 25, '2-Jan-2024', 23, 800000);
 
