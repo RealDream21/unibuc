@@ -1,0 +1,2 @@
+curs 4 -> rute, redirecturi, keywords(NonAction, ActionName)
+lab 4 -> controllere show, index, new(get/post), delete(post si formularul cu buton in show)
