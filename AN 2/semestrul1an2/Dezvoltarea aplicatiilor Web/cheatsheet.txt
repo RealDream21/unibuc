@@ -1,2 +1,6 @@
 curs 4 -> rute, redirecturi, keywords(NonAction, ActionName)
 lab 4 -> controllere show, index, new(get/post), delete(post si formularul cu buton in show)
+
+curs 5 -> model, EF core, instalare EF core, 6.0 daca da eroare la 8.0, model binding,(CRUD pe baza de date)
+lab5 -> atentioe la AppDbContext(daca da eroare la base(options) => trebuie scrisa mostenirea clasei de la DbContext
+	-> trebuie pus .First() sau ceva de genul daca spune ca nu recunoaste un atribut(pentru ca il da sub forma de IQuerry)

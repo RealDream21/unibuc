@@ -1,0 +1,13 @@
+﻿<h2>Afisare student</h2>
+<br />
+<p>@ViewBag.Student.Name</p>
+<p>@ViewBag.Student.Email</p>
+<p>@ViewBag.Student.CNP</p>
+
+<br />
+<a href ="/Students/Index">Afisare studenti</a>
+
+<form method="post" action="/Students/Delete/@ViewBag.Student.StudentId">
+    <button type ="submit">Sterge student</button>
+
+</form>

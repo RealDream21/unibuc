@@ -1,0 +1,13 @@
+﻿<h2>Afisare studenti</h2>
+<br />
+
+@foreach(var student in ViewBag.Students)
+{
+    <p>@student.Name</p>
+    <p>@student.Email</p>
+    <p>@student.CNP</p>
+    <br />
+    <a href ="/Students/Show/@student.StudentId">Afisare student</a>
+    <br />
+    <a href ="/Students/Edit/@student.StudentId">Editare Student</a>
+}
