@@ -1,0 +1,5 @@
+Exista alternative pentru Helpere daca nu vrei sa dai modelul ca parametru
+    <select class="form-control" name="CategoryId" asp-items="@ViewBag.Categ">
+        <option disabled selected value="">Selectati categoria</option>
+    </select>
+Se observa ca am schimbat din for whatever in name = "CategoryId" ca sa faca matching

@@ -1,0 +1,21 @@
+﻿<h2>Editare articol</h2>
+
+<form method="post" action="/Articles/Edit/@ViewBag.Article.Id">
+    <label>Titlu</label>
+    <br />
+    <input type="text" name="Title" value="@ViewBag.Article.Title" />
+    <br /><br />
+
+    <label>Continut</label>
+    <br />
+    <input type="text" name="Content" value="@ViewBag.Article.Content" />
+    <br /><br />
+
+    <label>Categorie</label>
+    <select class="form-control" name="CategoryId" asp-items="@ViewBag.Categ">
+        <option disabled selected value="">Selectati categoria</option>
+    </select>
+
+    <button type="submit">Modifica articol</button>
+
+</form>
