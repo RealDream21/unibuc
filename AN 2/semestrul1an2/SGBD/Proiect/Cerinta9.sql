@@ -10,7 +10,15 @@ CREATE OR REPLACE PROCEDURE procedura_cerinta_9
             nume familie.nume_familie%type);
         TYPE tablou_indexat IS TABLE OF info INDEX BY pls_integer;
         t tablou_indexat;
+		v_nume_cumparator cumparator.nume%type;
     BEGIN
+
+	--verificam daca exista un singur cumparator cu numele asta
+    SELECT nume INTO v_nume_cumparator
+    FROM cumparator
+	WHERE lower(nume) = lower(v_cumparator);
+
+        
     SELECT ii.nume, l.prenume, f.nume_familie BULK COLLECT INTO t
     FROM CUMPARATOR c JOIN CONTRACT_CUMPARARE ccu ON c.id_cumparator = ccu.id_cumparator
         JOIN FAMILIE f ON f.id_familie = ccu.id_familie JOIN locuitor l ON l.id_familie = f.id_familie
@@ -27,32 +35,22 @@ CREATE OR REPLACE PROCEDURE procedura_cerinta_9
     END IF;
     
     EXCEPTION
-        WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('A aparut o eroare');
+        WHEN NO_DATA_FOUND THEN
+        	DBMS_OUTPUT.PUT_LINE('Nu exista acest cumparator');
+		WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('Acest cumparator apare de mai multe ori');
     
     END procedura_cerinta_9;
 /
 
+INSERT INTO CUMPARATOR
+VALUES(6, '123 Industries');
+
 BEGIN
     procedura_cerinta_9('Global Solutions'); 
+	procedura_cerinta_9('Global Market');
+	procedura_cerinta_9('123 Industries');
 END;
 /
+ROLLBACK;
 
-
-
-
-
-
-
-
-
-
-
-
-
-INSERT INTO CONTRACT_CUMPARARE
-VALUES (2, 5, 25, '2-Jan-2024', 23, 800000);
-
-SELECT * FROM contract_cumparare;
-
-SELECT * FROM CUMPARATOR;
