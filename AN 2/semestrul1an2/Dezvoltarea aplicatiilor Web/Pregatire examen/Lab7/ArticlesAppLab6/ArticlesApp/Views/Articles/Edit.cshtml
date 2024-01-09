@@ -1,0 +1,29 @@
+﻿
+@model ArticlesApp.Models.Article
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<form method="post" action="/Articles/Edit/@Model.Id">
+
+    @Html.Label("Title", "Titlu Articol")
+    @*Html.TextBox("Title", null, new{@class = "form-control"})
+    sau*@
+    @Html.EditorFor(m => m.Title, new{htmlAttributes = new {@class = "form-control"}})
+    <br /><br />
+
+    @Html.Label("Content", "Continut articol")
+    @Html.TextBox("Content", null, new{@class="form-control"})
+    <br />
+
+    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categ, "Value", "Text"), "Selectati categoria", new{@class="form-control"})
+
+    <br /><br />
+
+    <button class="btn btn-success" type="submit">Modifica articol</button>
+
+</form>
+
+

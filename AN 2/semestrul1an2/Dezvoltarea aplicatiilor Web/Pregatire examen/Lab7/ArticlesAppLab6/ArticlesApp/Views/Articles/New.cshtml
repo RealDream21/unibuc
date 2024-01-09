@@ -1,0 +1,50 @@
+﻿
+@model ArticlesApp.Models.Article
+
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>Adaugare articol</h2>
+<br />
+
+<form method="post" action="/Articles/New">
+
+    @Html.Label("Title", "Titlu articol")
+    @Html.TextBox("Title", null, new{@class = "form-control"})
+    <br />
+    <br />
+
+    @Html.Label("Content", "Continut articol")
+    @Html.TextBox("Content", null, new{@class = "form-control"})
+    <br />
+    <br />
+
+    @*
+    <input type="hidden" name="Date" value="@DateTime.Now" />
+    <br />
+    *@
+
+    <label>Selectati categoria</label>
+
+    @*
+    Proprietatea name primeste valoarea CategoryId, si anume id-ul categoriei, fiind atributul care
+    se paseaza catre Controller prin post
+    Proprietatea value are id-ul categoriei si valoarea care se afiseaza in dropdown (numele categoriei)
+    *@
+
+    @*<select name="CategoryId">
+        @foreach (var item in ViewBag.Categories)
+        {
+            <option value="@item.Id">@item.CategoryName</option>
+        }
+    </select>*@
+
+    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categ, "Value", "Text"), "Selectati categoria", new {@class = "form-control"})
+
+    <br />
+    <button class="btn btn-success" type="submit">Adauga articol</button>
+
+</form>
+
+

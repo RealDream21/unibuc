@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Lista categorii";
+}
+
+@if (ViewBag.Msg != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Msg</h2>
+}
+
+<h2>@ViewBag.Title</h2>
+<br />  
+
+<a href="/Articles/Index">Inapoi la articole</a>
+<br />
+<br />
+
+@foreach (var category in ViewBag.Categories)
+{
+    <p>@category.CategoryName</p>
+    <a class="btn alert-success" href="/Categories/Show/@category.Id">Afisare categorie</a>
+    <a class="btn alert-success" href="/Categories/Edit/@category.Id">Editare categorie</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />
+<a class="btn btn-success" href="/Categories/New">Adauga o noua categorie</a>
+<br />
+
