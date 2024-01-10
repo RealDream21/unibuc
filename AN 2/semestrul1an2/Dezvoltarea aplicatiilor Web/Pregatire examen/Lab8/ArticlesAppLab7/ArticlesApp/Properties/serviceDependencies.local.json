@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    },
+    "mssql2": {
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:dada",
+      "dynamicId": null
+    },
+    "mssql3": {
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:Lab8",
+      "dynamicId": null
+    }
+  }
+}
