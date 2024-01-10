@@ -1,21 +1,22 @@
-CREATE TABLE istoric_inserturi
-(
-    utilizator VARCHAR2(30),
-    data_actualizare date
-);
+--Creati un trigger care permite insert in tabela doar in zilele de luni si marti,
+--update doar vinerea si delete doar in weekend
+
 
 CREATE OR REPLACE TRIGGER trigger_cerinta_10
-BEFORE INSERT ON PRIMARIE_EVENIMENT
+BEFORE INSERT OR UPDATE OR DELETE ON PRIMARIE_EVENIMENT
 BEGIN
-    INSERT INTO ISTORIC_INSERTURI
-    VALUES(SYS.LOGIN_USER, sysdate);
+	IF (INSERTING AND (trim(lower(to_char(sysdate, 'DAY'))) != 'monday' AND trim(lower(to_char(sysdate, 'DAY'))) != 'tuesday')) THEN
+    	RAISE_APPLICATION_ERROR(-20001, 'nu puteti introduce valori in zilele de luni sau marti');
+	ELSIF (UPDATING AND (trim(lower(to_char(sysdate, 'DAY'))) != 'friday')) THEN
+        RAISE_APPLICATION_ERROR(-2001, 'nu puteti face update decat vinerea');
+	ELSIF (DELETING AND (trim(lower(to_char(sysdate, 'DAY'))) != 'saturday' AND trim(lower(to_char(sysdate, 'DAY'))) != 'sunday')) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'nu puteti face delete decat in week-end');
+	END IF;
 END;
 /
 
-SELECT * FROM primarie_eveniment;
+--SELECT * FROM primarie_eveniment; -- testata pentru luni/marti -> merge
 INSERT INTO PRIMARIE_EVENIMENT
 VALUES(1, 1, '12-Jan-2023');
-
-SELECT * FROM istoric_inserturi;
-ROLLBACK;
+SELECT * FROM PRIMARIE_EVENIMENT;
 

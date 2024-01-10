@@ -1,0 +1,16 @@
+﻿<form method="post" action = "/Articles/New">
+    <label>Titlu</label>
+    <br />
+    <input type="text" name="Title" />
+    <br /><br />
+
+    <label>Content</label>
+    <input type="text" name="Content" />
+
+    <label>Categorie</label>
+    <select class="form-control" name="CategoryId" asp-items="@ViewBag.Categ">
+        <option disabled selected value="">Selectati categoria</option>
+    </select>
+
+    <button type ="submit">Adauga articol</button>
+</form>

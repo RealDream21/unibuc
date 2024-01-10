@@ -1,0 +1,30 @@
+﻿<h2>Afisare articol wow</h2>
+
+<p>@ViewBag.article.Title</p>
+<p>@ViewBag.article.Content</p>
+<p>@ViewBag.article.Category.CategoryName</p>
+
+<form method="post" action="/Articles/Delete/@ViewBag.article.Id">
+    <button type="submit">Sterge articol</button>
+</form>
+
+
+@*URMEAZA AFISAREA COMENTARIILOR*@
+@foreach(var comment in @ViewBag.Article.Comments)
+{
+    <div>
+        <p>@comment.Content</p>
+        <p>@comment.date</p>
+    </div>
+}
+
+@*FORMULAR ADAUGARE COMENTARII*@
+<form method="post" action="/Comments/New">
+    <label>Continut comment</label>
+    <br />
+    <input type ="text" name="Content" />
+    <input type ="hidden" name="ArticleId" value="@ViewBag.Article.Id" />
+
+    <button type="submit">Adauga comentariu</button>
+
+</form>
