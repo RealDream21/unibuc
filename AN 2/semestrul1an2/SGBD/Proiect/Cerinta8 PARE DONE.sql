@@ -63,12 +63,6 @@ CREATE OR REPLACE FUNCTION f_cerinta8
         WHEN EX_CASA_OCUPATA THEN
             DBMS_OUTPUT.PUT_LINE('A aparut o eroare la data casei');
             return -1;
-        WHEN NO_DATA_FOUND THEN
-            DBMS_OUTPUT.PUT_LINE('Nu a fost gasita familia/casa');
-            return -1;
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Alta eroare');
-            return -1;
 END f_cerinta8;
 /
 

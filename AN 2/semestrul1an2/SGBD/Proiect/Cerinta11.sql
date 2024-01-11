@@ -18,17 +18,17 @@ EXCEPTION
 END;
 /
 
-UPDATE contract_cumparare
+UPDATE contract_cumparare --suma creste cu mai mult de 50% -> eroare
 SET suma = suma + suma*0.5 + 1000
 WHERE id_primarie = 1;
 ROLLBACK;
 
-UPDATE contract_cumparare
+UPDATE contract_cumparare --scade cu mai mult de 2500 lei
 SET suma = suma - 2530
 WHERE id_primarie = 1;
 ROLLBACK;
 
-UPDATE contract_cumparare
+UPDATE contract_cumparare --merge bine
 SET suma = suma + suma*0.1
 WHERE id_primarie = 1;
 ROLLBACK;

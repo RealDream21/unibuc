@@ -43,9 +43,6 @@ CREATE OR REPLACE PROCEDURE procedura_cerinta_9
     END procedura_cerinta_9;
 /
 
-INSERT INTO CUMPARATOR
-VALUES(6, '123 Industries');
-
 BEGIN
     procedura_cerinta_9('Global Solutions'); 
 	procedura_cerinta_9('Global Market');

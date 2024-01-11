@@ -57,7 +57,6 @@ END p_cerinta6;
 
 BEGIN
     p_cerinta6;
-    rollback;
 END;
 /
 

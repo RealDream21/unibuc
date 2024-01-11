@@ -1,0 +1,678 @@
+Cerinta 4
+
+CREATE TABLE STRADA(
+    id_strada NUMBER(3) PRIMARY KEY,
+    nume_strada VARCHAR(100) NOT NULL
+    );
+    
+CREATE TABLE INSTITUTIE_INVATAMANT (
+    id_forma NUMBER(3) PRIMARY KEY,
+    nume VARCHAR(50) NOT NULL,
+    tip_forma_invatamant CHAR(40) NOT NULL,
+    id_strada REFERENCES STRADA
+    );
+
+CREATE TABLE CASA (
+    id_strada REFERENCES STRADA,
+    numar NUMBER(3) NOT NULL CHECK (numar > 0 AND numar < 50),
+    camere NUMBER(2) DEFAULT 1 NOT NULL,
+    dimensiune NUMBER(4) NOT NULL,
+    PRIMARY KEY(id_strada, numar)
+    );
+
+CREATE TABLE PRIMARIE (
+    id_primarie NUMBER(3) PRIMARY KEY,
+    nume VARCHAR(100) NOT NULL,
+    id_strada REFERENCES STRADA,
+    CONSTRAINT primarie_locatie_unic UNIQUE (id_strada)
+    );
+
+CREATE TABLE FAMILIE(
+    id_familie NUMBER(4) PRIMARY KEY,
+    id_primarie REFERENCES PRIMARIE,
+    nume_familie VARCHAR(25) NOT NULL
+    );
+
+CREATE TABLE LOCUITOR (
+    id_locuitor NUMBER(5) PRIMARY KEY,
+    id_familie NUMBER(4) REFERENCES FAMILIE(id_familie),
+    prenume VARCHAR(50) NOT NULL,
+    sex NUMBER(1) CHECK (sex > 0 AND sex < 3)
+    );
+
+CREATE TABLE FIRMA_ORGANIZARE(
+    id_firma NUMBER(3) PRIMARY KEY,
+    nume VARCHAR(100) NOT NULL
+    );
+    
+CREATE TABLE EVENIMENT_CULTURAL(
+    id_eveniment NUMBER(3) PRIMARY KEY, 
+    id_firma REFERENCES FIRMA_ORGANIZARE,
+    nume_eveniment VARCHAR(25) NOT NULL,
+    capacitate NUMBER(7) NOT NULL
+    );
+
+CREATE TABLE CUMPARATOR(
+    id_cumparator NUMBER(3) PRIMARY KEY,
+    nume VARCHAR(100) NOT NULL
+    );
+
+CREATE TABLE CICLU_INVATAMANT(
+    id_forma REFERENCES INSTITUTIE_INVATAMANT,
+    id_locuitor REFERENCES locuitor,
+    an_invatamant DATE NOT NULL,
+    PRIMARY KEY (id_forma, id_locuitor, an_invatamant)
+    );
+    
+CREATE TABLE CONTRACT_CUMPARARE(
+    id_primarie REFERENCES PRIMARIE,
+    id_cumparator REFERENCES CUMPARATOR,
+    id_familie REFERENCES FAMILIE,
+    data_cumparare DATE NOT NULL,
+    taxa NUMBER(3) DEFAULT NULL,
+    suma NUMBER(8) NOT NULL,
+    PRIMARY KEY (id_primarie, id_cumparator, id_familie, data_cumparare)
+    );
+
+CREATE TABLE FAMILIE_CASA(
+    id_familie NUMBER(4) NOT NULL,
+    id_strada NUMBER(3),
+    numar NUMBER(3),
+    data_mutare DATE NOT NULL,
+    PRIMARY KEY (id_familie, id_strada, numar, data_mutare),
+    FOREIGN KEY (id_strada, numar) REFERENCES CASA(id_strada, numar),
+    FOREIGN KEY (id_familie) REFERENCES FAMILIE(id_familie)
+    );
+
+CREATE TABLE PRIMARIE_EVENIMENT(
+    id_primarie REFERENCES PRIMARIE,
+    id_eveniment REFERENCES EVENIMENT_CULTURAL,
+    data_eveniment DATE NOT NULL,
+    PRIMARY KEY(id_primarie, id_eveniment, data_eveniment)
+    );
+
+Cerinta 5
+
+DROP SEQUENCE strada_seq;
+CREATE SEQUENCE strada_seq
+START with 1
+INCREMENT BY 5
+NOCACHE;
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Teilor');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Libertatii');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Viilor');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Crinului');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Tineretului');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Eroilor');
+INSERT INTO STRADA
+VALUES(strada_seq.nextval, 'Singuratatii');
+INSERT INTO STRADA
+VALUES(64, 'Metalurgiei');
+
+
+INSERT INTO CASA
+VALUES(1, 1, 5, 420);
+INSERT INTO CASA
+VALUES(11, 2, 2, 210);
+INSERT INTO CASA
+VALUES(16, 14, 1, 100);
+INSERT INTO CASA
+VALUES(21, 4, 3, 250);
+INSERT INTO CASA
+VALUES(21, 5, 2, 260);
+INSERT INTO CASA
+VALUES(16, 25, 3, 420);
+INSERT INTO CASA
+VALUES(64, 13, 2, 140);
+
+INSERT INTO PRIMARIE
+VALUES(1, 'Primaria Viilor', 6);
+INSERT INTO PRIMARIE
+VALUES(2, 'Primaria Tineretului', 16);
+INSERT INTO PRIMARIE
+VALUES(3, 'Primaria Crinului', 11);
+INSERT INTO PRIMARIE
+VALUES(4, 'Primaria Eroilor', 21);
+INSERT INTO PRIMARIE
+VALUES(5, 'Primaria Teilor', 1);
+INSERT INTO PRIMARIE
+VALUES(6, 'Primaria Degeaba', 26);
+
+INSERT INTO FAMILIE
+VALUES(5, 4, 'Popescu');
+INSERT INTO FAMILIE
+VALUES(10, 1, 'Ionescu');
+INSERT INTO FAMILIE
+VALUES(15, 1, ' Popa');
+INSERT INTO FAMILIE
+VALUES(20, 4, 'Constantinescu');
+INSERT INTO FAMILIE
+VALUES(25, 5, 'Tupeiescu');
+INSERT INTO FAMILIE
+VALUES(30, 2, 'Vecinescu');
+
+INSERT INTO LOCUITOR 
+VALUES (1, 5, 'Ion', 1);
+INSERT INTO LOCUITOR
+VALUES (2, 5,'Maria', 2);
+INSERT INTO LOCUITOR
+VALUES (3, 5, 'Ana', 2);
+INSERT INTO LOCUITOR
+VALUES (4, 20, 'Mihai', 1);
+INSERT INTO LOCUITOR
+VALUES (5, 20, 'Elena', 2);
+INSERT INTO LOCUITOR
+VALUES(6, 25, 'Costache', 1);
+INSERT INTO LOCUITOR
+VALUES(7, 25, 'Mihaela', 2);
+INSERT INTO LOCUITOR
+VALUES(8, 30, 'Ramon', 1);
+
+INSERT INTO INSTITUTIE_INVATAMANT
+VALUES (1, 'Scoala Gimnaziala Nr. 1', 'Scoala Gimnaziala', 1);
+INSERT INTO INSTITUTIE_INVATAMANT
+VALUES (2, 'Liceul Teoretic "Mihai Eminescu"', 'Liceu', 1);
+INSERT INTO INSTITUTIE_INVATAMANT
+VALUES (3, 'Scoala Gimnaziala Nr. 2', 'Scoala Gimnaziala', 6);
+INSERT INTO INSTITUTIE_INVATAMANT
+VALUES (4, 'Colegiul National "Gheorghe Lazar"', 'Colegiu', 16);
+INSERT INTO INSTITUTIE_INVATAMANT
+VALUES (5, 'Liceul Tehnic', 'Liceu', 21);
+
+INSERT INTO CUMPARATOR
+VALUES (1, 'ABC Company');
+INSERT INTO CUMPARATOR
+VALUES (2, 'XYZ Corporation');
+INSERT INTO CUMPARATOR
+VALUES (3, '123 Industries');
+INSERT INTO CUMPARATOR
+VALUES (4, 'Acme Enterprises');
+INSERT INTO CUMPARATOR
+VALUES (5, 'Global Solutions');
+INSERT INTO CUMPARATOR
+VALUES(6, '123 Industries');
+
+INSERT INTO FIRMA_ORGANIZARE
+VALUES (1, 'Event Management Company');
+INSERT INTO FIRMA_ORGANIZARE
+VALUES (2, 'Art Agency');
+INSERT INTO FIRMA_ORGANIZARE
+VALUES (3, 'Production House');
+INSERT INTO FIRMA_ORGANIZARE
+VALUES (4, 'Entertainment Solutions');
+INSERT INTO FIRMA_ORGANIZARE
+VALUES (5, 'Creative Events');
+
+INSERT INTO EVENIMENT_CULTURAL
+VALUES (1, 1, 'Concert Live', 1000);
+INSERT INTO EVENIMENT_CULTURAL
+VALUES (2, 5, 'Expozitie de arta', 500);
+INSERT INTO EVENIMENT_CULTURAL
+VALUES (3, 5, 'Teatru in aer liber', 300);
+INSERT INTO EVENIMENT_CULTURAL
+VALUES (4, 1, 'Dans contemporan', 800);
+INSERT INTO EVENIMENT_CULTURAL
+VALUES (5, 4, 'Film in aer liber', 200);
+
+INSERT INTO CICLU_INVATAMANT
+VALUES(1, 1, '15-sep-1985');
+INSERT INTO CICLU_INVATAMANT
+VALUES(5, 1, '20-sep-1993');
+INSERT INTO CICLU_INVATAMANT
+VALUES(3, 2, '15-sep-1985');
+INSERT INTO CICLU_INVATAMANT
+VALUES(4, 2, '20-sep-1993');
+INSERT INTO CICLU_INVATAMANT
+VALUES(3, 3, '29-aug-2003');
+INSERT INTO CICLU_INVATAMANT
+VALUES(4, 3, '30-sep-2011');
+INSERT INTO CICLU_INVATAMANT
+VALUES(1, 4, '29-aug-2003');
+INSERT INTO CICLU_INVATAMANT
+VALUES(4, 4, '30-sep-2011');
+INSERT INTO CICLU_INVATAMANT
+VALUES(3, 5, '11-sep-2002');
+INSERT INTO CICLU_INVATAMANT
+VALUES(5, 5, '19-sep-2010');
+INSERT INTO CICLU_INVATAMANT
+VALUES(4, 6, '20-may-2003');
+
+INSERT INTO FAMILIE_CASA
+VALUES(5, 16, 14, '10-may-1980');
+INSERT INTO FAMILIE_CASA
+VALUES(10, 11, 2, '10-april-1985');
+INSERT INTO FAMILIE_CASA
+VALUES(5, 21, 4, '9-april-1985');
+INSERT INTO FAMILIE_CASA
+VALUES(20, 21, 5, '29-aug-2003');
+INSERT INTO FAMILIE_CASA
+VALUES(15, 21, 4, '15-feb-1995');
+INSERT INTO FAMILIE_CASA
+VALUES(15, 1, 1,'20-jan-1997');
+INSERT INTO FAMILIE_CASA
+VALUES(10, 1, 1, '14-jan-2001');
+INSERT INTO FAMILIE_CASA
+VALUES(15, 11, 2, '10-june-2000'); 
+INSERT INTO FAMILIE_CASA
+VALUES(20, 21, 5, '19-jul-2005');
+INSERT INTO FAMILIE_CASA
+VALUES(20, 1, 1, '20-march-2002');
+INSERT INTO FAMILIE_CASA
+VALUES(10, 21, 4, '15-march-2002');
+INSERT INTO FAMILIE_CASA
+VALUES(25, 16, 14, '5-june-2001');
+INSERT INTO FAMILIE_CASA
+VALUES(30, 16, 25, '3-may-2001');
+
+
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(1, 1, 5, '15-sep-1990', 15, 120000); 
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(1, 2, 5, '20-jan-1985', 20, 17000);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(3, 1, 20, '15-aug-2019', 5, 7000);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(2, 5, 25,'14-sep-2023', 40, 800000);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(3, 4, 20, '19-jul-2021', 14, 75189); 
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(2, 2, 25, '11-june-2021', 10, 10000);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(1, 1, 5, '15-sep-2004', 5, 6510);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(3, 2, 20, '14-sep-2022', 10, 19000);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(2, 1, 25, '19-oct-2022', 4, 7000);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(1, 3, 15, '18-nov-2022', 10, 19500);
+INSERT INTO CONTRACT_CUMPARARE
+VALUES(2, 3, 10, '20-aug-2001', NULL, 10000);
+
+CREATE SEQUENCE id_prim
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 5
+    CYCLE
+    NOCACHE;
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 1, '12-july-1998');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 5, '6-november-2006');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 3, '20-september-1993');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 2, '3-may-2014');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 1, '18-january-2002');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 3, '9-october-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 5, '28-march-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 4, '14-june-2007');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 2, '27-august-1992');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 1, '01-may-2011');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 2, '05-aug-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(id_prim.nextval, 3, '29-sep-2022');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 4, '1-may-2001');
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 5, '16-aug-2023');
+
+Cerinta 6
+
+--Sa se mareasca contractele de cumparare cu suma >= 10.000 cu inca 1% . Afisati contractele modificate(dupa)
+--din acest nou tablou sa se pastreze intr un vector doar familiile care au avut contracte cu cumparatorul cu id 1.
+
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE p_cerinta6        
+IS
+    TYPE tablou_indexat IS TABLE OF contract_cumparare%rowtype INDEX BY PLS_INTEGER;
+    t_contracte tablou_indexat;
+    
+    TYPE vector IS VARRAY(20) OF contract_cumparare%rowtype;
+    t_vector vector:=vector();
+    
+    TYPE tablou_imbricat IS TABLE OF contract_cumparare%rowtype;
+    t_contracte_totale tablou_imbricat := tablou_imbricat();
+    t_contracte_ramase tablou_imbricat := tablou_imbricat();
+    
+BEGIN
+    SELECT id_primarie, id_cumparator, id_familie, data_cumparare, taxa, suma BULK COLLECT INTO t_contracte
+    FROM contract_cumparare;
+        
+    FOR i in t_contracte.FIRST..t_contracte.LAST LOOP
+        IF(t_contracte(i).suma >= 10000) THEN
+            t_vector.extend;
+            t_vector(t_vector.count) := t_contracte(i);
+        END IF;
+    END LOOP;
+    
+    FOR i in t_vector.first..t_vector.last LOOP
+        t_contracte_totale.extend;
+        UPDATE contract_cumparare
+        SET suma = suma + 0.01*suma
+        WHERE id_cumparator = t_vector(i).id_cumparator
+            AND id_familie = t_vector(i).id_familie
+            AND data_cumparare = t_vector(i).data_cumparare
+        RETURNING id_primarie, id_cumparator, id_familie, data_cumparare, taxa, suma
+        INTO t_contracte_totale(i);
+    END LOOP;
+    
+    FOR i in t_contracte_totale.first..t_contracte_totale.last LOOP
+        IF(t_contracte_totale(i).id_cumparator = 1) THEN
+            t_contracte_ramase.extend;
+            t_contracte_ramase(t_contracte_ramase.count) := t_contracte_totale(i);
+        END IF;
+    END LOOP;
+     
+     FOR i in t_contracte_ramase.first..t_contracte_ramase.last LOOP
+        DBMS_OUTPUT.PUT_LINE('Id familie: ' || t_contracte_ramase(i).id_familie || ', ' || 'suma contract: ' || t_contracte_ramase(i).suma);
+     END LOOP;
+        
+        
+  
+END p_cerinta6;
+/
+
+
+BEGIN
+    p_cerinta6;
+END;
+/
+
+SELECT * FROM contract_cumparare;
+
+Cerinta 7
+
+--Obtineti pentru fiecare familie numarul de persoane care apartin acesteia. Daca familia nu are persoane se va afisa
+--mesajul "Familia nu are locuitori"
+
+CREATE OR REPLACE PROCEDURE p_cerinta7
+IS
+    TYPE cursor_ref IS REF CURSOR;
+    CURSOR c_familie IS SELECT id_familie, nume_familie,
+                    CURSOR(SELECT l.id_locuitor, l.prenume
+                            FROM locuitor l
+                            WHERE l.id_familie = f.id_familie)
+            FROM familie f;         
+    v_id_familie familie.id_familie%type;
+    v_nume_familie familie.nume_familie%type;
+    v_id_locuitor locuitor.id_locuitor%type;
+    v_prenume locuitor.prenume%type;
+    v_cursor cursor_ref;
+    v_cnt NUMBER(5);
+BEGIN
+    OPEN c_familie;
+    LOOP
+        FETCH c_familie INTO v_id_familie, v_nume_familie, v_cursor;
+        EXIT WHEN c_familie%NOTFOUND;
+        v_cnt := 0;
+        DBMS_OUTPUT.PUT_LINE('Afisez date pentru familia: ' || v_nume_familie);
+        LOOP
+            FETCH v_cursor INTO v_id_locuitor, v_prenume;
+            EXIT WHEN v_cursor%NOTFOUND;
+            v_cnt := v_cnt + 1;
+            DBMS_OUTPUT.PUT_LINE(v_prenume);
+        END LOOP;
+        IF v_cnt = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Familia nu are locuitori');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Familia are ' || v_cnt || ' persoane');
+        END IF;
+    END LOOP;
+    CLOSE c_familie;
+END p_cerinta7;
+/
+
+BEGIN
+    p_cerinta7();
+END;
+/
+
+Cerinta 8
+
+--aflati strada casei unei familii cu un anumit nume(eroare daca nu exista id-ul), 
+CREATE OR REPLACE FUNCTION f_cerinta8
+    (v_nume familie.nume_familie%type)
+    RETURN strada.nume_strada%TYPE
+    IS
+        v_nume_strada strada.nume_strada%type;
+        v_cnt_familie NUMBER(2);
+        v_id_strada strada.id_strada%type;
+        v_numar_casa familie_casa.numar%type;
+        v_data familie_casa.data_mutare%type;
+        v_data2 familie_casa.data_mutare%type;
+        ex_casa_ocupata EXCEPTION; -- prima exceptie, in caz ca sta cineva in casa lor deja
+        ex_familie_negasita EXCEPTION;
+        PRAGMA EXCEPTION_INIT(ex_casa_ocupata, -20001);
+        PRAGMA EXCEPTION_INIT(ex_familie_negasita, -20002);
+    BEGIN
+
+    --prima data verific daca exita familia sau mai multe chiar cu acelasi nume
+    SELECT count(nume_familie) INTO v_cnt_familie
+    FROM familie
+    WHERE lower(nume_familie) = lower(v_nume);
+    
+    IF v_cnt_familie = 0 THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Nu a fost gasita o familie cu acest nume');
+    END IF;
+
+
+    WITH aux AS(
+        SELECT ss.id_strada, fc.numar, fc.data_mutare
+        FROM familie_casa fc JOIN strada ss ON fc.id_strada = ss.id_strada JOIN familie f on f.id_familie = fc.id_familie
+        WHERE lower(f.nume_familie) = lower(v_nume)
+        ORDER BY data_mutare desc
+    )
+    SELECT * INTO v_id_strada, v_numar_casa, v_data
+    FROM aux
+    WHERE ROWNUM = 1;
+
+    --verific daca in ultima lor casa nu cumva sta deja altcineva(lucru cauzat de eroare la validarea datelor)
+    --gasesc ultima data la care s-a mutat cineva in acea casa
+    WITH aux as(
+        SELECT data_mutare
+        FROM familie_casa
+        WHERE id_strada = v_id_strada AND numar = v_numar_casa
+        ORDER BY data_mutare desc)
+    SELECT * INTO v_data2
+    FROM aux
+    WHERE ROWNUM = 1;
+    
+    IF v_data < v_data2 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'O familie deja sta la aceasta casa');
+    END IF;
+    
+    SELECT nume_strada INTO v_nume_strada
+    FROM strada
+    WHERE id_strada = v_id_strada;
+    
+    return v_nume_strada;
+    
+    EXCEPTION
+        WHEN EX_FAMILIE_NEGASITA THEN
+            DBMS_OUTPUT.PUT_LINE('Nu a fost gasita o familie cu acest nume');
+            return -1;
+        WHEN EX_CASA_OCUPATA THEN
+            DBMS_OUTPUT.PUT_LINE('A aparut o eroare la data casei');
+            return -1;
+END f_cerinta8;
+/
+
+BEGIN
+    DBMS_output.put_line(f_cerinta8('Popescu')); --exemplu care produce eroare
+    DBMS_output.put_line(f_cerinta8('Constantinescu')); -- exemplu care merge bine
+    DBMS_output.put_line(f_cerinta8('haha')); --exemplu in care nu exista familia
+END;
+/
+
+
+Cerinta 9
+SELECT * FROM USER_TABLES;
+--Numele institutiilor de invatamant pe care le au absolvit membrii familiei cu cel mai mare contract la o companie data
+
+CREATE OR REPLACE PROCEDURE procedura_cerinta_9
+        (v_cumparator VARCHAR)
+    IS
+        TYPE info is RECORD
+            (nume_institutie institutie_invatamant.nume%type,
+            prenume locuitor.prenume%type,
+            nume familie.nume_familie%type);
+        TYPE tablou_indexat IS TABLE OF info INDEX BY pls_integer;
+        t tablou_indexat;
+		v_nume_cumparator cumparator.nume%type;
+    BEGIN
+
+	--verificam daca exista un singur cumparator cu numele asta
+    SELECT nume INTO v_nume_cumparator
+    FROM cumparator
+	WHERE lower(nume) = lower(v_cumparator);
+
+        
+    SELECT ii.nume, l.prenume, f.nume_familie BULK COLLECT INTO t
+    FROM CUMPARATOR c JOIN CONTRACT_CUMPARARE ccu ON c.id_cumparator = ccu.id_cumparator
+        JOIN FAMILIE f ON f.id_familie = ccu.id_familie JOIN locuitor l ON l.id_familie = f.id_familie
+        JOIN ciclu_invatamant ci ON ci.id_locuitor = l.id_locuitor JOIN institutie_invatamant ii ON ii.id_forma = ci.id_forma
+    WHERE lower(c.nume) = lower(v_cumparator)
+        AND ccu.suma = (SELECT max(suma) FROM contract_cumparare ccu2 WHERE ccu2.id_familie = l.id_familie AND ccu2.id_cumparator = c.id_cumparator);
+    
+    if(t.count > 0) THEN
+        FOR i IN t.first..t.last LOOP
+            DBMS_OUTPUT.PUT_LINE(t(i).nume || ' ' || t(i).prenume || ' a studiat la ' || t(i).nume_institutie);
+        END LOOP;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Nu a fost gasita vreo institutie de invatamant');
+    END IF;
+    
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+        	DBMS_OUTPUT.PUT_LINE('Nu exista acest cumparator');
+		WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('Acest cumparator apare de mai multe ori');
+    
+    END procedura_cerinta_9;
+/
+
+BEGIN
+    procedura_cerinta_9('Global Solutions'); 
+	procedura_cerinta_9('Global Market');
+	procedura_cerinta_9('123 Industries');
+END;
+/
+ROLLBACK;
+
+
+Cerinta 10
+
+--Creati un trigger care permite insert in tabela doar in zilele de luni si miercuri,
+--update doar vinerea si delete doar in weekend
+
+
+CREATE OR REPLACE TRIGGER trigger_cerinta_10
+BEFORE INSERT OR UPDATE OR DELETE ON PRIMARIE_EVENIMENT
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(lower(to_char(sysdate,'DAY')));
+	IF (INSERTING AND (trim(lower(to_char(sysdate, 'DAY'))) != 'monday' AND trim(lower(to_char(sysdate, 'DAY'))) != 'tuesday')) THEN
+    	RAISE_APPLICATION_ERROR(-20001, 'nu puteti introduce valori in zilele de luni sau miercuri');
+	ELSIF (UPDATING AND (trim(lower(to_char(sysdate, 'DAY'))) != 'friday')) THEN
+        RAISE_APPLICATION_ERROR(-2001, 'nu puteti face update decat vinerea');
+	ELSIF (DELETING AND (trim(lower(to_char(sysdate, 'DAY'))) != 'saturday' AND trim(lower(to_char(sysdate, 'DAY'))) != 'sunday')) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'nu puteti face delete decat in week-end');
+	END IF;
+END;
+/
+
+--SELECT * FROM primarie_eveniment; -- testata pentru luni/miercuri-> merge
+INSERT INTO PRIMARIE_EVENIMENT
+VALUES(1, 1, '12-Jan-2023');
+SELECT * FROM PRIMARIE_EVENIMENT;
+
+rollback;
+
+
+
+Cerinta 11
+
+--Fac un declansator prin care nu las ca valoarea unui contract sa fie marita cu mai mult de 50% din valoarea acestuia
+--sau sa scada cu mai mult de 2500 RON sub cat era inainte
+CREATE OR REPLACE TRIGGER trigger_cerinta_11
+    BEFORE UPDATE ON contract_cumparare
+    FOR EACH ROW
+DECLARE
+    v_exceptie EXCEPTION;
+BEGIN
+    IF (:OLD.suma + :OLD.suma*0.5) < :NEW.suma AND (:NEW.suma - :OLD.suma > 0) THEN
+        RAISE v_exceptie;
+	ELSIF ((:NEW.suma - :OLD.suma) < -2500) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Suma a scazut cu mai mult de 2500 lei');
+    END IF;
+EXCEPTION
+    WHEN v_exceptie THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Suma noua a crescut cu mai mult de 50%');
+    DBMS_OUTPUT.PUT_LINE('Suma a fost schimbata');
+END;
+/
+
+UPDATE contract_cumparare --suma creste cu mai mult de 50% -> eroare
+SET suma = suma + suma*0.5 + 1000
+WHERE id_primarie = 1;
+ROLLBACK;
+
+UPDATE contract_cumparare --scade cu mai mult de 2500 lei
+SET suma = suma - 2530
+WHERE id_primarie = 1;
+ROLLBACK;
+
+UPDATE contract_cumparare --merge bine
+SET suma = suma + suma*0.1
+WHERE id_primarie = 1;
+ROLLBACK;
+
+Cerinta 12
+
+--Trigger pe LDD care tine minte istoricul actiunilor
+
+CREATE TABLE istoric_cerinta_12
+    (utilizator VARCHAR2(30),
+    actiune varchar2(50),
+    data DATE);
+    
+CREATE OR REPLACE TRIGGER trigger_cerinta_12
+    BEFORE CREATE OR DROP OR ALTER ON SCHEMA
+BEGIN
+    IF lower(SYS.SYSEVENT) = lower('create') THEN
+        INSERT INTO ISTORIC_CERINTA_12
+        VALUES(SYS.LOGIN_USER, 'Created table ' || SYS.DICTIONARY_OBJ_NAME, SYSDATE);
+    ELSIF lower(SYS.SYSEVENT) = lower('alter') THEN
+        INSERT INTO ISTORIC_CERINTA_12
+        VALUES(SYS.LOGIN_USER, 'Altered table ' || SYS.DICTIONARY_OBJ_NAME, SYSDATE);
+    ELSIF lower(SYS.SYSEVENT) = lower('drop') THEN
+        INSERT INTO ISTORIC_CERINTA_12
+        VALUES(SYS.LOGIN_USER, 'Dropped table ' || SYS.DICTIONARY_OBJ_NAME, SYSDATE);
+    END IF;
+END;
+/
+
+
+CREATE TABLE test1(atribut varchar2(30));
+CREATE TABLE test2(atribut varchar2(30));
+DROP TABLE test1;
+DROP TABLE test2;
+SELECT * FROM istoric_cerinta_12
+
+
+

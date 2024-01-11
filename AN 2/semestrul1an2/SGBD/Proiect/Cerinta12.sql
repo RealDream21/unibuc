@@ -20,7 +20,7 @@ BEGIN
     END IF;
 END;
 /
-SET SERVEROUTPUT ON;
+
 
 CREATE TABLE test1(atribut varchar2(30));
 CREATE TABLE test2(atribut varchar2(30));
