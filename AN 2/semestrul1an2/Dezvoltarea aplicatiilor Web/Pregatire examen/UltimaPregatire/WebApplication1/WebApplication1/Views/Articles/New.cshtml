@@ -1,0 +1,17 @@
+﻿@model WebApplication1.Models.Article
+
+<h2>Articol nou</h2>
+
+<form method="post" action="/Articles/New">
+    @Html.Label("Title", "Titlu articol")
+    @Html.TextBox("Title", null, new{@class = "form-control"})
+    <br />
+
+    @Html.Label("Content", "Continut articol")
+    @Html.TextBox("Content", null, new{@class="form-control"})
+
+    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categ,"Value","Text"), "Selectati categoria", new{@class = "form-control"})
+
+
+    <button type ="submit">Trimite articol</button>
+</form>
