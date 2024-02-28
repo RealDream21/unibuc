@@ -109,7 +109,7 @@ instance Applicative (Reader env) where
   mf <*> ma = do
     f <- mf
     a <- ma
-    return (f a)       
+    return (f a)
 
 instance Functor (Reader env) where              
   fmap f ma = pure f <*> ma    
@@ -119,7 +119,7 @@ mshowPersonN = Reader(\p -> "NAME: " ++ name p)
 mshowPersonA ::  Reader Person String
 mshowPersonA = Reader(\p -> "AGE:" ++ show(age p)) 
 mshowPerson ::  Reader Person String
-mshowPerson = do
+mshowPerson = doL
         n <- mshowPersonN
         a <- mshowPersonA 
         return $ "(" ++ n ++ ", " ++ a ++ ")" 
