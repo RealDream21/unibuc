@@ -1,0 +1,14 @@
+razvan.vasile@yahoo.com
+
+Backlog:
+	-> descrierea proiectului
+	-> user stories
+	-> diagrame
+		-> flowchart
+		-> D.B.
+		-> GANTT
+
+Bug reporting:
+	-Jira
+
+Notatie ungara
