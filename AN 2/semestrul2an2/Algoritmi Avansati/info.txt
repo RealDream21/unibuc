@@ -1,0 +1,9 @@
+Saptamanile 1-7:
+2 Teme din :
+	Algoritmi de aproximare
+	Algoritmi genetici
+
+Saptamanile 8-14: -> Geometrie computationala
+Teme pe cms.fmi.unibuc.ro
+3 Teme din:
+	
