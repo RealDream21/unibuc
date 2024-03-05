@@ -52,6 +52,17 @@ def breadthFirst(gr, nsol = 2):
                 return
         coada += gr.succesori(nodCurent)
 
+def breadthFirstModificat(gr, nsol = 2):
+    coada = [NodArbore(gr.start)]
+    while coada:
+        nodCurent = coada.pop(0)
+        coada += gr.succesori(nodCurent)
+        for nod in gr.succesori(nodCurent):
+            if gr.scop(nod.informatie):
+                print(repr(nod))
+                nsol -= 1
+                if nsol == 0:
+                    return
 
 currentSol = 0
 def depthFirstRec(gr, nodCurent, nsol):
@@ -106,6 +117,10 @@ print("____RECURSIV___")
 depthFirstRecursiv(gr, nsol=3)
 print("____NERECURSIV___")
 depthFirstNerecursiv(gr, nsol=3)
+print("___BREATHFIRST_nemodificat___")
+breadthFirst(gr, nsol=3)
+print("___BREATHFIRST_modificat___")
+breadthFirstModificat(gr, nsol=3)
 
 
 #TEMA DEPTH FIRST
