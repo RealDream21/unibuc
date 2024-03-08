@@ -1,0 +1,26 @@
+Step 2:
+Which management ports are available?
+-Cel din stanga, cred ca scrie e eHWIC 1. Mai sunt si cf1 si cf0
+Which LAN and WAN interfaces are available on the East router and how many there are?
+
+How many physical interfaces are listed?
+-4
+
+c. What is the default badnwith of this interface?
+-1000000 Kbit. Pentru a doua interfata este 1544 Kbit
+
+
+Step3:
+a. eHWIC 1 -> un singur expansion slot
+b. 5 sloturi
+
+Part 2:
+
+Step1:
+a.1)HWIC-4ESW deoarece are 4 switch ports
+  2)4
+b. PT-SWITCH-NM-1FGE
+
+Step2:
+d.GigabitEthernet5/1
+e.

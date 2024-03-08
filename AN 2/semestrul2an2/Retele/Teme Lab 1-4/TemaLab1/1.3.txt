@@ -1,0 +1,22 @@
+Step 1:
+List the intermediary device categores
+-Routers, Switches, Hubs, Wireless Devices, WAN Emulation
+
+How many icons in the topology represent endpoint devices?
+15
+Without counting the two clouds, how many icons in the topology represent intermediary devices?
+11
+How many end devices are not desktop computers?
+8
+How many different types of media connections are used in this network topology?
+3(wifi, cablu la switch si cablu la router)
+
+Step 2:
+a. LAN = local area network
+   WAN = wide area network
+LAN este folosit in spatiu restrans, intre un numar redus de Host-uri care sunt apropiate fizic pe cand WAN are mai multe Host-uri si distanta de operare mai mare.
+b. 2 WAN-uri: Intranet si Internet
+c. 3 LANuri, delimitate de "cutiile": Central, Home Office si Branch
+d. Internetul este un fel de WAN intre foarte multe retele mici LAN
+e. Prin cablu, prin wifi, sau date mobile
+f. Presupun ca tot prin cablu/wifi
