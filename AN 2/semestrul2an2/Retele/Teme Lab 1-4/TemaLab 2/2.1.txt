@@ -1,0 +1,41 @@
+Part 1:
+Step 2:
+b. 9600 bits per second
+c. S1>
+
+Step 3:
+a. connect
+b. telnet terminal traceroute
+c. te? -> telnet terminal
+
+Part 2:
+Step 1:
+a. Turn on privileged commands
+b. Imi completeaza cu enable
+la te<Tab> nu stie pentru ca sunt mai multe comenzi care incep cu te
+c. se schimba din S1> in S1#
+d. clear, clock, configure, connect, copy -> 5 comenzi care incep cu c
+
+Step2:
+a. Configuring from terminal, memory, or network [terminal]?
+b. S1(config)#
+
+Part 3:
+Step 1:
+a. Informatia care apare este: ora:minut:secunda, impreuna cu ziua luna si anul 
+b. incomplete command
+c. set Set the time and date
+d. hh:mm:ss  Current Time
+
+Step 2:
+b.
+cl<tab>
+-nu se intampla nimic
+clock
+-incomplete command
+clock set 25:00:00
+	  ^
+-% Invalid input detected at '^' marker.
+clock set 15:00:00 32
+                   ^
+% Invalid input detected at '^' marker.

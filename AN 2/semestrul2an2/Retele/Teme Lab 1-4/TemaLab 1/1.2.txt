@@ -1,0 +1,7 @@
+Part 1:
+-Routers, Switches, Hubs, Wireless Devices, Security, WAN Emulation
+
+Part 2:
+d. Acces_point, WebServer, ALS1
+e. Laptop_1
+f. Laptop_1 e pe masa

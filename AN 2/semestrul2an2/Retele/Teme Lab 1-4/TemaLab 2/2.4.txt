@@ -1,0 +1,32 @@
+Part 1:
+Step 2:
+b.
+1) 24
+2) 2
+3) 0 - 15
+4) show startup-config 
+5) Pentru ca inca nu am salvat fisierul in NVRAM
+
+Part 2:
+Step 2:
+pentru a cere parola cand vrem sa intram in terminal
+
+Step 7:
+b.$1$mERr$zGzizFNE3cs.WdsDXHNLZ0
+c. deoarece este criptata
+
+Part 3:
+Step 1:
+1.Banner-ul este afisat cand cineva vrea sa intre la switch prin consola
+2.Pentru a transmite diferite mesaje: de exemplu mentenante si sedinte IT
+
+Part 4:
+
+Step 2: 
+copy run start
+
+Step 3:
+Da, sunt al fel
+
+
+

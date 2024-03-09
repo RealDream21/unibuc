@@ -1,0 +1,15 @@
+Part 1:
+Step 5:
+copy running-config startup-config
+
+Part 2:
+Step 2:
+nu, pentru ca inca nu am configurat switch-urile
+
+Part 3:
+Step 1: pentru a te conecta la un switch trebuie sa-i asignezi o adrsa ip
+de ce no shutdown?
+-pentru a activa interfata
+
+Step 4:
+copy running-config startup-config

@@ -1,0 +1,5 @@
+Tabelul de completat:
+F 0/1: S1 Status(UP) | S1 Protocol(UP) | S2 Status(UP) | S2 Protocol(UP)
+F 0/6: S1 Status(UP) | S1 Protocol(UP) | S2 Status(DOWN) | S2 Protocol(DOWN)
+F 0/18: S1 Status(DOWN) | S1 Protocol(DOWN) | S2 Status(UP) | S2 Protocol(UP)
+VLAN 1: S1 Status(UP) | S1 Protocol(UP) | S2 Status(UP) | S2 Protocol(UP)
