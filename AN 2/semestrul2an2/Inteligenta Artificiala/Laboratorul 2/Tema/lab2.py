@@ -28,21 +28,22 @@ class NodArbore:
         for i, actiune in enumerate(lista_drumuri):
             print(actiune)
             if i == len(lista_drumuri) - 1:
-                fisier.writelines(f"(Stanga) 0 canibali 0 misionari ..... (Dreapta:<barca>) {canibaliTotali} canibali {misionariTotali} misionari\n")
+                fisier.write(f"(Stanga) 0 canibali 0 misionari ..... (Dreapta:<barca>) {canibaliTotali} canibali {misionariTotali} misionari\n")
                 break
             if actiune[2] == 1:
                 #to_write = f"Stanga:<barca> {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari"
-                fisier.write(f"Stanga:<barca> {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari")
+                fisier.write(f"(Stanga:<barca>) {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari\n")
                 fisier.write("\n")
-                fisier.write(f">>> Barca s-a deplasat de la malul stang la malul drept cu {actiune[0] - lista_drumuri[i + 1][0]} canibali si {actiune[1] - lista_drumuri[i + 1][1]} misionari")
+                fisier.write(f">>> Barca s-a deplasat de la malul stang la malul drept cu {actiune[0] - lista_drumuri[i + 1][0]} canibali si {actiune[1] - lista_drumuri[i + 1][1]} misionari\n")
                 nrCanibaliInsula -= actiune[0] - lista_drumuri[i + 1][0]
                 nrMisionariInsula -= actiune[1] - lista_drumuri[i + 1][1]
             else:
-                fisier.write(f"(Stanga) {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta:<barca>) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari")
+                fisier.write(f"(Stanga) {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta:<barca>) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari\n")
                 fisier.write("\n")
-                fisier.write(f">>> Barca s-a deplasat de la malul drept la malul stang cu {lista_drumuri[i + 1][0] - actiune[0]} canibali si {lista_drumuri[i + 1][1] - actiune[1]} misionari")
+                fisier.write(f">>> Barca s-a deplasat de la malul drept la malul stang cu {lista_drumuri[i + 1][0] - actiune[0]} canibali si {lista_drumuri[i + 1][1] - actiune[1]} misionari\n")
                 nrCanibaliInsula += lista_drumuri[i + 1][0] - actiune[0]
                 nrMisionariInsula += lista_drumuri[i + 1][1] - actiune[1]
+        fisier.write("\n\n\n\n\n\n\n\n\n\n")
         return
 
     
