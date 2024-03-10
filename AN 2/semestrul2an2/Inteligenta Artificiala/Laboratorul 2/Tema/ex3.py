@@ -26,12 +26,10 @@ class NodArbore:
         nrCanibaliInsula = canibaliTotali
         nrMisionariInsula = misionariTotali
         for i, actiune in enumerate(lista_drumuri):
-            print(actiune)
             if i == len(lista_drumuri) - 1:
                 fisier.write(f"(Stanga) 0 canibali 0 misionari ..... (Dreapta:<barca>) {canibaliTotali} canibali {misionariTotali} misionari\n")
                 break
             if actiune[2] == 1:
-                #to_write = f"Stanga:<barca> {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari"
                 fisier.write(f"(Stanga:<barca>) {nrCanibaliInsula} canibali {nrMisionariInsula} misionari ..... (Dreapta) {canibaliTotali - nrCanibaliInsula} canibali {misionariTotali - nrMisionariInsula} misionari\n")
                 fisier.write("\n")
                 fisier.write(f">>> Barca s-a deplasat de la malul stang la malul drept cu {actiune[0] - lista_drumuri[i + 1][0]} canibali si {actiune[1] - lista_drumuri[i + 1][1]} misionari\n")
@@ -63,44 +61,45 @@ class Graf:
     
     #mal curent = malul cu barca
     def succesori(self, nod):
-        def testConditie(m, c):
-            return m == 0 or m >= 0
+        def testConditie(m,c):
+            return m==0 or m>=c
 
-        lSuccesori = []
-        if nod.informatie[2] == 1:
-            misMalCurent = nod.informatie[0]
-            canMalCurent = nod.informatie[1]
-            misMalOpus = Graf.N - nod.informatie[0]
-            canMalOpus = Graf.N - nod.informatie[1]
+        lSuccesori=[]
+        if nod.informatie[2]==1:
+            misMalCurent=nod.informatie[0]
+            canMalCurent=nod.informatie[1]
+            misMalOpus=Graf.N-nod.informatie[0]
+            canMalOpus=Graf.N-nod.informatie[1]
         else:
-            misMalOpus = nod.informatie[0]
-            canMalOpus = nod.informatie[1]
-            misMalCurent = Graf.N - nod.informatie[0]
-            canMalCurent = Graf.N - nod.informatie[1]
-        maxMisBarca = min(misMalCurent, Graf.M)
-        for mb in range(maxMisBarca + 1):
-            if mb == 0:
-                minCanBarca = 1
-                maxCanBarca = min(canMalCurent, Graf.M)
+            misMalOpus=nod.informatie[0]
+            canMalOpus=nod.informatie[1]
+            misMalCurent=Graf.N-nod.informatie[0]
+            canMalCurent=Graf.N-nod.informatie[1]
+        maxMisBarca=min(misMalCurent, Graf.M)
+        for mb in range(maxMisBarca+1):
+            if mb==0:
+                minCanBarca=1
+                maxCanBarca=min(canMalCurent, Graf.M)
             else:
-                minCanBarca = 0
-                maxCanBarca = min(canMalCurent, Graf.M - mb, mb)
-            for cb in range(minCanBarca, maxCanBarca + 1):
-                misMalCurentNou = misMalCurent - mb
-                canMalCurentNou = canMalCurent - cb
-                misMalOpusNou = misMalOpus + mb
-                canMalOpusNou = canMalOpus + cb
-                if not testConditie(misMalCurentNou, canMalCurentNou):
+                minCanBarca=0
+                maxCanBarca=min(canMalCurent, Graf.M-mb, mb )
+            for cb in range(minCanBarca,maxCanBarca + 1):
+                misMalCurentNou=misMalCurent-mb
+                canMalCurentNou=canMalCurent-cb
+                misMalOpusNou=misMalOpus+mb
+                canMalOpusNou=canMalOpus+cb
+                if not testConditie(misMalCurentNou,canMalCurentNou):
                     continue
-                if not testConditie(misMalOpusNou, canMalOpusNou):
+                if not testConditie(misMalOpusNou,canMalOpusNou):
                     continue
-                if nod.informatie[2] == 1:
-                    infoSuccesor = (misMalCurentNou, canMalCurentNou, 0)
+                if nod.informatie[2]==1:
+                    infoSuccesor=(misMalCurentNou,canMalCurentNou,0)
                 else:
-                    infoSuccesor = (misMalOpus, canMalOpusNou, 1)
+                    infoSuccesor = (misMalOpusNou, canMalOpusNou, 1)
 
-                if not nod.inDrum(infoSuccesor):
-                    lSuccesori.append(NodArbore(infoSuccesor, nod))
+
+                if  not nod.inDrum(infoSuccesor):
+                    lSuccesori.append(NodArbore(infoSuccesor,nod))
         return lSuccesori
     
 def breadthFirst(gr, nsol = 2):
