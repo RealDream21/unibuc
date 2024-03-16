@@ -1,3 +1,6 @@
+import time
+
+
 class NodArbore:
     def __init__(self, informatie, g = 0, h = 0, parinte = None):
         self.informatie = informatie
@@ -83,6 +86,9 @@ h=[0,1,6,2,0,3,0]
 
 gr = Graf(m, start, scopuri, h)
 breadthFirst(gr, nsol=6)
+
+
+
 
 
 #TEMA DEPTH FIRSTx
