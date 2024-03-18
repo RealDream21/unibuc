@@ -29,7 +29,8 @@ class NodArbore:
         return self.f == other.f
     def __lt__(self, other):
         return self.f < other.f or (self.f == other.f and self.g > other.g)
-    
+    def __gt__(self, other):
+        return self.f > other.f or (self.f == other.f and self.g > other.g)
     
     def __str__(self):
         return f"({str(self.informatie)} g: {self.g} f:{self.f}"
@@ -57,6 +58,24 @@ class Graf:
                 lSuccesori.append(NodArbore(infoSuccesor, nod.g + self.matr[nod.informatie][infoSuccesor], self.estimeaza_h(infoSuccesor), nod))
         return lSuccesori
 
+
+def bin_search(listaNoduri, nodNou, ls, ld):
+   if len(listaNoduri)==0:
+       return 0
+   if ls==ld:
+       return ls
+   else:
+       mij=(ls+ld)//2
+       if nodNou < listaNoduri[mij]:
+           return bin_search(listaNoduri, nodNou, ls, mij)
+       elif nodNou > listaNoduri[mij]:
+           return bin_search(listaNoduri, nodNou, mij+1, ld)
+       else:
+           if nodNou < listaNoduri[mij]:
+               return bin_search(listaNoduri, nodNou, mij + 1, ld)
+           else:
+               return bin_search(listaNoduri, nodNou, ls, mij)
+
 def breadthFirst(gr, nsol = 2):
     coada = [NodArbore(gr.start)]
     while coada:
@@ -66,8 +85,9 @@ def breadthFirst(gr, nsol = 2):
             nsol -= 1
             if nsol == 0:
                 return
-        coada += gr.succesori(nodCurent)
-        coada.sort()
+        for succ in gr.succesori(nodCurent):
+            indexInserare = bin_search(coada, succ, 0, len(coada))
+            coada.insert(indexInserare, succ)
 
 m = [
 [0, 3, 5, 10, 0, 0, 100],
@@ -83,9 +103,8 @@ scopuri = [4,6]
 h=[0,1,6,2,0,3,0]
 
 
-
 gr = Graf(m, start, scopuri, h)
-breadthFirst(gr, nsol=6)
+breadthFirst(gr, nsol=10)
 
 
 

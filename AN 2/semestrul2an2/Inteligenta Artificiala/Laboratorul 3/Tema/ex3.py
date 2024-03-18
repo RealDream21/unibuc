@@ -1,5 +1,7 @@
+import queue
 import time
-
+import cProfile
+import profile
 
 class NodArbore:
     def __init__(self, informatie, g = 0, h = 0, parinte = None):
@@ -58,16 +60,17 @@ class Graf:
         return lSuccesori
 
 def breadthFirst(gr, nsol = 2):
-    coada = [NodArbore(gr.start)]
+    coada = queue.PriorityQueue()
+    coada.put(NodArbore(gr.start))
     while coada:
-        nodCurent = coada.pop(0)
+        nodCurent = coada.get()
         if gr.scop(nodCurent.informatie):
             print(repr(nodCurent))
             nsol -= 1
             if nsol == 0:
                 return
-        coada += gr.succesori(nodCurent)
-        coada.sort()
+        for succ in gr.succesori(nodCurent):
+            coada.put(succ)
 
 m = [
 [0, 3, 5, 10, 0, 0, 100],
@@ -82,13 +85,6 @@ start = 0
 scopuri = [4,6]
 h=[0,1,6,2,0,3,0]
 
-
-
 gr = Graf(m, start, scopuri, h)
-breadthFirst(gr, nsol=6)
-
-
-
-
-
-#TEMA DEPTH FIRSTx
+breadthFirst(gr, nsol=10)
+#ATAT ALGORITMUL CU COADA DE PRIORITATI CAT SI FARA DA TIMPUL 0, CRED CA ESTE PREA MIC EXEMPLUL :(
