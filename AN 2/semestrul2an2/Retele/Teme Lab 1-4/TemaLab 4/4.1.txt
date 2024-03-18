@@ -1,0 +1,38 @@
+Part 1. Step 1. b)
+Which management ports are available?
+Raspuns: AUX, USB si Consola
+
+Part 1. Step 2. a)
+Which LAN and WAN interfaces are available on the East router and how many are there?
+Raspuns: 2 LAN (Cele 2 GIGABIT) si 2 WAN (Cele 2 SERIAL)
+
+Part 1. Step 2. b)
+How many physical interfaces are listed?
+Raspuns: 4 interfete fizice
+
+Part 1. Step 2. c)
+What is the default bandwidth of this interface?(pentru gigabitethernet 0/0)
+Raspuns: 1000000 Kbit
+What is the default bandwidth of this interface?(pentru serial 0/0/0)
+Raspuns: 1544 Kbit
+
+Part 1. Step 3)
+How many expansion slots are available to add additional modules to the East router?
+Raspuns: 1 slot
+Click Switch2. How many expansion slots are available?
+Raspuns: 5 sloturi
+
+Part 2. Step 1. a)
+	1)Which module can you use to connect the three PCs to the East router?
+	Raspuns: HWICH-4ESW
+	2)How many hosts can you connect to the router using this module?
+	Raspuns: 4 Host-uri
+b)
+Which module can you insert to provide a Gigabit optical connection to Switch3?
+Raspuns: PT-SWITCH-NM-1FGE
+
+Part 2. Step 2. c)
+Into which slot was it inserted?
+Raspuns: GigabitEthernet5/1
+
+

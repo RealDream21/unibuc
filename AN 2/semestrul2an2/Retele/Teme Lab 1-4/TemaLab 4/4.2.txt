@@ -1,0 +1,15 @@
+Part 5. Step 1. c)
+How many wires are connected to the switch in the blue rack?
+Raspuns: 2 fire
+
+Part 5. Step 2. a)
+What is located on the table to the right of the blue rack?
+Raspuns: Un calculator denumit Configuration Terminal
+
+Part 5. Step 3. a)
+Why are there two orange cables connected to each device?
+Cablul de fibra vine in 2 parti pentru transmitere, respectiv primire
+
+Part 5. Step 4. a)
+Why is there no rack to hold the equipment?
+Raspuns: Deoarece nu avem ce echipament sa punem intr-un rack(de ex nu avem switch-uri)
