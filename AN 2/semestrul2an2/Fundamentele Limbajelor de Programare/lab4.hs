@@ -317,6 +317,7 @@ data Assn = BEX Bool | LEX AExp AExp | NotEX Assn | AndEX Assn Assn | DisjInfX [
 
 -- value of an assertion relative to a state, similar to valueb
 valueassn :: Assn -> [(String, Int)] -> Bool
+valueassn _ [] = True
 valueassn (BEX val) state = val
 valueassn (LEX expr1 expr2) state = (value expr1 state) <= (value expr2 state)
 valueassn (NotEX ass) state = not (valueassn ass state) 
@@ -363,16 +364,30 @@ data Stmt = Skip | AtrE String AExp | Seq Stmt Stmt | IfE BExp Stmt Stmt | While
     deriving Show
 data BExp = BE Bool | LE AExp AExp | NotE BExp | AndE BExp BExp
     deriving Show
+data Assn = BEX Bool | LEX AExp AExp | NotEX Assn | AndEX Assn Assn | DisjInfX [Assn]
+convassn :: BExp -> Assn
 -}
+--b ∧ wp(c, Pk ).
+--fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+--substaexp :: AExp -> String -> AExp -> AExp
+--valueassn :: Assn -> [(String, Int)] -> Bool
+--convassn :: BExp -> Assn
+--substassn :: Assn -> String -> AExp -> Assn
+
+pk = (BE false) : (\b -> convassn b) : pk
+
+
 wp :: Stmt -> Assn -> Assn
 wp skip b = b
 wp (AtrE str aexp) b = substassn b str aexp
 wp (Seq stmt1 stmt2) b = wp stmt1 (wp stmt2 b)
 wp (IfE bexp stmt1 stmt2) b =
-    let bAssn = convassn bexp
-        wpStmt1 = wp stmt1 b
-        wpStmt2 = wp stmt2 b
-    in AndEX (NotEX (AndEX bAssn wpStmt1)) (NotEX (AndEX (NotEX bAssn) wpStmt2))
+    let wpStmt1 = wp stmt1 b
+        wpStmt2 = wp stmt2 b --b e de tip Assn
+    in orx (AndEX (convassn bexp) wpStmt1) (AndEX (NotEX (convassn bexp)) wpStmt2)
+wp (WhileE bexp stmt1) b = undefined
+
+--AndEX (NotEX (AndEX bAssn wpStmt1)) (NotEX (AndEX (NotEX bAssn) wpStmt2))
 
 test1 = valueassn (wp prog (LEX (Qid "s") (Nu 5051))) [] -- should return true
 
