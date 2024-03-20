@@ -1,4 +1,6 @@
 Part 1:
+Step3:
+Iesim din terminal si incercam sa intram din nou => ne cere parola. O alta alternativa ar fi sa utilizam comanda show running-config
 Step 5:
 copy running-config startup-config
 
