@@ -23,4 +23,3 @@ b. PT-SWITCH-NM-1FGE
 
 Step2:
 d.GigabitEthernet5/1
-e.
