@@ -1,5 +1,5 @@
 import copy
-import os
+
 
 class NodArbore:
     def __init__(self, informatie, g = 0, h = 0, parinte = None):
@@ -63,25 +63,7 @@ class Graf:
                             h += 1 #aici vom pune costul blocului care trebuie mutat
             if minh > h:
                 minh = h
-            return minh
-        if euristica == "euristica costuri":
-            minh = float('inf')
-            for scop in self.scopuri:
-                h = 0 
-                for iStiva, stiva in enumerate(scop):
-                    for iBloc, bloc in enumerate(stiva):
-                        try:
-                            if infoNod[iStiva][iBloc] != bloc:
-                                h += ord(bloc) - ord('a') + 1 #aici vom pune costul blocului care trebuie mutat
-                        except:
-                            h += ord(bloc) - ord('a') + 1 #aici vom pune costul blocului care trebuie mutat
-            if minh > h:
-                minh = h
-            return minh
-        if euristica == "euristica inadmisibila":
-            return 1000
-            
-
+        return minh
 
     def succesori(self, nod, euristica):
         lSuccesori = []
@@ -96,12 +78,7 @@ class Graf:
                 infoSuccesor = copy.deepcopy(copieStive)
                 infoSuccesor[j].append(bloc)
             if not nod.inDrum(infoSuccesor):
-                if euristica == "euristica inadmisibila":
-                    lSuccesori.append(NodArbore(infoSuccesor, nod.g + 1000, self.estimeaza_h(infoSuccesor, euristica), nod))
-                elif euristica == "euristica costuri":
-                    lSuccesori.append(NodArbore(infoSuccesor, nod.g + (ord(bloc) - ord('a') + 1), self.estimeaza_h(infoSuccesor, euristica), nod))
-                else:
-                    lSuccesori.append(NodArbore(infoSuccesor, nod.g + 1, self.estimeaza_h(infoSuccesor, euristica), nod)) # in loc de 1 punem ord() - ord() pentru euristica de costuri
+                lSuccesori.append(NodArbore(infoSuccesor, nod.g + 1, self.estimeaza_h(infoSuccesor, euristica), nod)) # in loc de 1 punem ord() - ord() pentru euristica de costuri
         return lSuccesori
     
 
@@ -151,16 +128,15 @@ def calculeazaStive(sir):
     return [sirStiva.strip().split() if sirStiva != "#" else [] for sirStiva in sir.strip().split('\n')]
 
 
-here = os.path.dirname(os.path.abspath(__file__))
-filename = os.path.join(here, 'input.txt')
-f=open(filename, "r")
-
-sirStart, sirScopuri = f.read().strip().split("=========")
+f=open("input.txt", "r")
+sirStart, sirScopuri = f.read().split("=========")
 start = calculeazaStive(sirStart)
 scopuri = [calculeazaStive(sirScop) for sirScop in sirScopuri.split("---")]
 
+print(scopuri)
+
 gr = Graf(start, scopuri)
-aStar(gr, "euristica inadmisibila")
+aStar(gr, "euristica mutari")
 
 #Tema:
 #LAB 3 EX 5, LAB 4 EX 1, 2 + euristica costuri + euristica neadmisibila
