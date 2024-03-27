@@ -160,7 +160,7 @@ start = calculeazaStive(sirStart)
 scopuri = [calculeazaStive(sirScop) for sirScop in sirScopuri.split("---")]
 
 gr = Graf(start, scopuri)
-aStar(gr, "euristica inadmisibila")
+aStar(gr, "euristica banala")
 
 #Tema:
 #LAB 3 EX 5, LAB 4 EX 1, 2 + euristica costuri + euristica neadmisibila
