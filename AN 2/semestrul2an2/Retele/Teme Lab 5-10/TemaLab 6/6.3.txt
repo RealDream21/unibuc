@@ -1,0 +1,80 @@
+Part 1:
+Step 2. e)
+Why are ND PDUs present?
+Raspuns: Deoarece pentru a face ping trebuie ca PCA1 sa stie adresa MAC a PCA2. ND-ul incearca astfel sa afle adrsa MAC a PCA2
+
+Step 2. f)
+Under the OSI Model tab, what is the Message Type listed for ICMPv6?
+Raspuns: 128
+
+Step 3. g)
+What changed in the Layer 3 addressing?
+Raspuns: Message type acum este 134
+What Layer 2 addresses are shown?
+Raspuns: Adresa sursa(0001:961D:6301) si destinatia(3333:0000:0001)
+
+Step 3. h)
+Is there any difference between the In Layers and Out Layers for Layer 2?
+Raspuns: nu
+
+Step 3. i)
+Ethernet II DEST ADDR: 3333:0000:0001
+Ethernet II SRC ADDR: 0001:961D:6301
+IPv6 SRC IP: FE80::1
+IPv6 DSET IP: FF02::1
+
+Step 3. j)
+Why are there no Out Layers?
+Raspuns: la mine sunt out layers
+
+Step 3. l)
+Does PCA1 now have all the necessary information to communicate with PCA2?
+Raspuns: da, acum stim si adresa MAC
+
+What is the ICMPv6 Echo Message Type?
+Raspuns: 129
+
+Step 3. o)
+Why were there no NDP events?
+Raspuns: Deoarce PCA1 deja stie adresa MAC al lui PCA2
+
+
+
+Part 2:
+Step 1. f)
+What address is being used for the Src IP in the inbound PDU?
+Raspuns: FE80::201:42FF:FE7E:E8ED
+
+Step 1. g)
+What MAC address is being used for the destination MAC?
+Raspuns: 0001.961D.6301
+
+Step 1. i)
+What is missing in the outbound Layer 2 information?
+Raspuns: Adresa MAC
+
+Step 1. m)
+Were there any NDP events?
+Raspuns: nu
+
+Step 1. n)
+What does the destination MAC address corespond to?
+Raspuns: adresa lui PCB1
+
+Why is PCB1 using the router interface MAC address to make its ICMP PDUs?
+Raspuns: pentru ca destinatia este pe alta retea
+
+Step 2. b)
+How many addresses are listed?
+Raspuns: 5 adrese
+
+Step 2. d)
+Are there entries for PCA2?
+Raspuns: da
+
+Reflection questions:
+1. Cand nu stie adresa MAC a destinatiei
+2. router-ul tine minte adresele MAC ale dispozitivelor din subretele
+3. nu stiu sa raspund
+4. Cand destinatia este pe acelasi LAN, switch-ul trimite NDP-uri la toate host-urile si afla daca adresle MAC sunt cele cautate. Daca este remote LAN, acest proces trece si prin router. 
+
