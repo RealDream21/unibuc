@@ -58,7 +58,7 @@ def cromozomToNumar(cromozom):
                 nr += 2**pow
         return nr
     #din cromozom aflu numarul asociat (al x lea interval)
-    return params["capete_interval"]["st"] + binStringToNumber(cromozom) * params["interval_discretizare"]
+    return round(params["capete_interval"]["st"] + binStringToNumber(cromozom) * params["interval_discretizare"], params["precizie_interval"])
 
 def numarToCromozom(numar):
     #transform numarul intr-un cromozom
@@ -201,4 +201,5 @@ while nr_etapa <= etape:
     nr_etapa += 1
 
 print(aux1)
+
 print(populatie_actuala)
