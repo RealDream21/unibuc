@@ -1,7 +1,8 @@
-nr_cromozomi = 10
-capete_interval = 0 2
-coeficienti = -1 2 3
-precizie_interval = 5
-probabilitate_crossover = 0.6
-probabilitate_mutatie = 0.3
-etape = 100
+nr_cromozomi = 20
+capete_interval = -1 2
+coeficienti = -1 1 2
+precizie_interval = 6
+probabilitate_crossover = 0.25
+probabilitate_mutatie = 0.01
+etape = 50
+
