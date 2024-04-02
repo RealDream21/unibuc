@@ -1,5 +1,6 @@
 package cabinet.domain;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class Programare {
@@ -7,7 +8,7 @@ public abstract class Programare {
     protected Medic medic;
     protected Client client;
 
-    double cost;
+    private double cost;
 
     protected Programare(Date data, Medic medic, Client client, double cost) {
         this.data = data;
@@ -18,8 +19,15 @@ public abstract class Programare {
 
     @Override
     public abstract String toString();
-    public double calculeazaCost()
-    {
+
+    public double calculeazaCost() {
+        if(medic instanceof MedicGeneralist)
+        {
+
+        }
+        else if(medic instanceof MedicSpecialist) {
+
+        }
         return cost;
     }
 

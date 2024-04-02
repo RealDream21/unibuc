@@ -1,10 +1,11 @@
 package cabinet.domain;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class ProgramareConsult extends Programare{
     int numarDeOrdine;
-    private static final double COTIZATIE_SPECIALIZARE = 12.3;
+    private static final double COTIZATIE_CONSULT;
 
     public static int nr_crt = 0;
     {
@@ -32,6 +33,6 @@ public class ProgramareConsult extends Programare{
     @Override
     public double calculeazaCost()
     {
-        return medic.getNrSpecializari() * COTIZATIE_SPECIALIZARE + super.calculeazaCost();
+        return super.calculeazaCost() * COTIZATIE_CONSULT;
     }
 }
