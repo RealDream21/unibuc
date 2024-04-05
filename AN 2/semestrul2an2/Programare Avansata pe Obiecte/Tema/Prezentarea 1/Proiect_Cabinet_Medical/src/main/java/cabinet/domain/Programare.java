@@ -8,27 +8,19 @@ public abstract class Programare {
     protected Medic medic;
     protected Client client;
 
-    private double cost;
+    //private double cost; costul este calculat si nu setat
 
     protected Programare(Date data, Medic medic, Client client, double cost) {
         this.data = data;
         this.medic = medic;
         this.client = client;
-        this.cost = cost;
     }
 
     @Override
     public abstract String toString();
 
-    public double calculeazaCost() {
-        if(medic instanceof MedicGeneralist)
-        {
-
-        }
-        else if(medic instanceof MedicSpecialist) {
-
-        }
-        return cost;
+    protected abstract double getCostSpecial();
+    public final double calculeazaCost() {
+        return medic.getCotizatie() * getCostSpecial();
     }
-
 }

@@ -1,73 +1,42 @@
 package cabinet.domain;
 
-public class Client {
-    String nume;
-    String numarTelefon;
-    String adresa;
-    boolean asigurareMedicala;
-    Programare[] istoricProgramari;//astea sa fie afisate in ordine crescatoare dupa data lor sau cv
-    String[] observatii;//diverse alergii si altele
+import java.util.Arrays;
 
-    public Client() {
-        this.asigurareMedicala = false;
+public class Client extends Persoana{
+    private boolean asigurareMedicala;
+    private Programare[] istoricProgramari;//astea sa fie afisate in ordine crescatoare dupa data lor sau cv
+    private String[] observatii;//diverse alergii si altele
+
+
+    public Client(String nume, String email, String numarTelefon)
+    {
+        super(nume, email, numarTelefon);
     }
 
-    public Client(String nume)
+    public Client(String nume, String email, String numarTelefon, boolean asigurareMedicala)
     {
-        this();
-        this.nume = nume;
-    }
-
-    public Client(String nume, String numarTelefon)
-    {
-        this(nume);
-        String regexTelefon = "0[0-9]{9}+";
-        if(numarTelefon.matches(regexTelefon)){
-            this.numarTelefon = numarTelefon;
-        }
-        else {
-            this.numarTelefon = "NUMAR_INVALID";
-        }
-    }
-
-    public Client(String nume, String numarTelefon, String adresa)
-    {
-        this(nume, numarTelefon);
-        this.adresa = adresa;
-    }
-
-    public Client(String nume, String numarTelefon, String adresa, boolean asigurareMedicala)
-    {
-        this(nume, numarTelefon, adresa);
+        this(nume,email,numarTelefon);
         this.asigurareMedicala = asigurareMedicala;
-    }
-
-    public String getNume() {
-        return nume;
-    }
-
-    public String getNumarTelefon() {
-        return numarTelefon;
-    }
-
-    public String getAdresa() {
-        return adresa;
     }
 
     public boolean isAsigurareMedicala() {
         return asigurareMedicala;
     }
 
+    public void setAsigurareMedicala(boolean asigurareMedicala) {
+        this.asigurareMedicala = asigurareMedicala;
+    }
+
     public Programare[] getIstoricProgramari() {
-        return istoricProgramari;
+        return Arrays.copyOf(istoricProgramari, istoricProgramari.length);
     }
 
     public String[] getObservatii() {
-        return observatii;
+        return Arrays.copyOf(observatii, observatii.length);
     }
 
     @Override
-    public String toString(){
-        return "Metoda toString() inca nu a fost suprascrisa dar trebuie suprascrisa";
+    public String toString() {
+        return "Clientul se numeste: " + nume;
     }
 }

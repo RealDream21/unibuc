@@ -5,7 +5,8 @@ import java.util.Date;
 
 public class ProgramareConsult extends Programare{
     int numarDeOrdine;
-    private static final double COTIZATIE_CONSULT;
+    private static final double COTIZATIE_CONSULT = 1.23;
+    private static final double COST_STANDARD = 100;
 
     public static int nr_crt = 0;
     {
@@ -30,9 +31,15 @@ public class ProgramareConsult extends Programare{
         return "Pacientul + " + client.toString() + " are programata o consultatie cu medicul " + medic.toString() + " la data de " + data.toString();
     }
 
+//    @Override
+//    public double calculeazaCost()
+//    {
+//        return super.calculeazaCost() * COTIZATIE_CONSULT;
+//    }
+
     @Override
-    public double calculeazaCost()
+    protected double getCostSpecial()
     {
-        return super.calculeazaCost() * COTIZATIE_CONSULT;
+        return COTIZATIE_CONSULT * COST_STANDARD;
     }
 }

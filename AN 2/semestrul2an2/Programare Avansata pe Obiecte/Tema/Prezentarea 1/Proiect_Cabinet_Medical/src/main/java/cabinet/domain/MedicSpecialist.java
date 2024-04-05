@@ -1,24 +1,18 @@
 package cabinet.domain;
 
 public class MedicSpecialist extends Medic{
-    private static final double COTIZATIE_MEDIC_SPECIALIST = 1.3;
+    private static final double COTIZATIE_MEDIC_SPECIALIST = 2.12;
     Specializare specializare;
 
-    public MedicSpecialist(String nume, Specializare specializare)
+    MedicSpecialist(String nume, String adresa, String numarTelefon, Specializare specializare)
     {
-        super(nume);
-        this.specializare = specializare;
-    }
-
-    public MedicSpecialist(String nume, Specializare specializare, String email)
-    {
-        super(nume, email);
+        super(nume, adresa, numarTelefon);
         this.specializare = specializare;
     }
 
     @Override
     public String toString(){
-        return "Medicul " + nume + " ,email " + email + " este specialist in " + specializare.toString();
+        return "Medicul " + super.getNume() + " ,email " + super.getEmail() + " este specialist in " + specializare.toString();
     }
     @Override
     public double getCotizatie(){

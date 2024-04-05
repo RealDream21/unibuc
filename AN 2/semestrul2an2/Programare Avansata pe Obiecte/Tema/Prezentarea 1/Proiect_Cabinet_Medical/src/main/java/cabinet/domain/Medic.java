@@ -5,23 +5,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Medic {
-    String nume;
-    String email;
+public abstract class Medic extends Persoana{
 
-    public Medic(){}
-    public Medic(String nume){
-        this.nume = nume;
-    }
-
-    public Medic(String nume, String email)
+    Medic(String nume, String email, String numarTelefon)
     {
-        this(nume);
-        this.email = email;
+        super(nume, email, numarTelefon);
     }
 
-
-    @Override
-    public abstract String toString();
+    //Nu mai scriu override la toString deoarece o vreau abstracta mai departe, deci nu scriu nimic
     public abstract double getCotizatie();
 }

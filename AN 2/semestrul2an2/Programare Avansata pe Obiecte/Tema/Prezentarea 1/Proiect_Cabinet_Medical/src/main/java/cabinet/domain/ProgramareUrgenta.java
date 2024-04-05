@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class ProgramareUrgenta extends Programare{
 
+    private final double COST_PER_GRAD_URGENTA = 100;
     int gradUrgenta;
 
     public ProgramareUrgenta(Date data, Medic medic, Client client, double cost, int gradUrgenta)
@@ -23,9 +24,15 @@ public class ProgramareUrgenta extends Programare{
         return "Pacientul: " + client.toString() + " are programare de urgenta la data: " + data.toString()+ " cu medicul " + medic.toString() + " gradul de urgenta este: " + gradUrgenta;
     }
 
+//    @Override
+//    public double calculeazaCost()
+//    {
+//        return super.calculeazaCost() + gradUrgenta * super.calculeazaCost();
+//    }
+
     @Override
-    public double calculeazaCost()
+    protected double getCostSpecial()
     {
-        return super.calculeazaCost() + gradUrgenta * super.calculeazaCost();
+        return gradUrgenta * COST_PER_GRAD_URGENTA;
     }
 }
