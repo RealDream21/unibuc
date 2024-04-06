@@ -10,7 +10,11 @@ import java.util.spi.CalendarDataProvider;
 public class Main {
     public static void main(String[] args) throws IOException {
         SingletonServiciuProgramare singletonServiciuProgramare = SingletonServiciuProgramare.getInstanceOfServiciuProgramare();
-        singletonServiciuProgramare.addClient();
+//        singletonServiciuProgramare.addClient();
+//        System.out.println(singletonServiciuProgramare.getClienti());
+//        singletonServiciuProgramare.addClient();
+        singletonServiciuProgramare.addMedic();
+        System.out.println(singletonServiciuProgramare.getMedici());
         System.out.println(singletonServiciuProgramare.getClienti());
 
     }

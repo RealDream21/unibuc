@@ -6,10 +6,23 @@ public abstract class Persoana {
     protected String numarTelefon;
 
     public Persoana(String nume, String email, String numarTelefon) {
-        this.nume = nume;
-        this.email = email;
-        String regexTelefon = "0[0-9]{9}+";
-        if(numarTelefon.matches(regexTelefon)){
+        if(verificaNume(nume))
+        {
+            this.nume = nume;
+        }
+        else {
+            this.nume = "NUME_INVALID";
+        }
+
+        if(verificaEmail(email))
+        {
+            this.email = email;
+        }
+        else{
+            this.email = "EMAIL_INVALID";
+        }
+
+        if(verificaTelefon(numarTelefon)){
             this.numarTelefon = numarTelefon;
         }
         else {
@@ -17,12 +30,37 @@ public abstract class Persoana {
         }
     }
 
+    private static boolean verificaNume(String nume)
+    {
+        String regexNume = "[A-Z][a-z]+";
+        if(nume.matches(regexNume))
+            return true;
+        return false;
+    }
+
+    private static boolean verificaEmail(String email)
+    {
+        String regexEmail = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if(email.matches(regexEmail))
+            return true;
+        return false;
+    }
+
+    private static boolean verificaTelefon(String numarTelefon)
+    {
+        String regexTelefon = "0[0-9]{9}+";
+        if(numarTelefon.matches(regexTelefon))
+            return true;
+        return false;
+    }
+
     public String getNume() {
         return nume;
     }
 
     public void setNume(String nume) {
-        this.nume = nume;
+        if(verificaNume(nume))
+            this.nume = nume;
     }
 
     public String getEmail() {
@@ -30,7 +68,8 @@ public abstract class Persoana {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if(verificaEmail(email))
+            this.email = email;
     }
 
     public String getNumarTelefon() {
@@ -38,7 +77,8 @@ public abstract class Persoana {
     }
 
     public void setNumarTelefon(String numarTelefon) {
-        this.numarTelefon = numarTelefon;
+        if(verificaTelefon(numarTelefon))
+            this.numarTelefon = numarTelefon;
     }
 
     public abstract String toString();

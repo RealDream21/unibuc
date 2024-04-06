@@ -4,7 +4,6 @@ public class MedicGeneralist extends Medic{
 
     private final static double COTIZATIE_MEDIC_GENERALIST = 1.24;
 
-
     MedicGeneralist(String nume, String email, String numarTelefon)
     {
         super(nume,email, numarTelefon);
