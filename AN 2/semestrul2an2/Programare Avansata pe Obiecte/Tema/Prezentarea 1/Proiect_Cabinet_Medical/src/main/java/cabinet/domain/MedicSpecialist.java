@@ -12,7 +12,7 @@ public class MedicSpecialist extends Medic{
 
     @Override
     public String toString(){
-        return "Medicul " + super.getNume() + " ,email " + super.getEmail() + " este specialist in " + specializare.toString();
+        return "Medicul " + super.getNume() + ", email " + super.getEmail() + " este specialist " + specializare.toString();
     }
     @Override
     public double getCotizatie(){
