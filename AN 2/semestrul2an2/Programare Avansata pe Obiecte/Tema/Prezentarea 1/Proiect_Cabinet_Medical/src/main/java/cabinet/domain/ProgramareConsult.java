@@ -1,6 +1,5 @@
 package cabinet.domain;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class ProgramareConsult extends Programare{
@@ -12,9 +11,9 @@ public class ProgramareConsult extends Programare{
     {
         nr_crt++;
     }
-    public ProgramareConsult(Date data, Medic medic, Client client, double cost)
+    public ProgramareConsult(Date data, Medic medic, Client client)
     {
-        super(data, medic, client, cost);
+        super(data, medic, client);
         this.numarDeOrdine = nr_crt;
     }
 

@@ -6,11 +6,12 @@ import java.util.Date;
 public class ProgramareUrgenta extends Programare{
 
     private final double COST_PER_GRAD_URGENTA = 100;
+    private static final int URGENTA_MAXIMA = 10;
     int gradUrgenta;
 
-    public ProgramareUrgenta(Date data, Medic medic, Client client, double cost, int gradUrgenta)
+    public ProgramareUrgenta(Date data, Medic medic, Client client, int gradUrgenta)
     {
-        super(data, medic, client, cost);
+        super(data, medic, client);
         this.gradUrgenta = gradUrgenta;
     }
 
@@ -22,6 +23,11 @@ public class ProgramareUrgenta extends Programare{
     public String toString()
     {
         return "Pacientul: " + client.toString() + " are programare de urgenta la data: " + data.toString()+ " cu medicul " + medic.toString() + " gradul de urgenta este: " + gradUrgenta;
+    }
+
+    public static int getURGENTA_MAXIMA()
+    {
+        return URGENTA_MAXIMA;
     }
 
 //    @Override
