@@ -1,0 +1,12 @@
+Test     	  Successful?       Issues      Solution	Verified
+PC1 to S1	  Da              		Am schimbat adresa lui PC1 in 192.168.10.3
+Pc1 to R1	  Da
+PC3 to R1         Da
+PC3 to S2         Nu 		     S2 nu are configurata adresa ip cu 192.168.11.2
+PC3 to S2 	  Da
+PC4 to PC3        Da
+PC4 to S2	  Da
+PC4 to 192.168.1.1(Default gateway) -> Nu merge, deoarece default gateway este de fapt 192.168.11.1 -> schimb default gateway
+PC4 to R1  	  Da
+PC4 to PC1	  Da
+PC4 to PC2        Da	
