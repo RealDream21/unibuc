@@ -25,6 +25,17 @@ def alg(testcase):
             mx += elem
     return mx
 
+def algPdf(testcase):
+    n, k = testcase[0:2]
+    total = 0
+    s = [0] + testcase[2:]
+    for x in s:
+        if x + total <= k:
+            total += x
+        elif (total < x):
+            total = x
+    return total 
+
 def generateTestcase(param1 = 10, param2 = 10):
     k = int(random.uniform(param1, 2 * param1))
     n = int(random.uniform(0, param2))
@@ -32,12 +43,17 @@ def generateTestcase(param1 = 10, param2 = 10):
     return testcase
 
 cnt = 0
-for _ in range(1000):
-    teste = generateTestcase(10, 100)
+for _ in range(1):
+    #teste = generateTestcase(10, 100)
+    teste = [5, 3, 1, 1, 9, 1, 1]
     val1 = opt(teste)
     val2 = alg(teste)
+    val3 = algPdf(teste)
+    print(val1)
+    print(val2)
+    print(val3)
     if val1 != 0:
-        raport = val2/val1
+        raport = val3/val1
         if raport < 0.5:
             cnt += 1
             print(teste)
