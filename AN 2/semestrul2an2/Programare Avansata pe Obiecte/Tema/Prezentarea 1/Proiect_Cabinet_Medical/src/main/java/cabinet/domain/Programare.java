@@ -14,6 +14,7 @@ public abstract class Programare implements Comparable<Programare>{
         this.data = data;
         this.medic = medic;
         this.client = client;
+        client.addProgramare(this);
     }
 
     @Override
@@ -21,7 +22,10 @@ public abstract class Programare implements Comparable<Programare>{
 
     protected abstract double getCostSpecial();
     public final double calculeazaCost() {
-        return medic.getCotizatie() * getCostSpecial();
+        double reducere = 1;
+        if(client.getAsigurareMedicala())
+            reducere = client.getReducereAsigurareMedicala();
+        return medic.getCotizatie() * getCostSpecial() * reducere;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package cabinet.domain;
 
-public abstract class Persoana {
+public abstract class Persoana{
     protected String nume;
     protected String email;
     protected String numarTelefon;

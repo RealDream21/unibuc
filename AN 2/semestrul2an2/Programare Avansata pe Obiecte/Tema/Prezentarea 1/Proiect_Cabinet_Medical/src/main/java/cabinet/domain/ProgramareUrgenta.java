@@ -22,7 +22,7 @@ public class ProgramareUrgenta extends Programare{
     @Override
     public String toString()
     {
-        return "Pacientul: " + client.toString() + " are programare de urgenta la data: " + data.toString()+ " cu medicul " + medic.toString() + " gradul de urgenta este: " + gradUrgenta;
+        return client.toString() + " are programare de urgenta la data: " + data.toString()+ " cu medicul " + medic.toString() + " gradul de urgenta este: " + gradUrgenta + " costul acestei interventii va fi " + this.calculeazaCost();
     }
 
     public static int getURGENTA_MAXIMA()

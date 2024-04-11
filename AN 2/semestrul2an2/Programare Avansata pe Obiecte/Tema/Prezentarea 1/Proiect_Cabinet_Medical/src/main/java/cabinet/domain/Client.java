@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Client extends Persoana{
+    private static double REDUCERE_ASIGURARE_MEDICALA = 0.8;
     private boolean asigurareMedicala;
     private List<Programare> istoricProgramari;//astea sa fie afisate in ordine crescatoare dupa data lor sau cv
     private String[] observatii;//diverse alergii si altele
@@ -27,7 +28,12 @@ public class Client extends Persoana{
         istoricProgramari.add(programare);
     }
 
-    public boolean isAsigurareMedicala() {
+    public void addObservatie(String observatie)
+    {
+        observatii[observatii.length] = observatie;
+    }
+
+    public boolean getAsigurareMedicala() {
         return asigurareMedicala;
     }
 
@@ -37,6 +43,10 @@ public class Client extends Persoana{
 
     public List<Programare> getIstoricProgramari() {
         return istoricProgramari;
+    }
+    public double getReducereAsigurareMedicala()
+    {
+        return REDUCERE_ASIGURARE_MEDICALA;
     }
 
     public String[] getObservatii() {

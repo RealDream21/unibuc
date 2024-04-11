@@ -27,7 +27,7 @@ public class ProgramareConsult extends Programare{
 
     @Override
     public String toString() {
-        return "Pacientul + " + client.toString() + " are programata o consultatie cu medicul " + medic.toString() + " la data de " + data.toString();
+        return client.toString() + " are programata o consultatie cu medicul " + medic.toString() + " la data de " + data.toString() + " costul consultatiei va fi " + this.calculeazaCost();
     }
 
 //    @Override

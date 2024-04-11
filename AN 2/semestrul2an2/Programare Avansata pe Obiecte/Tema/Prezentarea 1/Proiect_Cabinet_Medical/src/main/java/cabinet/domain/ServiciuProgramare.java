@@ -1,8 +1,10 @@
 package cabinet.domain;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.sort;
 
 public abstract class ServiciuProgramare{
@@ -16,6 +18,7 @@ public abstract class ServiciuProgramare{
         medici = new ArrayList<Medic>();
         programari = new ArrayList<Programare>();
     }
+
     public final void addClient() throws IOException, RuntimeException {
         //daca am vreo eraore => false(asta pentru viitor cand fac erori)
         //frumos ar fi sa fac o persoanaBuilder dar deja e prea mult
@@ -36,6 +39,10 @@ public abstract class ServiciuProgramare{
         else{
             throw new RuntimeException("EROARE LA CREAREA CLIENTULUI");
         }
+    }
+
+    public final void addClient(Client client){
+        clienti.add(client);
     }
 
     public final void addMedic() throws IOException, RuntimeException {
@@ -73,6 +80,10 @@ public abstract class ServiciuProgramare{
         } else{
             throw new IOException("Nu exista acest tip de medic");
         }
+    }
+
+    public final void addMedici(Medic medic){
+        medici.add(medic);
     }
 
     public final void addProgramare()
@@ -119,7 +130,142 @@ public abstract class ServiciuProgramare{
         else{
             throw new RuntimeException("Nu exista acest tip de programare");
         }
+    }
 
+    public final void addProgramare(Programare programare){
+        programari.add(programare);
+    }
+
+    public final double totalIncasari()
+    {
+        double sum = 0;
+        for(Programare programare: programari)
+        {
+            sum += programare.calculeazaCost();
+        }
+        return sum;
+    }
+
+    public final double totalIncasariIntreDouaDate(Date data1, Date data2)
+    {
+        double sum = 0;
+        for(Programare programare: programari)
+        {
+            if(programare.getData().compareTo(data1) >= 0 && programare.getData().compareTo(data2) <= 0)
+                sum += programare.calculeazaCost();
+        }
+        return sum;
+    }
+
+    public final List<Programare> getProgramariCuUnAnumitMedic(Medic medic)
+    {
+        List<Programare> aux = new ArrayList<Programare>();
+        for(Programare programare: programari)
+        {
+            if(programare.getMedic() == medic){
+                aux.add(programare);
+            }
+        }
+        return aux;
+    }
+
+    public final List<Programare> getProgramariCuUnAnumitMedic(){
+        Scanner input = new Scanner(System.in);
+        List<Programare> aux = new ArrayList<Programare>();
+
+        Medic medic = null;
+        try{
+            medic = getMedicFromInput(input);
+        }
+        catch(IndexOutOfBoundsException e){
+            System.out.println("A aparut o eroare la indicele pentru lista de medici");
+            System.out.println(e.toString());;
+        }
+        catch(Error e)
+        {
+            System.out.println(e.toString());
+        }
+
+        for(Programare programare: programari)
+        {
+            if(programare.getMedic() == medic)
+                aux.add(programare);
+        }
+        return aux;
+    }
+
+    public final List<Programare> getProgramariSortate()
+    {
+        List<Programare> aux = new ArrayList<Programare>(List.copyOf(programari));
+        Collections.sort(aux);
+        return List.copyOf(aux);
+    }
+
+    public final List<Programare> getProgramariPersoana()
+    {
+        //poate nu mereu programarile din service sunt sincronizate cu programarile din Client
+        Scanner input = new Scanner(System.in);
+        List<Programare> aux = new ArrayList<Programare>();
+
+        Client client = null;
+        try{
+            client = getClientFromInput(input);
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+            System.out.println("A aparut o eroare la indexul pentru lista de clienti");
+            System.out.println(e.toString());
+        }
+        catch(Error e)
+        {
+            System.out.println("A aparut o eroare" + e.toString());
+        }
+
+
+        for(Programare programare: programari)
+        {
+            if(programare.getClient() == client)
+                aux.add(programare);
+        }
+        return aux;
+    }
+
+    public final List<Programare> reminderProgramari()
+    {
+        Scanner input = new Scanner(System.in);
+        Client client = null;
+        Medic medic = null;
+        try{
+            client = getClientFromInput(input);
+            medic = getMedicFromInput(input);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("A aparut o eroare la un indice" + e.toString());
+        }
+        catch (Error e)
+        {
+            System.out.println("A aparut o eroare" + e.toString());
+        }
+
+        List<Programare> aux = new ArrayList<Programare>();
+
+        for(Programare programare: programari)
+        {
+            if(programare.getMedic() == medic && programare.getClient() == client)
+                aux.add(programare);
+        }
+        return aux;
+    }
+
+    public final List<Programare> reminderProgramari(Medic medic, Client client)
+    {
+        List<Programare> aux = new ArrayList<Programare>();
+
+        for(Programare programare: programari)
+        {
+            if(programare.getMedic() == medic && programare.getClient() == client)
+                aux.add(programare);
+        }
+        return aux;
     }
 
     public final List<Client> getClienti()
@@ -137,13 +283,43 @@ public abstract class ServiciuProgramare{
         return List.copyOf(programari);
     }
 
-    public final List<Programare> getProgramariSortate()
+    private Medic getMedicFromInput(Scanner input) throws IndexOutOfBoundsException
     {
-        List<Programare> aux = List.copyOf(programari);
-        Collections.sort(aux);
-        return List.copyOf(aux);
+        System.out.println("Alege un medic(-1 pentru a alege ultimul medic)");
+
+        for(int i = 0; i < medici.size(); i++)
+        {
+            System.out.println(i + ". " + medici.get(i));
+        }
+
+        int index = input.nextInt();
+        if(index == -1)
+            index = medici.size() - 1;
+        if(index < 0 || index > medici.size() - 1)
+            throw new IndexOutOfBoundsException("Acest indice nu este valid pentru lista de medici");
+
+        Medic medic = medici.get(index);
+        return medic;
     }
 
+    private Client getClientFromInput(Scanner input) throws IndexOutOfBoundsException
+    {
+        System.out.println("Alege un client(-1 pentru a alege ultimul client)");
+
+        for(int i = 0; i < clienti.size(); i++)
+        {
+            System.out.println(i + ". " + clienti.get(i));
+        }
+
+        int index = input.nextInt();
+        if(index == -1)
+            index = clienti.size() - 1;
+        if(index < 0 || index > clienti.size() - 1)
+            throw new IndexOutOfBoundsException("Acest indice nu este valid pentru lista de clienti");
+
+        Client client = clienti.get(index);
+        return client;
+    }
 
     private static String readNume(Scanner input){
         String nume;
@@ -166,32 +342,33 @@ public abstract class ServiciuProgramare{
         return numarTelefon;
     }
 
-    private static long inputDataAsLong(Scanner input){
+    private static long inputDataAsLong(Scanner input) throws InputMismatchException {
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         System.out.println("In ce an este programarea?");
         int an = input.nextInt();
         if(an < 2024)
-            throw new RuntimeException("Data nu poate fi trecuta in trecut");
+            throw new InputMismatchException("Data nu poate fi trecuta in trecut");
         if(an > 2050)
-            throw new RuntimeException("Data nu poate fi trecuta atat de in viitor");
+            throw new InputMismatchException("Data nu poate fi trecuta atat de in viitor");
 
         System.out.println("In ce luna este programarea?");
         int luna = input.nextInt();
         if(luna < 0)
-            throw new RuntimeException("Data nu poate fi negativa");
+            throw new InputMismatchException("Data nu poate fi negativa");
         if(luna > 12)
-            throw new RuntimeException("Data nu poate fi > 12");
+            throw new InputMismatchException("Data nu poate fi > 12");
 
         System.out.println("In ce zi este programarea?");
         int zi = input.nextInt();
         if(zi < 0)
-            throw new RuntimeException("Ziua nu poate fi negativa");
+            throw new InputMismatchException("Ziua nu poate fi negativa");
         if(zi > 31)
-            throw new RuntimeException("Ziua nu poate fi > 31");
+            throw new InputMismatchException("Ziua nu poate fi > 31");
 
         gregorianCalendar.set(an, luna, zi);
 
         return gregorianCalendar.getTimeInMillis();
     }
+
 
 }
