@@ -25,18 +25,7 @@ servicii:
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        SingletonServiciuProgramare singletonServiciuProgramare = SingletonServiciuProgramare.getInstanceOfServiciuProgramare();
-//        singletonServiciuProgramare.addClient();
-//        System.out.println(singletonServiciuProgramare.getClienti());
-//        singletonServiciuProgramare.addClient();
-        singletonServiciuProgramare.addClient();
-        singletonServiciuProgramare.addMedic();
-        singletonServiciuProgramare.addProgramare();
-        List<Programare> programari = singletonServiciuProgramare.getProgramariSortate();
-        //eroare, imi spune ca List<Programare> este imutabila :(((
-        for(var programare: programari)
-        {
-            System.out.println(programare);
-        }
+        SingletonMeniuUtilizare meniu = SingletonMeniuUtilizare.getInstance();
+        meniu.enterMeniu();
     }
 }

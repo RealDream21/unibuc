@@ -1,11 +1,13 @@
 package cabinet.domain;
 
+import java.security.InvalidParameterException;
+
 public abstract class Persoana{
     protected String nume;
     protected String email;
     protected String numarTelefon;
 
-    public Persoana(String nume, String email, String numarTelefon) {
+    public Persoana(String nume, String email, String numarTelefon) throws InvalidParameterException{
         if(verificaNume(nume))
         {
             this.nume = nume;
@@ -28,6 +30,12 @@ public abstract class Persoana{
         else {
             this.numarTelefon = "NUMAR_INVALID";
         }
+        if(this.nume == "NUME_INVALID")
+            throw new InvalidParameterException("Numele persoanei nu este valid");
+        if(this.email == "EMAIL_INVALID")
+            throw new InvalidParameterException("Emailul persoanei nu este valid");
+        if(this.numarTelefon == "NUMAR_INVALID")
+            throw new InvalidParameterException("Numarul de telefon al persoanei nu este valid");
     }
 
     private static boolean verificaNume(String nume)

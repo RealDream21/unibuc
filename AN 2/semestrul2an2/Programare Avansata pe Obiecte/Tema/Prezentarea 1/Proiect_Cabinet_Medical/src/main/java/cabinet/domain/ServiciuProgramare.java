@@ -2,6 +2,7 @@ package cabinet.domain;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.security.InvalidParameterException;
 import java.util.*;
 
 import static java.util.Collections.emptyMap;
@@ -19,7 +20,7 @@ public abstract class ServiciuProgramare{
         programari = new ArrayList<Programare>();
     }
 
-    public final void addClient() throws IOException, RuntimeException {
+    public final void addClient() throws InvalidParameterException {
         //daca am vreo eraore => false(asta pentru viitor cand fac erori)
         //frumos ar fi sa fac o persoanaBuilder dar deja e prea mult
         Scanner input = new Scanner(System.in);
@@ -31,13 +32,11 @@ public abstract class ServiciuProgramare{
         System.out.println("Dati numarul de telefon al clientului:");
         numarTelefon = readNumarTelefon(input);
 
-        Client client = new Client(nume, email, numarTelefon);
-        if(client != null)
-        {
+        try{
             clienti.add(new Client(nume, email, numarTelefon));
-        }
-        else{
-            throw new RuntimeException("EROARE LA CREAREA CLIENTULUI");
+        }catch(InvalidParameterException e){
+            System.out.println(e.toString());
+            throw new InvalidParameterException("Eroare la crearea clientului");
         }
     }
 
@@ -45,7 +44,7 @@ public abstract class ServiciuProgramare{
         clienti.add(client);
     }
 
-    public final void addMedic() throws IOException, RuntimeException {
+    public final void addMedic() throws InputMismatchException, IndexOutOfBoundsException {
         Scanner input = new Scanner(System.in);
         String nume, email, numarTelefon;
         System.out.println("Dati numele medicului");
@@ -73,12 +72,12 @@ public abstract class ServiciuProgramare{
                 medici.add(new MedicSpecialist(nume, email, numarTelefon, spec));
             }
             else {
-                throw new RuntimeException("Indexul accesat nu este in range");
+                throw new IndexOutOfBoundsException("Indexul accesat nu este in range");
             }
         } else if (tip == 2){
             medici.add(new MedicGeneralist(nume, email, numarTelefon));
         } else{
-            throw new IOException("Nu exista acest tip de medic");
+            throw new InputMismatchException("Nu exista acest tip de medic");
         }
     }
 
@@ -181,7 +180,7 @@ public abstract class ServiciuProgramare{
             System.out.println("A aparut o eroare la indicele pentru lista de medici");
             System.out.println(e.toString());;
         }
-        catch(Error e)
+        catch(Exception e)
         {
             System.out.println(e.toString());
         }
@@ -216,7 +215,7 @@ public abstract class ServiciuProgramare{
             System.out.println("A aparut o eroare la indexul pentru lista de clienti");
             System.out.println(e.toString());
         }
-        catch(Error e)
+        catch(Exception e)
         {
             System.out.println("A aparut o eroare" + e.toString());
         }
@@ -241,7 +240,7 @@ public abstract class ServiciuProgramare{
         }catch (IndexOutOfBoundsException e){
             System.out.println("A aparut o eroare la un indice" + e.toString());
         }
-        catch (Error e)
+        catch (Exception e)
         {
             System.out.println("A aparut o eroare" + e.toString());
         }
