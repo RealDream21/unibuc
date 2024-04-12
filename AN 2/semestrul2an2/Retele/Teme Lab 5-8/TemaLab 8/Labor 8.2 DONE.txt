@@ -1,0 +1,66 @@
+Device	Interface		IP Address		Subnet Mask		Default Gateway
+R1	G0/0			192.168.100.1		255.255.255.224		N/A
+R1	G0/1			192.168.100.33		255.255.255.224		N/A
+R1	S0/0/0			192.168.100.129		255.255.255.224		N/A
+
+R2	G0/0			192.168.100.65		255.255.255.224		N/A
+R2	G0/1			192.168.100.97		255.255.255.224		N/A
+R2	S0/0/0			192.168.100.158		255.255.255.224		N/A
+
+S1	Vlan1			192.168.100.2		255.255.255.224		192.168.100.1
+S2	Vlan1			192.168.100.34		255.255.255.224		192.168.100.33		
+S3	Vlan1			192.168.100.66		255.255.255.224		192.168.100.65
+S4	Vlan1			192.168.100.98		255.255.255.224		192.168.100.97
+PC1	NIC			192.168.100.30		255.255.255.224		192.168.100.1
+PC2	NIC			192.168.100.62		255.255.255.224		192.168.100.33
+PC3	NIC			192.168.100.94		255.255.255.224		192.168.100.65
+PC4	NIC			192.168.100.126		255.255.255.224		192.168.100.97
+
+
+
+Part 1:
+
+Step 1. a) Based on the topology, how many subnets are needed?
+Raspuns: 4 subnet-uri LAN si 1 pentru Routere => 5 subnet uri
+
+Step 1. b)
+How many bits must be borrowed to support the number of subnets in the topology table?
+Raspuns: 3 pentru a avea 2^3 = 8 subnet-uri. Altfel am avea 2^2 = 4 < 5 subnet-uri si nu are incapea toate
+
+Step 1. c)
+How many subnets does this create?
+Raspuns: 8
+
+Step 1. d)
+How many usable hosts does this create per subnet?
+Raspuns: 2 ^ 5 - 2 = 32 - 2 = 30 host-uri
+
+Step 1. e)
+Subnet		Network Address		Bit 7	Bit 6	Bit 5	Bit 4	Bit 3	Bit 2	Bit 1	Bit 0
+0		192.168.100.		0	0	0	0	0	0	0	0
+1		192.168.100.		0	0	1	0	0	0	0	0
+2		192.168.100.		0	1	0	0	0	0	0	0
+3		192.168.100.		0	1	1	0	0	0	0	0
+4		192.168.100.		1	0	0	0	0	0	0	0
+
+Step 1. f)
+F
+First Octet	Second Octet	Third Octet	MaB 7	MaB6	MaB 5	MaB 4	MaBt 3	MaB 2	MaB 1	MaB 0
+11111111	11111111	11111111	1	1	1	0	0	0	0	0
+255.255.255.224
+
+Subnet Number		Subnet Address		First Usable Host		Last Usable Host		Broadcast
+0			192.168.100.0		192.168.100.1			192.168.100.30			192.168.100.31
+1			192.168.100.32		192.168.100.33			192.168.100.62			192.168.100.63
+2			192.168.100.64		192.168.100.65			192.168.100.94			192.168.100.95
+3			192.168.100.96		192.168.100.97			192.168.100.126			192.168.100.127
+
+4			192.168.100.128		192.168.100.129			192.168.100.158			192.168.100.159
+
+5			192.168.100.160		192.168.100.161			192.168.100.190			192.168.100.191
+6			192.168.100.192		192.168.100.193			192.168.100.222			192.168.100.223
+7			192.168.100.224		192.168.100.225			192.168.100.254			192.168.100.255
+
+
+
+

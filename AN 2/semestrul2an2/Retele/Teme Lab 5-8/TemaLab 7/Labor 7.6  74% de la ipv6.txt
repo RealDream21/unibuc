@@ -1,0 +1,26 @@
+Part 3:
+
+Step 1. a)
+What code is used in the routing table to indicate a directly connected network?
+Raspuns: C si L
+
+How many route entries are coded with a C code in the routing table?
+Raspuns: 2
+
+What interface types are associated to the C coded routes?
+Raspuns: GigabitEthernet 0/0/0 si 0/0/1
+
+Step 2. a)
+What is the operational status of the G0/0/1 interface?
+Raspuns: up, line protocol is up
+
+What is the Media Access Control (MAC) address of the G0/1 interface?
+Raspuns: 0060.4731.8102
+
+How is the internet address displayed in this command?
+Raspuns: sub forma de "Internet address is 192.168.1.1/24"
+
+
+Reflection questions.
+1. No shutdown
+2. As fi primit eroare de overlap

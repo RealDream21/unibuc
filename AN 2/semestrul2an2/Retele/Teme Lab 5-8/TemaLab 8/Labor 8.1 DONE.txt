@@ -1,0 +1,111 @@
+DEVICE			Interface		IP Address		Subnet Mask		Default Gateway
+CustomerRouter		G 0/0			192.168.0.1		255.255.255.192		N/A
+CustomerRouter		G 0/1			192.168.0.65		255.255.255.192		N/A
+CustomerRouter		S0/1/0			209.165.201.2		255.255.255.252		N/A
+
+LAN-A Switch		VLAN1			192.168.0.2		255.255.255.192		192.168.0.1
+LAN-B Switch		VLAN1			192.168.0.66		255.255.255.192		192.168.0.65
+
+PC-A			NIC			192.168.0.62		255.255.255.192		192.168.0.1
+PC-B			NIC			192.168.0.126		255.255.255.192		192.168.0.65
+
+ISPRouter		G0/0			209.165.200.225		255.255.255.224		N/A
+ISPRouter		S0/1/0			209.165.201.1		255.255.255.252		N/A
+
+ISPSwitch		VLAN1			209.165.200.226		255.255.255.224		209.165.200.225
+
+ISPW Workstation	NIC			209.165.200.235		255.255.255.224		298.165.200.225
+
+ISP Server		NIC			209.165.200.240		255.255.255.224		209.165.200.225
+
+
+Part 1:
+Step 1. d)
+How many host addresses are needed in the largest required subnet?
+Raspuns: 50
+
+What is the minimum number of subnets required?
+Raspuns: 4
+
+The network that you are tasked to subnet is 192.168.0.0/24. What is the /24 subnet mask in binary?
+Raspuns: 1111.1111/1111.1111/1111.1111/0000.0000
+
+Step 1. e)
+In the network mask, what do the ones represent?
+Raspuns: Network portion, biti blocati
+
+In the network mask, what do the zeros represent?
+Raspuns: Host portion, biti liberi
+
+Step 1. f)
+1)(/25) 11111111.11111111.11111111.10000000
+
+Dotted decimal subnet mask equivalent:
+255.255.255.128
+
+Number of subnets? Number of hosts?
+2^1 -> 2 subneturi
+2^7 - 2 = 128 - 2 = 126 hosts
+
+2)(/26) 11111111.11111111.11111111.11000000
+
+Dotted decimal subnet mask equivalent:
+255.255.255.192
+
+Number of subnets? Number of hosts?
+2^2 = 4 subnets
+2^6 - 2 = 62 hosts
+
+3)(/27) 11111111.11111111.11111111.11100000
+
+Dotted decimal subnet mask equivalent:
+255.255.255.224
+
+Number of subnets? Number of hosts?
+2^3 = 8 subnets
+2^5 - 2 = 30 hosts
+
+4)(/28) 11111111.11111111.11111111.11110000
+
+Dotted decimal subnet mask equivalent:
+255.255.255.240
+
+Number of subnets? Number of hosts?
+2^4 = 16 subnets
+2^4 - 2 = 14 hosts
+
+5)(/29) 11111111.11111111.11111111.11111000
+
+Dotted decimal subnet mask equivalent:
+255.255.255.248
+
+Number of subnets? Number of hosts?
+2^5 = 32 subnets
+2^3 - 2 = 6 hosts
+
+6)(/30) 11111111.11111111.11111111.11111100
+
+Dotted decimal subnet mask equivalent:
+255.255.255.252
+
+Number of subnets? Number of hosts?
+2^6 = 64 subnets
+2^2 - 2 = 2 hosts
+
+Considering your answers above, which subnet masks meet the required number of minimum host addresses?
+Raspuns: /26, /25
+
+Considering your answers above, which subnet masks meets the minimum number of subnets required?
+Raspuns: /26, /27, /28, /29, /30
+
+Considering your answers above, which subnet mask meets both the required minimum number of hosts and the minimum number of subnets required?
+Raspuns: /26
+
+192.168.0.0
+Subnet Address				Prefix				Subnet Mask
+192.168.0.0				/26				255.255.255.192
+192.168.0.64				/26				255.255.255.192
+192.168.0.128				/26				255.255.255.192
+192.168.0.192				/26				255.255.255.192
+
+
