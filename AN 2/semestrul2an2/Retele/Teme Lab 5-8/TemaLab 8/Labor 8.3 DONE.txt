@@ -1,0 +1,69 @@
+Device		Interface		IP Address		Subnet Mask		Default Gateway
+Building1	G0/0			10.11.48.97		255.255.255.240		N/A
+Building1	G0/1			10.11.48.65		255.255.255.224		N/A
+Building1	S0/0/0/			10.11.48.121		255.255.255.252		N/A
+
+Building2	G0/0			10.11.48.113		255.255.255.248		N/A
+Building2	G0/1			10.11.48.1		255.255.255.192		N/A
+Building3	S0/0/0			10.11.48.122		255.255.255.252		N/A
+
+ASW-1		VLAN1			10.11.48.98		255.255.255.240		10.11.48.97
+ASW-2		VLAN1			10.11.48.66		255.255.255.224		10.11.48.65
+ASW-3		VLAN1			10.11.48.114		255.255.255.248		10.11.48.113
+ASW-4		VLAN1			10.11.48.2		255.255.255.192		10.11.48.1
+
+Host-A		NIC			10.11.48.110		255.255.255.240		10.11.48.97
+Host-B		NIC			10.11.48.94		255.255.255.224		10.11.48.65
+Host-C		NIC			10.11.48.118		255.255.255.248		10.11.48.113
+Host-D		NIC			10.11.48.62		255.255.255.192		10.11.48.1
+
+
+Part 1:
+
+Step 1.)
+How many subnets are needed in the network topology?
+Raspuns: 5
+
+Step 2. a)
+Which subnet mask will accommodate the number of IP addresses required for ASW-1?
+How many usable host addresses will this subnet support?
+Raspuns: 14(255.255.255.240)->/28
+
+Step 2. b)
+Which subnet mask will accommodate the number of IP addresses required for ASW-2?
+How many usable host addresses will this subnet support?
+Raspuns: 30(255.255.255.224)->/27
+
+Step 2. c)
+Which subnet mask will accommodate the number of IP addresses required for ASW-3?
+How many usable host addresses will this subnet support?
+Raspuns: 6(255.255.255.248)->/29
+
+Step 2.d)
+Which subnet mask will accommodate the number of IP addresses required for ASW-4?
+How many usable host addresses will this subnet support?
+Raspuns: 60(255.255.255.192)-/26
+
+Step 2.e)
+Which subnet mask will accommodate the number of IP addresses required for the connection between Building1 and Building2?
+Raspuns: 255.255.255.252/30
+
+
+Part 2:
+Step 2. 10.11.48.0/24
+
+Subnet Description	Number of Hosts Nedded		Network Address/CIDR		First Usable Host		Broadcast
+LAN-4			60				10.11.48.0/26			10.11.48.1			10.11.48.63
+LAN-2			30				10.11.48.64/27			10.11.48.65			10.11.48.95
+LAN-1			14				10.11.48.96/28			10.11.48.97			10.11.48.111
+LAN-3			6				10.11.48.112/29			10.11.48.113			10.11.48.119
+WAN			2				10.11.48.120/30			10.11.48.121			10.11.48.123	
+
+
+
+
+
+
+
+
+
