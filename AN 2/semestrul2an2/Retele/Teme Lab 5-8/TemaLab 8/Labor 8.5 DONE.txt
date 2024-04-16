@@ -1,0 +1,99 @@
+192.168.33.128/25
+
+Part 1
+
+Step 1)
+How many host addresses are available in a /25 network?
+Raspuns: 126
+What is the total number of host addresses needed in the topology diagram?
+Raspuns: 80
+How many subnets are needed in the network topology?
+Raspuns: 6
+
+Step 2)
+What is the subnet description (e.g. BR1 LAN or BR1-BR2 link)?
+Raspuns: BR1 LAN
+How many IP addresses are required in the largest subnet?
+Raspuns: 40
+What subnet mask can support that many host addresses?
+Raspuns: /26 -> 255.255.255.192
+How many total host addresses can that subnet mask support?
+Raspuns: 62
+Can you subnet the 192.168.33.128/25 network address to support this subnet?
+Raspuns: Da, se poate
+What are the network addresses that would result from this subnetting?
+Raspuns: 192.168.33.128/26 si 192.168.33.192/26
+
+Step 3)
+What is the subnet description?
+Raspuns: BR2 LAN
+How many IP addresses are required for the second largest subnet?
+Raspuns: 25
+What subnet mask can support that many host addresses?
+Raspuns: /27 -> 255.255.255.224
+How many total host addresses can that subnet mask support?
+Raspuns: 30
+Can you subnet the remaining subnet again and still support this subnet?
+Raspuns: Da, se poate
+What are the network addresses that would result from this subnetting?
+Raspuns: 192.168.33.192/27 si 192.168.33.224/27
+
+Step 4)
+What is the subnet description?
+Raspuns: BR2 IoT LAN
+How many IP addresses are required for the next largest subnet?
+Raspuns: 5
+What subnet mask can support that many host addresses?
+Raspuns: /29 -> 255.255.255.248
+How many total host addresses can that subnet mask support?
+Raspuns: 6
+Can you subnet the remaining subnet again and still support this subnet?
+Raspuns: Da, se poate
+What are the network addresses that would result from this subnetting?
+Raspuns: 192.168.33.224/29, 192.168.33.232/29, 192.168.33.240/29 si 192.168.33.248/29
+
+Step 5)
+What is the subnet description?
+Raspuns: BR1-BR2 Link
+How many IP addresses are required for the next largest subnet?
+Raspuns: 2
+What subnet mask can support that many host addresses?
+Raspuns: /30 -> 255.255.255.252
+How many total host addresses can that subnet mask support?
+Raspuns: 4
+Can you subnet the remaining subnet again and still support this subnet?
+Raspuns: Da, se poate
+What are the network addresses that would result from this subnetting?
+Raspuns: 192.168.33.248/30 sau 192.168.33.252/30
+
+
+Part 2:
+Step 1: 
+Subnet description	Number of Hosts		Network Address			First host		Broadcast
+BR1 LAN			40			192.168.33.128/25		192.168.33.129		192.168.33.191
+BR2 LAN			25			192.168.33.192/27		192.168.33.193		192.168.33.223
+BR2 IoT LAN		5			192.168.33.224/29		192.168.33.225		192.168.33.231
+BR2 CCTV LAN		4			192.168.33.232/29		192.168.33.233		192.168.33.239
+BR2 HVAC C2LAN		4			192.168.33.240/29		192.168.33.241		192.168.33.247	
+BR1-BR2 Linl		2			192.168.33.248/30		192.168.33.249		192.168.33.251
+
+
+
+Step 2:
+Device		Interface		IP Address		Subnet Mask		Device Interface
+BR1		G0/0/0			192.168.33.249		255.255.255.252		BR1-BR2 Link							
+BR1		G0/0/1			192.168.33.129		255.255.255.192		40 Host LAN						
+
+BR2		G0/0/0			192.168.33.250		255.255.255.252		BR1-BR2 Linl								
+BR2		G0/0/1			192.168.33.193		255.255.255.224		25 Host LAN							
+
+
+
+
+
+
+
+
+
+
+
