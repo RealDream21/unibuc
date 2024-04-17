@@ -180,9 +180,13 @@ compose es fs = (composeaux es fs) ++ [Equ (Variable x) t | (Equ (Variable x) t)
 
 -- evaluates a clause in a goal with a selected formula (the full program is the first argument)
 evaluatemix :: [Clause] -> Clause -> ([AtomicRel], AtomicRel, [AtomicRel]) -> [[Equ]]
-evaluatemix p (Clause bt bts) (l1, at, l2) = case (unifya at bt) of
-                                                Failure -> []
-                                                Set es -> map (compose es) (evaluatep p (substitutegl es (Goal (l1 ++ bts ++ l2))))
+evaluatemix p (Clause bt bts) (l1, at, l2) = 
+    case (unifya at bt) of
+    Failure -> []
+    Set es -> 
+        map 
+            (compose es) 
+            (evaluatep p (substitutegl es (Goal (l1 ++ bts ++ l2))))
 
 -- creates goals with selected formulas for use in the above function
 mixg :: [a] -> [([a], a, [a])]
@@ -191,16 +195,16 @@ mixg (x:xs) = ([],x,xs):(map (\(a,b,c) -> (x:a,b,c)) (mixg xs))
 
 -- evaluates a goal in a clause (the full program is the first argument)
 evaluatenc :: [Clause] -> Goal -> Clause -> [[Equ]]
-evaluatenc p (Goal ats) c = undefined
+evaluatenc p (Goal ats) c = concat (map (evaluatemix p c)(mixg ats))
 
 -- evaluates a program and a goal, assuming all the clauses in the program have already been appropriately renamed
 evaluatenp :: [Clause] -> Goal -> [[Equ]]
-evaluatenp p g = undefined
+evaluatenp p g = evaluatenp(map(renclause g) p) g
 
 -- evaluates a program and a goal
 evaluatep :: [Clause] -> Goal -> [[Equ]]
 evaluatep p (Goal []) = [[]]
-evaluatep p g = undefined
+evaluatep p g = evaluatenp (map (renclause g) p) g
 
 -- restricts the variables in a solved form to the variables that appear in a given list
 restrict :: [String] -> [Equ] -> [Equ]
@@ -210,7 +214,7 @@ restrict vs (_:es) = restrict vs es
 
 -- evaluates a program and a goal (restricting the solved form to the variables that actually appear in the goal)
 evaluate :: [Clause] -> Goal -> [[Equ]]
-evaluate p g = undefined
+evaluate p g = map(restrict(vargl g)) (evaluatep p g)
 
 -- zero term
 termz :: Term
