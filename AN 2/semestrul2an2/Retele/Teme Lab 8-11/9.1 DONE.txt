@@ -1,0 +1,109 @@
+Part 1:
+
+Step 7. b)
+What is this called?
+Raspuns: Bottleneck
+
+A variety of PDUs appears in the event list in the Simulation Panel. What is the meaning of the different colors
+Raspuns: protocoale diferite
+
+Part 2:
+
+Step 1. d)
+Why did it take so long for the HTTP PDU to appear?
+Raspuns: prima data trebuia facuta conexiunea cu serverul prin TCP
+
+Step 1.e)
+What is the section labeled?
+Raspuns:TCP
+Are these communications considered to be reliable?
+Raspuns:Da
+Record the SRC PORT, DEST PORT, SEQUENCE NUM, and ACK NUM values.
+SRC PORT = 1027
+DEST PORT = 80
+SEQUENCE NUM = 1
+ACK NUM = 1
+
+Step 1.f)
+Which TCP flags are set in this PDU?
+Raspuns: ACK si PSH
+
+Step 1. h)
+How are the port and sequence numbers different than before?
+Raspuns: sunt inversate
+
+Step 1. i)
+What information is now listed in the TCP section? How are the port and sequence numbers different from the previous two PDUs?
+Raspuns:sursa si destinatia sunt inversate, ACK NUM este 103
+
+Step 2.c)
+Are these communications considered to be reliable?
+Raspuns: da
+
+Step 2.d)
+Record the SRC PORT, DEST PORT, SEQUENCE NUM, and ACK NUM values.
+Raspuns:
+SRC PORT = 1027
+DEST PORT = 21
+SEQUENCE NUM = 0
+ACK NUM = 0
+What is the value in the flag field?
+Raspuns: SYN
+
+Step 2.f)
+How are the port and sequence numbers different than before?
+Raspuns: sunt inversate
+
+Step 2.g)
+How are the port and sequence numbers different from the previous results?
+Raspuns: porturile sunt la fel, dar SEQ NUM SI ACK NUM sunt ambele 1
+
+Step 2.i)
+What is the message from the server?
+Raspuns: Welcome to PT Ftp server
+
+Step 3.d)
+What is the Layer 4 protocol?
+Raspuns: UDP
+Are these communications considered to be reliable?
+Raspuns: nu
+
+Step 3.e)
+SRC PORT = 1026
+DEST PORT = 53
+Why are there no sequence and acknowledgement numbers?
+Raspuns: UDP nu trebuie sa seteze o comunicare reliable
+
+
+Step 3.g)
+How are the port and sequence numbers different than before?
+Raspuns: sunt inversate port sursa cu port destinatie
+What is the last section of the PDU called? What is the IP address for the name multiserver.pt.ptu?
+Raspuns: DNS Answer, adresa ip pentru multiserver.pt.ptu este 192.168.1.254
+
+Step 4.d)
+What transport layer protocol does email traffic use?
+Raspuns: Layer 4, TCP
+Are these communications considered to be reliable?
+Raspuns:da
+
+Step 4.e)
+SRC PORT = 1026
+DEST PORT = 25
+SEQUENCE NUM = 0
+ACK NUM = 0
+FLAG = SYN
+
+Step 4.g)
+How are the port and sequence numbers different than before?
+Raspuns: sunt inversate intre ele
+
+Step 4.h)
+How are the port and sequence numbers different from the previous two results?
+Raspuns: sunt iar inversate
+
+Step 4.i)
+How are the port and sequence numbers different from the previous two PDUs?
+Raspuns: inversate
+What email protocol is associated with TCP port 25? What protocol is associated with TCP port 110?
+Raspuns: nu stiu
