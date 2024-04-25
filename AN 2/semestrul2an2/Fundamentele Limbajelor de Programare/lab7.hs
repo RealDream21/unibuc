@@ -84,7 +84,11 @@ test_beta2 = df_leaves (reductree term2)
 -- a branch of given length in a tree
 branch :: Int -> TermTree -> Maybe [LambdaTerm]
 branch 0 (TermTree t _) = Just [t]
-branch 1
+branch n (TermTree t l) = 
+    case mapMaybe(branch (n - 1)) l of
+        [] -> Nothing
+        (b: )
+
                                 
 testbranch1 = branch 2 (reductree term1)
                                 
