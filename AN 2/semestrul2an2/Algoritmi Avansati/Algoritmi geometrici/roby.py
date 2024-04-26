@@ -13,7 +13,7 @@ for _ in range(n):
     puncte.append(tuplu)
 
 for i, punct in enumerate(puncte):
-    if(i == 1):
+    if(i == 0):
         continue
     xp, yp = puncte[i - 1]
     xq, yq = puncte[i]

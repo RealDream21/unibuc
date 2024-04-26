@@ -15,5 +15,3 @@ while t:
     elif(orientare == 0):
         print("TOUCH")
     t -= 1
-
-input()
