@@ -68,7 +68,7 @@ int main()
     }
 
 
-    map<pair<int, int>, bool> inFrontiera;
+
 
     for(int i = 0; i < frontiera_jos.size(); i++){
         inFrontiera[frontiera_jos[i]] = true;
