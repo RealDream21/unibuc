@@ -1,0 +1,28 @@
+Part 1. Step 1. b)
+DESTINATION		AVG ROUND TRIP		TTL
+192.168.1.10		4 ms			128
+2001:db8:acad:1::10	2 ms			128
+192.168.1.1(R1)		0 ms			255
+192.168.1.2(S1)		0 ms			255
+2001:db8:acad:1::2(S1)	0 ms			255
+64.100.0.2(R1)		1 ms			255
+2001:db8:acad::1(ISP)	0 ms			254
+209.165.200.225(ISP G0/0/1)	unreachable
+2001:db8:acad:200::225 (ISP 50/0/1) time out
+209.165.200.226			unreachable
+2001:db8:acad:200::226		time out
+
+Part 1. Step 2)
+What are the ping results from S1 to ISP and External?
+Timeout si unreachable
+
+Reflection Questions
+1. What could prevent ping or traceroute responses from reaching the originating device beside network connectivity issues?
+Raspuns: Blocarea pachetelor ICMP printr-ul firewall
+
+2. If you ping a non-existent address on the remote network, such as 209.165.200.227, what is the message displayed by the ping command? What does this mean? If you ping a valid host address and receive this response, what should you check?
+Raspuns: primim destination host unreachable. Daca aceasta este o adresa valida si primim acest mesaj ar trebui sa verificam legatura cu
+router-ul extern
+
+3. If you ping an address that does not exist in any network in your topology, such as 192.168.5.3, from a Windows-based PC, what is the message displayed by the ping command? What does this message indicate?
+Raspuns: primim destination host unreachable. Asta inseamna ca nu a putut fi gasit ip-ul pe o retea externa
