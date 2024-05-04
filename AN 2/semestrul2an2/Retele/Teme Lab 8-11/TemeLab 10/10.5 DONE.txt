@@ -1,0 +1,55 @@
+DEVICE		INTERFACE		IP ADDR					DEFAULT GATEWATY
+PC1		NIC			10.10.1.99	255.255.255.224		10.10.1.97
+PC2		NIC			2001:DB8:1:1::2				FE80::1				
+PC3		NIC			10.10.1.19	255.255.25.240		10.10.1.17
+PC4		NIC			2001:DB8:1:4::2				FE80::2
+
+
+Part 1. Step 2. a)
+What is the last successful IPv4 address that was reached?
+10.10.1.97
+
+Step 2. b)
+What is the last successful IPv4 address that was reached?
+10.10.1.17
+
+Step 2. f)
+What is the other?
+10.10.1.6 -> Legatura cu R2
+
+Step 2. g)
+What are they?
+10.10.1.4/30 si 10.10.1.6/32
+
+pentru R3:
+f) 10.10.1.10
+g) 10.10.1.8/30 si 10.10.1.10/32
+
+
+Step 2. j)
+Serial 0/0/0 -> 10.10.1.2
+Serial 0/0/1 -> 10.10.1.9
+
+Step 3)
+What is the error?
+IP-ul de la serial 0/0/0 din R2 este gresit 
+What solution would you propose to correct the problem?
+Sa configuram IP-ul corect la serial 0/0/0 pe R2
+
+Part 2. Step 2.a)
+What is the last successful IPv6 address that was reached?
+2001:db8:1:3::2
+
+Part 2. Step 2. c)
+What is the last successful IPv6 address that was reached?
+Nu ajunge la nicio alta adresa IPv6
+
+
+Part 2. Step 2. d)
+Is there a discrepancy? Da, este FE80::3
+
+Step 3)
+What is the error?
+PC4 are default gateway diferit fata de cel configurat n R3
+What solution would you propose to correct the problem?
+Sa schimbam default gatway din PC4
