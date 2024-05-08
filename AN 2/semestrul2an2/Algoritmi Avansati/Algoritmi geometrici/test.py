@@ -6,13 +6,14 @@ def stangaSauDreapta(xp, yp, xq, yq, xr, yr):
     det = xq * yr + xr * yp + xp * yq - xq * yp - xr * yq - xp * yr
     return det
 
-# n = int(input().strip())
-n = randint(10, 30)
+n = int(input().strip())
+#n = randint(100, 200)
 
 puncte = []
 
 for _ in range(n):
-    punct = (x, y) = [randint(0, 50), randint(0, 50)]
+    #punct = (x, y) = [randint(-50, 50), randint(-50, 50)]
+    punct = (x, y) = [int(x) for x in input().split()]
     puncte.append(punct)
 #
 puncte_salvate = puncte.copy()
