@@ -1,0 +1,11 @@
+Part 2)
+1) show ip route, show protocols
+2) show ip interface brief
+3) show interfaces, show ip interface brief
+4) show version
+5) arp, show interfaces
+6) show version, show flash
+7) show users
+8) show interfaces
+9) show ip route
+10) GigabitEthgernet 0/0, Serial 0/0/1

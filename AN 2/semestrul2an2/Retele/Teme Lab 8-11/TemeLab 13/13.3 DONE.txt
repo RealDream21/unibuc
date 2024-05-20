@@ -1,0 +1,26 @@
+Part 1
+Step 1)
+What message is displayed? Destination host unreachable
+
+Step 2)
+b) 10.0.0.25
+c) 10.100.100.6
+
+Step 3)
+a)
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     unassigned      YES unset  administratively down down 
+GigabitEthernet0/1     unassigned      YES unset  administratively down down 
+GigabitEthernet0/2     unassigned      YES unset  administratively down down 
+Serial0/0/0            10.100.100.17   YES manual up                    up 
+Serial0/0/1            10.100.100.6    YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+b)Serial 0/0/0 este pus gresit
+c)Solutia este sa setam Serial 0/0/0 ca 10.100.100.9/30
+
+Step 4)
+b) Da, comanda a avut succes
+
+Part 2
+c) Comanda nu a mai trecut prin 10.0.0.254
+

@@ -1,0 +1,19 @@
+Step 1)
+a)IPv4 pentru PC-01 este gresit => il schimb
+b)Ping la default gateway merge. Ping la web server merge. Unreachable PC-A. Unreachable PC-B
+Tracert se blocheaza la 209.165.200.225
+c)Merge si cu ip address, dar si cu www.cisco.pka
+
+Step 2)
+a)Default gateway setat gresit, il schimb
+b)Toate pingurile merg
+c)www.cisco.pka merge, merge si cu IP
+
+Step 3)
+a) E ok
+b) Nu merge ping la default gatway => il rezolv prin ssh de la PC-01 si pun ip bun.
+	Pe gigabit 0/1 IP addr este configurat gresit => Il modific
+c) Nu merge www.cisco.pka => modific DNS server 
+
+Step3)
+c) Nu merge www.cisco.pka, observ ca DNS server este setat gresit => il schimb si merge

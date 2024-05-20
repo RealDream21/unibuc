@@ -1,0 +1,11 @@
+Part 2 Reflection Questions)
+1) show ip route, show interfaces
+2) show ip interface brief
+3) show interfaces, show ip interface brief, show protocols
+4) show version
+5) show arp, show interfaces, show ip route, show ip interface brief, show protocols
+6) show flash, show version
+7) show users
+8) show interfaces
+9) show ip route
+10) Gigabitethernet 0/0, serial 0/0/1

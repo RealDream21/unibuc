@@ -1,0 +1,14 @@
+Part 1
+Step 3)
+serviciul DNS-ul nu este setat(si de asta nu ar functiona nslookup).
+Solutia a fost sa configurez ip-ul de DNS de la PC1 si a mers dupa si site-ul dualstackserver.pka
+
+Part 2
+Step 1)
+Primul gand este sa verific conexiunea lui R1 cu Internet, configurez IPv6 pentru R1 dar tot nu merge. Internet nu pot configura
+asa ca trec  la server. Observ ca are IPv6 default gateway gresit => setez si merge
+Verific si merge FTP
+
+Part 3
+Step 1)
+PC3 nu are interfata IPv4. Verific daca cea de la PC2 este configurata si nu este configurata, default gateway nu este pus asa ca il pun eu
