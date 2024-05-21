@@ -1,0 +1,107 @@
+package cabinet.repository;
+
+import cabinet.config.DatabaseConfiguration;
+import cabinet.domain.Client;
+import cabinet.domain.Persoana;
+
+import javax.xml.crypto.Data;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.OptionalInt;
+
+public class ClientRepository {
+    public void insert(String nume, String email, String numarTelefon, boolean asigurareMedicala)
+    {
+        String comandaInsert = "INSERT INTO client(nume, email, numarTelefon, asigurareMedicala) VALUES (?, ?, ?, ?)";
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+
+        try{
+            PreparedStatement preparedStatement = conexiune.prepareStatement(comandaInsert);
+            preparedStatement.setString(1, nume);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, numarTelefon);
+            preparedStatement.setBoolean(4, asigurareMedicala);
+            preparedStatement.execute();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(Client client)
+    {
+        String comandaInsert = "INSERT INTO client(nume, email, numarTelefon, asigurareMedicala) VALUES (?, ?, ?, ?)";
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+        try{
+            PreparedStatement preparedStatement = conexiune.prepareStatement(comandaInsert);
+            preparedStatement.setString(1, client.getNume());
+            preparedStatement.setString(2, client.getEmail());
+            preparedStatement.setString(3, client.getNumarTelefon());
+            preparedStatement.setBoolean(4, client.getAsigurareMedicala());
+            preparedStatement.execute();
+        }catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Optional<Client> getByid(int id){
+        String comandaCautare = "SELECT * FROM client WHERE id = ?";
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+
+        try {
+            PreparedStatement preparedStatement = conexiune.prepareStatement(comandaCautare);
+            preparedStatement.setInt(1, id);
+            ResultSet rezultat = preparedStatement.executeQuery();
+            return mapToClient(rezultat);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Client> mapToClient(ResultSet rezultat)throws SQLException{
+        if(rezultat.next()){
+            String nume = rezultat.getString("nume");
+            String email = rezultat.getString("email");
+            String numarTelefon = rezultat.getString("numarTelefon");
+            boolean asigurareMedicala = rezultat.getBoolean("asigurareMedicala");
+            return Optional.of(new Client(nume, email, numarTelefon, asigurareMedicala));
+        }
+        return Optional.empty();
+    }
+
+    public void updateAsigurare(String nume, String email, boolean statutNouAsigurare)
+    {
+        String comandaUpdate = "UPDATE client SET asigurareMedicala = ? WHERE nume = ? AND email = ?";
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+
+        try{
+            PreparedStatement preparedStatement = conexiune.prepareStatement(comandaUpdate);
+            preparedStatement.setBoolean(1, statutNouAsigurare);
+            preparedStatement.setString(2, nume);
+            preparedStatement.setString(3, email);
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(String nume, String email, String numarTelefon)
+    {
+        String comandaDelete = "DELETE FROM client WHERE nume = ? AND email = ? AND numarTelefon = ?";
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+
+        try{
+            PreparedStatement preparedStatement = conexiune.prepareStatement(comandaDelete);
+            preparedStatement.setString(1, nume);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, numarTelefon);
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+}
