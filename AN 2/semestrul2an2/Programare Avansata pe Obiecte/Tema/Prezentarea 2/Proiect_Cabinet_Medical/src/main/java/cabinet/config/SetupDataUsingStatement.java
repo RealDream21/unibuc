@@ -48,4 +48,25 @@ public class SetupDataUsingStatement {
         }
     }
 
+    public void createProgramareConsultTable(){
+        String comandaTabel = """
+                CREATE TABLE programare_consult(
+                    id int PRIMARY KEY AUTO_INCREMENT,
+                    data DATE,
+                    cost DOUBLE(10, 3),
+                    MedicId int,
+                    ClientId int,
+                    FOREIGN KEY (MedicId) REFERENCES medic(id),
+                    FOREIGN KEY (ClientId) REFERENCES client(id)
+                );
+                """;
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+        try{
+            Statement statement = conexiune.createStatement();
+            statement.execute(comandaTabel);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

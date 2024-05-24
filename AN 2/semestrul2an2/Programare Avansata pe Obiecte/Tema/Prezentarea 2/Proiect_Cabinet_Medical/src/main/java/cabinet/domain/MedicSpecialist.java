@@ -4,7 +4,7 @@ public class MedicSpecialist extends Medic{
     private static final double COTIZATIE_MEDIC_SPECIALIST = 2.12;
     Specializare specializare;
 
-    MedicSpecialist(String nume, String adresa, String numarTelefon, Specializare specializare)
+    public MedicSpecialist(String nume, String adresa, String numarTelefon, Specializare specializare)
     {
         super(nume, adresa, numarTelefon);
         this.specializare = specializare;
@@ -17,5 +17,9 @@ public class MedicSpecialist extends Medic{
     @Override
     public double getCotizatie(){
         return COTIZATIE_MEDIC_SPECIALIST;
+    }
+
+    public Specializare getSpecializare() {
+        return specializare;
     }
 }

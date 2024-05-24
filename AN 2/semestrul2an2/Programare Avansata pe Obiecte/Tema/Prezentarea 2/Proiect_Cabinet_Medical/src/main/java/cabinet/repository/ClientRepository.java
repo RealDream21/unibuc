@@ -4,6 +4,7 @@ import cabinet.config.DatabaseConfiguration;
 import cabinet.domain.Client;
 import cabinet.domain.Persoana;
 
+import javax.swing.text.Style;
 import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,6 +48,26 @@ public class ClientRepository {
         }
     }
 
+    public Optional<Integer> getId(String nume, String email, String numarTelefon){
+        String comandaCautare = "SELECT id FROM client WHERE nume = ? AND email = ? AND numarTelefon = ?";
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+        try{
+            PreparedStatement preparedStatement = conexiune.prepareStatement(comandaCautare);
+            preparedStatement.setString(1, nume);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, numarTelefon);
+            ResultSet rezultat = preparedStatement.executeQuery();
+            if(rezultat.next()){
+                Integer id = rezultat.getInt("id");
+                return Optional.of(id);
+            }
+            return Optional.empty();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public Optional<Client> getByid(int id){
         String comandaCautare = "SELECT * FROM client WHERE id = ?";
         Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
@@ -61,6 +82,7 @@ public class ClientRepository {
         }
         return Optional.empty();
     }
+
 
     private Optional<Client> mapToClient(ResultSet rezultat)throws SQLException{
         if(rezultat.next()){
