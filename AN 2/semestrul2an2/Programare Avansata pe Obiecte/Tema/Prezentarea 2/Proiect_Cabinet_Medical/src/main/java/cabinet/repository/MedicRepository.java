@@ -2,6 +2,7 @@ package cabinet.repository;
 
 import cabinet.config.DatabaseConfiguration;
 import cabinet.domain.*;
+import cabinet.service.AuditService;
 
 import javax.swing.plaf.nimbus.State;
 import javax.xml.crypto.Data;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 public class MedicRepository {
 
+    private static final AuditService auditService = AuditService.getInstance();
     private static String specializareToString(Specializare specializare)
     {
         return specializare.toString();
@@ -28,6 +30,8 @@ public class MedicRepository {
             preparedStatement.setString(3, numarTelefon);
             preparedStatement.setString(4, specializareToString(specializare));
             preparedStatement.execute();
+            String line = "Am inserat medicul specialist " + nume + " " + email + " " + numarTelefon + " " + specializare.toString();
+            auditService.writeLine("log.csv", line);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -43,6 +47,8 @@ public class MedicRepository {
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, numarTelefon);
             preparedStatement.execute();
+            String line = "Am inserat medicul generalist " + nume + " " + email + " " + numarTelefon;
+            auditService.writeLine("log.csv", line);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -57,6 +63,8 @@ public class MedicRepository {
             preparedStatement.setString(2, medicGeneralist.getEmail());
             preparedStatement.setString(3, medicGeneralist.getNumarTelefon());
             preparedStatement.execute();
+            String line = "Am inserat medicul generalist " + medicGeneralist.getNume() + " " + medicGeneralist.getEmail() + " " + medicGeneralist.getNumarTelefon();
+            auditService.writeLine("log.csv", line);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -72,6 +80,8 @@ public class MedicRepository {
             preparedStatement.setString(3, medicSpecialist.getNumarTelefon());
             preparedStatement.setString(4, medicSpecialist.getSpecializare().toString());
             preparedStatement.execute();
+            String line = "Am inserat medicul specialist " + medicSpecialist.getNume() + " " + medicSpecialist.getEmail() + " " + medicSpecialist.getNumarTelefon() + " " + medicSpecialist.getSpecializare().toString();
+            auditService.writeLine("log.csv", line);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -159,6 +169,8 @@ public class MedicRepository {
             preparedStatement.setString(3, numarTelefon);
             preparedStatement.setString(4, email);
             preparedStatement.executeUpdate();
+            String line = "Am updatat specializarea medicului " + nume + " " + email + " " + numarTelefon + " in " + specializare.toString();
+            auditService.writeLine("log.csv", line);
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -173,6 +185,8 @@ public class MedicRepository {
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, numarTelefon);
             preparedStatement.executeUpdate();
+            String line = "Am sters medicul " + nume + " " + email + " " + numarTelefon;
+            auditService.writeLine("log.csv", line);
         }catch(SQLException e){
             e.printStackTrace();
         }

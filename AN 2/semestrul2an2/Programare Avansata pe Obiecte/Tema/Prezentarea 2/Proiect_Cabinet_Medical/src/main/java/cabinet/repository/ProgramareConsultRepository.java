@@ -4,6 +4,7 @@ import cabinet.config.DatabaseConfiguration;
 import cabinet.domain.Client;
 import cabinet.domain.Medic;
 import cabinet.domain.ProgramareConsult;
+import cabinet.service.AuditService;
 
 import java.sql.*;
 import java.time.Instant;
@@ -15,6 +16,8 @@ import java.util.spi.CalendarDataProvider;
 
 public class ProgramareConsultRepository {
 
+
+    private static AuditService auditService = AuditService.getInstance();
     public void insert(Client client, Medic medic)
     {
         String comandaInsert = "INSERT INTO programare_consult(data, cost, MedicId, ClientId) VALUES(?, ?, ?, ?)";
@@ -34,6 +37,8 @@ public class ProgramareConsultRepository {
             preparedStatement.setInt(4,clientRepository.getId(client.getNume(), client.getEmail(), client.getNumarTelefon()).get());
 
             preparedStatement.executeUpdate();
+            String line = "Am inserta programarea dintre medicul: " + medic.getNume() + " si clientul: " + client.getNume() + " la data de " + new Date(dataActuala);
+            auditService.writeLine("log.csv", line);
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -103,6 +108,8 @@ public class ProgramareConsultRepository {
             preparedStatement.setInt(3, ClientId.get());
             preparedStatement.setInt(4, MedicId.get());
             preparedStatement.executeUpdate();
+            String line = "Am schimbat data programerii de pe data  " + dataVeche + " la data " + dataNoua + " dintre medicul: " + medic.getNume() + " si clientul " + client.getNume();
+            auditService.writeLine("log.csv", line);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -128,6 +135,8 @@ public class ProgramareConsultRepository {
             preparedStatement.setInt(2, MedicId.get());
             preparedStatement.setDate(3, data);
             preparedStatement.executeUpdate();
+            String line = "Am sters programarea dintre medicul " + medic.getNume() + " si clientul " + client.getNume() + " de la data de " + data.toString();
+            auditService.writeLine("log.csv", line);
         }catch (SQLException e)
         {
             e.printStackTrace();

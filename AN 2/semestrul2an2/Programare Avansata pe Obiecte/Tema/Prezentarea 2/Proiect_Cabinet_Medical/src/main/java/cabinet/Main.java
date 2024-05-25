@@ -1,19 +1,17 @@
 package cabinet;
 
 import cabinet.config.DatabaseConfiguration;
-import cabinet.config.SetupDataUsingStatement;
-import cabinet.domain.*;
+import cabinet.config.SetupDatabase;
 import cabinet.repository.ClientRepository;
 import cabinet.repository.MedicRepository;
 import cabinet.repository.ProgramareConsultRepository;
+import cabinet.repository.ProgramareUrgentaRepository;
+import cabinet.service.DatabaseInteractiveMenu;
+import cabinet.service.MeniuClienti;
+import cabinet.service.MeniuMedici;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.List;
-import java.util.spi.CalendarDataProvider;
 
 
 /*
@@ -39,24 +37,7 @@ public class Main {
 //        SingletonMeniuUtilizare meniu = SingletonMeniuUtilizare.getInstance();
 //        meniu.enterMeniu();
         Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
-        SetupDataUsingStatement setupDataUsingStatement = new SetupDataUsingStatement();
-//        setupDataUsingStatement.createMedicTable();
-//        setupDataUsingStatement.createClientTable();
-//        setupDataUsingStatement.createProgramareConsultTable();
-
-        MedicRepository medicRepository = new MedicRepository();
-        ClientRepository clientRepository = new ClientRepository();
-        ProgramareConsultRepository programareConsultRepository = new ProgramareConsultRepository();
-
-        //medicRepository.insert("Ionel", "ionel@yahoo.com", "0725670003", Specializare.ORTODONT);
-        //clientRepository.insert("Costel", "costel@yahoo.com", "0722369550", false);
-        //medicRepository.insert("Paul", "paul@yahoo.com", "0724510600");
-
-        programareConsultRepository.updateData(clientRepository.getByid(1).get(), medicRepository.getByid(1).get(),new Date(Instant.now().toEpochMilli()), new Date(Instant.ofEpochMilli(1000).toEpochMilli()));
-
-        programareConsultRepository.delete(clientRepository.getByid(1).get(), medicRepository.getByid(1).get(), new Date(Instant.ofEpochMilli(1000).toEpochMilli()));
-
-        System.out.println(programareConsultRepository.getProgramariPersoana(clientRepository.getByid(1).get()).get());
-
+        DatabaseInteractiveMenu databaseInteractiveMenu = DatabaseInteractiveMenu.getInstance();
+        databaseInteractiveMenu.enterMenu();
     }
 }

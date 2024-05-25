@@ -1,13 +1,17 @@
 package cabinet.config;
 
-import javax.xml.crypto.Data;
+import cabinet.service.AuditService;
+
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.util.Date;
 
-public class SetupDataUsingStatement {
-    public void createClientTable() {
+public class SetupDatabase {
+
+    private final AuditService auditService = AuditService.getInstance();
+    public void createClientTable() throws SQLException {
         String comanda =
                 """
                 CREATE TABLE IF NOT EXISTS client(
@@ -22,13 +26,17 @@ public class SetupDataUsingStatement {
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         try{
             Statement statement = connection.createStatement();
-            statement.execute(comanda );
+            statement.execute(comanda);
+
+            String linie = "Creare tabel client";
+            auditService.writeLine("log.csv", linie);
         }catch(SQLException e){
             e.printStackTrace();
+            throw e;
         }
     }
 
-    public void createMedicTable() {
+    public void createMedicTable() throws SQLException {
         String comandaTabel = """
                 CREATE TABLE IF NOT EXISTS medic(
                     id int PRIMARY KEY AUTO_INCREMENT,
@@ -43,12 +51,15 @@ public class SetupDataUsingStatement {
         try {
             Statement statement = conexiune.createStatement();
             statement.execute(comandaTabel);
+            String linie = "Creare tabel medic";
+            auditService.writeLine("log.csv", linie);
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
     }
 
-    public void createProgramareConsultTable(){
+    public void createProgramareConsultTable() throws SQLException {
         String comandaTabel = """
                 CREATE TABLE programare_consult(
                     id int PRIMARY KEY AUTO_INCREMENT,
@@ -57,15 +68,46 @@ public class SetupDataUsingStatement {
                     MedicId int,
                     ClientId int,
                     FOREIGN KEY (MedicId) REFERENCES medic(id),
-                    FOREIGN KEY (ClientId) REFERENCES client(id)
+                    FOREIGN KEY (ClientId) REFERENCES client(id),
+                    UNIQUE (data, MedicId, ClientId)
                 );
                 """;
         Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
         try{
             Statement statement = conexiune.createStatement();
             statement.execute(comandaTabel);
+            String linie = "Creare tabel programari consultatii";
+            auditService.writeLine("log.csv", linie);
         }catch (SQLException e){
             e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void createProgramareUrgentaTable() throws SQLException {
+        String comandaTabel = """
+                CREATE TABLE programare_urgenta(
+                    id int PRIMARY KEY AUTO_INCREMENT,
+                    data DATE,
+                    gradUrgenta int,
+                    cost DOUBLE(10, 3),
+                    MedicId int,
+                    ClientId int,
+                    FOREIGN KEY (MedicId) REFERENCES medic(id),
+                    FOREIGN KEY (ClientId) REFERENCES client(id),
+                    CHECK (gradUrgenta >= 0 AND gradUrgenta <= 10),
+                    UNIQUE(data, gradUrgenta, MedicId,ClientId)
+                );
+                """;
+        Connection conexiune = DatabaseConfiguration.getDatabaseConnection();
+        try{
+            Statement statement = conexiune.createStatement();
+            statement.execute(comandaTabel);
+            String linie = "Creare tabel programari de urgenta";
+            auditService.writeLine("log.csv", linie);
+        }catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 
