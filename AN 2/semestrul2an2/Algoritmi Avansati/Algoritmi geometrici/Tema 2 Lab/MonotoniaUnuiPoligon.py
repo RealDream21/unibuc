@@ -27,8 +27,7 @@ def x_monoton():
             drum_1.append(puncte[i])
         if puncte[i] == cel_mai_din_dreapta and len(drum_1) != 0:
             break
-        i += 1
-        i = i % n
+        i = (i + 1) % n
 
     i -= 1
     while True:#calculam drumul de sus
@@ -38,8 +37,7 @@ def x_monoton():
             drum_2.append(puncte[i])
         if puncte[i] == cel_mai_din_stanga and len(drum_2) != 0:
             break
-        i += 1
-        i = i % n
+        i = (i + 1) % n
 
     diferente_drum_1 = []
     diferente_drum_2 = []
@@ -50,6 +48,7 @@ def x_monoton():
 
     for i in range(len(diferente_drum_1) - 1):
         if semn(diferente_drum_1[i + 1]) != semn(diferente_drum_1[i]):
+            print(diferente_drum_1[i + 1], diferente_drum_1[i], drum_1[i + 1], drum_1[i])
             return "NO"
     for i in range(len(diferente_drum_2) - 1):
         if(semn(diferente_drum_2[i + 1]) != semn(diferente_drum_2[i])):
@@ -71,7 +70,7 @@ def y_monoton():
         i += 1
         i = i % n
 
-    i -= 1
+    #i -= 1
     while True:#calculam drumul din dreapta
         if puncte[i] == cel_mai_de_jos:
             drum_2.append(puncte[i])

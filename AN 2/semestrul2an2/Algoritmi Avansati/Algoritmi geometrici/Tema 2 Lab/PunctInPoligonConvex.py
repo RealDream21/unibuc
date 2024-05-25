@@ -65,8 +65,21 @@ def rezolva(punct_test):
                 dr = m
         return st
     
+
     i = gaseste_indice_pi(punct_test)
-    sgn = cross_product(puncte[i], puncte[i + 1], punct_test)
+    #testam edge case
+    rez = stangaSauDreapta(puncte[i][0], puncte[i][1], puncte[(i + 1)%len(puncte)][0], puncte[(i + 1) %len(puncte)][1], xr, yr)
+    if rez == 0:
+        return "BOUNDARY"
+    if rez < 0: 
+        return "OUTSIDE"
+    elif rez > 0:
+        rez1 = stangaSauDreapta(puncte[(i+1)%len(puncte)][0], puncte[(i+1)%len(puncte)][1], puncte[(i+2)%len(puncte)][0], puncte[(i+2)%len(puncte)][1], xr, yr)
+        rez2 = stangaSauDreapta(puncte[(i-1)%len(puncte)][0], puncte[(i-1)%len(puncte)][1], puncte[i][0], puncte[i][1], xr, yr)
+        if rez1 == 0 or rez2 == 0:
+            return "BOUNDARY"
+
+    sgn = cross_product(puncte[i], puncte[(i + 1)%len(puncte)], punct_test)
     if(sgn < 0):
         return "OUTSIDE"
     elif (sgn > 0):
