@@ -2,6 +2,9 @@
 *.in
 *.out
 *.o
+*.png
+*.jpeg
+*.jpg
 ############# MY STUFF ###########
 
 
