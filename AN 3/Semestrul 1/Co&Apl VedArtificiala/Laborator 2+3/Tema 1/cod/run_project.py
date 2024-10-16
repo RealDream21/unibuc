@@ -21,12 +21,13 @@ params = Parameters(image_path)
 image_path = os.getcwd()
 image_path = os.path.join(image_path, 'Tema 1')
 image_path = os.path.join(image_path, 'data')
-image_path = os.path.join(image_path, 'colectie')
-#image_path = os.path.join(image_path, 'cat')
+#image_path = os.path.join(image_path, 'colectie')
+image_path = os.path.join(image_path, 'test')
+image_path = os.path.join(image_path, 'dog')
 
 params.small_images_dir = image_path
 # tipul imaginilor din director
-params.image_type = 'png'
+params.image_type = 'jpg'
 # numarul de piese ale mozaicului pe orizontala
 # pe verticala vor fi calcultate dinamic a.i sa se pastreze raportul
 params.num_pieces_horizontal = 100
@@ -39,7 +40,7 @@ params.layout = 'caroiaj'
 # optiuni: 'aleator', 'distantaCuloareMedie'
 params.criterion = 'distantaCuloareMedie'
 # daca params.layout == 'caroiaj', sa se foloseasca piese hexagonale
-params.hexagon = False
+params.hexagon = True
 img_mosaic = build_mosaic(params)
 img_mosaic=cv.resize(img_mosaic,(1000,657))
 cv.imshow('image', img_mosaic)
