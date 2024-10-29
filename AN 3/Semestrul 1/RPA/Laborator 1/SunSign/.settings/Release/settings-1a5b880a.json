@@ -1,4 +1,4 @@
-﻿{
+{
   "UiPath.UiAutomation.Activities.Generic.DelayBeforeMS": "200",
   "UiPath.UiAutomation.Activities.Generic.DelayAfterMS": "300",
   "UiPath.UiAutomation.Activities.Generic.TimeoutMS": "30000",
@@ -16,12 +16,6 @@
   "UiPath.UiAutomation.Activities.Browser.UserDataFolderMode": "Automatic",
   "UiPath.UiAutomation.Activities.Browser.UserDataFolderPath": "",
   "UiPath.UiAutomation.Activities.Browser.RuntimeBrowser": "None",
-  "UiPath.UiAutomation.Activities.Browser.ExtraCmdLineArgs_Chrome": "",
-  "UiPath.UiAutomation.Activities.Browser.ExtraCmdLineArgs_Edge": "",
-  "UiPath.UiAutomation.Activities.Browser.CustomExePath_Chrome": "",
-  "UiPath.UiAutomation.Activities.Browser.CustomExePath_Edge": "",
-  "UiPath.UiAutomation.Activities.Browser.EnableOpenBrowserRetry_Chrome": "False",
-  "UiPath.UiAutomation.Activities.Browser.EnableOpenBrowserRetry_Edge": "False",
   "UiPath.UiAutomation.Activities.Browser.OpenBrowserTimeoutSeconds": "60",
   "UiPath.UiAutomation.Activities.RobotLogging.LogTargetInfo": "False",
   "UiPath.UiAutomation.Activities.Callout.Timer": "0",
@@ -33,8 +27,6 @@
   "UiPath.UiAutomation.Activities.KeyboardEvents.EmptyField": "False",
   "UiPath.UiAutomation.Activities.KeyboardEvents.SimulateType": "False",
   "UiPath.UiAutomation.Activities.SAP.EnforceHardTimeout": "False",
-  "UiPath.UiAutomation.Activities.SAP.SapAdditionalScaling": "True",
-  "UiPath.UiAutomation.Activities.SAP.EnableSapMonitoring": "False",
   "UiPath.UiAutomation.Activities.SendHotkey.SendWindowMessages": "False",
   "UiPath.UiAutomation.Activities.MouseEvents.SendWindowMessages": "False",
   "UiPath.UiAutomation.Activities.MouseEvents.SimulateClick": "False",

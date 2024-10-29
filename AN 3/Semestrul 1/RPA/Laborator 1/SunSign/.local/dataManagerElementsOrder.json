@@ -3,23 +3,23 @@
     {
       "Path": null,
       "SortBy": 0,
-      "VariablesSectionElementsOrder": [],
+      "VariablesSectionElementsOrder": null,
       "ArgumentsSectionElementsOrder": null,
-      "ConstantsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": null,
       "AddedNamespaces": null
     },
     {
       "Path": "Main.xaml",
       "SortBy": 0,
       "VariablesSectionElementsOrder": [
-        "SiteExists&Sequence_2",
-        "YearOfBirth&Sequence_2",
-        "MonthOfBirth&Sequence_2",
-        "DayOfBirth&Sequence_2",
-        "SiteURL&Sequence_2"
+        "SIteExists&Sequence_1",
+        "YearOfBirth&Sequence_1",
+        "MonthOfBirth&Sequence_1",
+        "SiteURL&Sequence_1",
+        "DayOfBirth&Sequence_1"
       ],
-      "ArgumentsSectionElementsOrder": [],
-      "ConstantsSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": null,
       "AddedNamespaces": null
     }
   ]
