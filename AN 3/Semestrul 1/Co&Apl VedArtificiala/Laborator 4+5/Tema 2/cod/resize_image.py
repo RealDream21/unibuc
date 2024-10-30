@@ -80,6 +80,19 @@ def decrease_width(params: Parameters, num_pixels):
     cv.destroyAllWindows()
     return img
 
+def amplify_content(params: Parameters):
+    original_image = params.image.copy()
+    scaled_image = cv.resize(params.image, (0, 0), fx = params.factor_amplification, fy = params.factor_amplification)
+    params.image = scaled_image.copy()
+    params.num_pixels_width = scaled_image.shape[1] - original_image.shape[1]
+    resized_image = decrease_width(params, params.num_pixels_width)
+    params.num_pixel_height = scaled_image.shape[0] - original_image.shape[0]
+    params.image = resized_image
+    resized_image = decrease_height(params, params.num_pixel_height)
+    params.image = original_image
+    return resized_image
+
+
 def decrease_height(params: Parameters, num_pixels):
     params.image = np.rot90(params.image, k = 1)
     resized_image_r = decrease_width(params, num_pixels)
@@ -89,8 +102,36 @@ def decrease_height(params: Parameters, num_pixels):
     return resized_image
 
 def delete_object(params: Parameters, x0, y0, w, h):
-    #TODO: scrieti codul
-    return None
+    img = params.image.copy()
+    if w < h:
+        num_pixels = w
+        for i in range(num_pixels):
+            E=compute_energy(img)
+            E2 = np.zeros(E.shape)
+            E2[y0:y0+h, x0:x0+(w - i)] = -10000
+            E = E + E2
+            path = select_path(E, params.method_select_path)
+            if params.show_path:
+                show_path(img, path, params.color_path)
+            img = delete_path(img, path)
+    else:
+        num_pixels = h
+        img = np.rot90(img, k = 3)
+        for i in range(num_pixels):
+            E = compute_energy(img)
+            E2 = np.zeros((E.shape[1], E.shape[0]))
+            E2[y0:y0+h, x0:x0+w] = -10000
+            E2=np.rot90(E2, k=3)
+            E=E+E2
+            h = h - 1
+            path = select_path(E, params.method_select_path)
+            if params.show_path:
+                show_path(img, path, params.color_path)
+            img = delete_path(img, path)
+        img = np.rot90(img, k = 1)
+
+    cv.destroyAllWindows()
+    return img
 
 def resize_image(params: Parameters):
 
@@ -104,14 +145,12 @@ def resize_image(params: Parameters):
         return resized_image
     
     elif params.resize_option == 'amplificaContinut':
-        #TODO: scrieti codul
-        return None
+        resized_image = amplify_content(params)
+        return resized_image
 
     elif params.resize_option == 'eliminaObiect':
-        #TODO: scrieti codul
-        return None
-
-
+        x0, y0, w, h = cv.selectROI(np.uint8(params.image))
+        return delete_object(params, x0, y0, w, h)
     else:
         print('The option is not valid!')
         sys.exit(-1)

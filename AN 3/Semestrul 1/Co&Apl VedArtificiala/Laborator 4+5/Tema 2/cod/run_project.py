@@ -11,13 +11,14 @@ import matplotlib.pyplot as plt
 import os
 
 c_dir = os.getcwd()
-c_dir = os.path.join("data")
-image_name = os.path.join(c_dir, "castel.jpg")
+c_dir = os.path.join(c_dir, "data")
+image_name = os.path.join(c_dir, "arcTriumf.jpg")
+print(image_name)
 params = Parameters(image_name)
 
 # seteaza optiunea de redimenionare
 # micsoreazaLatime, micsoreazaInaltime, amplificaContinut, eliminaObiect
-params.resize_option = 'micsoreazaInaltime'
+params.resize_option = 'eliminaObiect'
 # numarul de pixeli pe latime
 params.num_pixels_width = 50
 # numarul de pixeli pe inaltime
@@ -27,6 +28,7 @@ params.show_path = True
 # metoda pentru alegerea drumului
 # aleator, greedy, programareDinamica
 params.method_select_path = 'programareDinamica'
+params.factor_amplification = 1.1
 
 resized_image = resize_image(params)
 resized_image_opencv = cv.resize(params.image, (resized_image.shape[1], resized_image.shape[0]))
