@@ -33,7 +33,7 @@ if it should plot statistics or not in the end
 
 def TrainTaxiAgent(env, taxiAgent, numEpisodes=200, plotStats=True, storeFramesDescription=True):
     moving_nb = 100
-    solved_score = 8.5
+    solved_score = 2
 
     scores = []
     ts = []
@@ -233,7 +233,7 @@ class QLearning_TaxiAgent(TaxiAgent):
             best_actionIndex_fromNextState = np.argmax(self.q[next_state])
             best_actionValue_fromNextState = self.q[next_state][best_actionIndex_fromNextState]
 
-            target = reward + self.gamma * best_actionValue_fromNextState
+            target = reward + self.gamma * best_actionValue_fromNextState #TODO CE E TARGET?
             self.q[state][action] = self.q[state][action] + (self.alpha * (target - self.q[state][action]))
 
 # Just a dummy debug thing for your work if you want

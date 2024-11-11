@@ -165,6 +165,14 @@ class MonteCarlo_BJAgent(BJAgent):
         for state, values in self.q.items():
             self.v[state] = np.max(values)
 
+class QLearning_BJAgent(MonteCarlo_BJAgent):
+    def __init__(self, env, gamma=1.0,
+                 start_epsilon=1.0, end_epsilon=0.05, epsilon_decay=0.99999):
+        super().__init__(env, gamma, start_epsilon, end_epsilon, epsilon_decay)
+
+    def update_policy_q(self, eps=None):
+        best_actionIndex_fromNextState = np.argmax(self.q[ne])
+
 
 # Just for testing purposes, no need to play but it is usefull for debugging purposes
 if __name__ == "__main__":
