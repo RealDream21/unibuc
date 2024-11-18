@@ -1,3 +1,14 @@
-te iubi <3
-
 primim scor doar pentru patratele care rezolva ecuatii (de ex daca suntem pe o constrangere X iar X-ul este rezolvat din stanga si din dreapta, dar din dreapta nu este rezolvat cu operatia => nu primim scor de 2 ori ci doar o data)
+
+Tips and tricks:
+
+Lucrul principal este delimitarea locului. Tabla este intr-o pozitie fixa(!)
+Cand se adauga o piesa ne incurca rau: am mai multe patratele umplute. Noi cand adaugam o piesa adaugam doar langa piesele exitente deja pe table. Treubie sa fie ceva conex. Putem sa ne restrangem cautarea
+Alta incurcatura la piesele duble(template matching functioneaza). Dar de ex la 11 exista 2 de, atentie sa nu se incurce 11 cu 1
+!!Corectiudinea calculelor (de ex daca am 2 si 3 ce pot sa pun langa ele: 3 + 2 / 2 * 3 / 3 - 2. Algoritmul nu oate sa puna 80 de ex). Daca nu are sens putem incerca de ex sa gasim urmatoarea corelatie de la template matching.
+Daca alg zice 90 o data si 90 a doua oara altundeva => nu e bine. Atentie si la asta
+Luminozitatea: se schimba, atentie cu parametrii. Maybe sa sample-uim ceva din imagine sa ne ajute ????
+Imaginile sunt f mari. Atentie daca facem warp sa nu ne ducem la o dim prea mare / prea mica
+
+
+
