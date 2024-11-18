@@ -2,9 +2,6 @@
 *.in
 *.out
 *.o
-*.png
-*.jpeg
-*.jpg
 ############# MY STUFF ###########
 
 
@@ -86,3 +83,9 @@ _[Ss]cripts
 AN 3/Semestrul 1/Co&Apl VedArtificiala/Laborator 4\+5/Tema 2/.ipynb_checkpoints/Articol-checkpoint.pdf
 
 AN 3/Semestrul 1/Co&Apl VedArtificiala/Laborator 4\+5/Tema 2/.ipynb_checkpoints/
+
+AN 3/Semestrul 1/RPA/
+
+AN 3/Semestrul 1/Co&Apl VedArtificiala/Laborator 2\+3/Tema 1/data/test/cat/
+
+AN 3/Semestrul 1/Co&Apl VedArtificiala/Laborator 2\+3/Tema 1
