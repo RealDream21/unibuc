@@ -1,5 +1,5 @@
 Player2 1 309
-Player1 7 64
+Player1 7 94
 Player2 13 84
 Player1 16 12
 Player2 19 52
