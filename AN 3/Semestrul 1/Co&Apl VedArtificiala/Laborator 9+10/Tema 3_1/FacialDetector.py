@@ -110,7 +110,8 @@ class FacialDetector:
         positive_scores = scores[train_labels > 0]
         negative_scores = scores[train_labels <= 0]
 
-
+# ESTI UN FRUMOOOS
+# <333333333
         plt.plot(np.sort(positive_scores))
         plt.plot(np.zeros(len(negative_scores) + 20))
         plt.plot(np.sort(negative_scores))
