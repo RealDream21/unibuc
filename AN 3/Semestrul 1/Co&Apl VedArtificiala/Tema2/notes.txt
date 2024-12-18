@@ -1,0 +1,22 @@
+sa avem grija sa nu adaugam exemple negative in care apar personaje. Cand extragem random sa verificam patch-ul si sa nu existe intersectie.(nici macar nasul sa nu apara mare grija big careful !!!)
+
+atentie la dimensiunea patratului (poate nu 36x36 e cel mai bun)
+
+augmentare de date ca sa avem mai multe exemple de antrenare
+
+primul challenge ar fi sa avem ex positive si negative
+
+posibil sa nu fie suficient un singur clasificator(daca am fete si patrate si dreptunghiulare -> complicat sa avem un singur model)
+POSIBIL sa avem nevoie de mai multe modele(poate 2-3-4-5)
+
+sa balansam si exemplele negative
+
+multiple scale la sliding window. De asemenea daca modelele se descurca pe multiple aspect ratio(unul pt patrate, altul pt dreptunghiulare). Daca modelele sunt antrenate  pe multiple aspedct ratio, atunci o singura fereastra glisanta nu e OK. 
+
+pt task 2:
+fie folosim output pt task 1 si venim cu un model care stie sa distinga intre personaje si ne spune cine e
+fie ne facem modele specializate(pt Mom/Dad/DeeDee/Dexter). 
+exemplu date pentru Mom -> Ex positive: Mama, Ex negative: Decor,etc, + Dexter, DeeDee, Dexter
+
+
+
