@@ -1,0 +1,22 @@
+                    # image = cv.imread(os.path.join(os.path.join(train_folder, folder), annotation.image_name), cv.IMREAD_GRAYSCALE)
+                    # middle_x = (annotation.x_bottom_right + annotation.x_top_left) // 2
+                    # middle_y = (annotation.y_bottom_right + annotation.y_top_left) // 2
+                    # new_x_top_left = middle_x - (W_window // 2)
+                    # new_y_top_left = middle_y - (L_window // 2)
+                    # new_x_bottom_right = middle_x + (W_window // 2)
+                    # new_y_bottom_right = middle_y + (L_window // 2)
+                    # if verbose:
+                    #     cv.rectangle(image, (new_x_top_left, new_y_top_left), (new_x_bottom_right, new_y_bottom_right), (0, 255, 255), 3)
+                    #     show_image('img', image.copy())
+                    # patch = image[new_y_top_left:new_y_bottom_right, new_x_top_left:new_x_bottom_right].copy()
+                    # if verbose:
+                    #     show_image('img', patch)
+                    # cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.positive_train_folder), f'{annotation.person}_{folder}Dataset_{annotation.image_name}'), patch)
+
+
+
+                                # if ((y >= annotation.y_top_left and y <= annotation.y_bottom_right) and (x >= annotation.x_top_left and x <= annotation.x_bottom_right)) or \
+                                # ((y + OY_dim_window >= annotation.y_top_left and y + OY_dim_window <= annotation.y_bottom_right) and (x + OX_dim_window >= annotation.x_top_left and x + OX_dim_window <= annotation.x_bottom_right)) or \
+                                # (x <= annotation.x_top_left <= x + OX_dim_window and y <= annotation.y_top_left <= y + OY_dim_window) or \
+                                # (x <= annotation.x_bottom_right <= x + OX_dim_window and y <= annotation.y_bottom_right <= y + OY_dim_window):
+
