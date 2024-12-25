@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pdb
+import os
 
 def intersection_over_union(bbox_a, bbox_b):
     x_a = max(bbox_a[0], bbox_b[0])
@@ -32,7 +33,7 @@ def compute_average_precision(rec, prec):
 def eval_detections(detections, scores, file_names, ground_truth_path):
     ground_truth_file = np.loadtxt(ground_truth_path, dtype='str')
     ground_truth_file_names = np.array(ground_truth_file[:, 0])
-    ground_truth_detections = np.array(ground_truth_file[:, 1:], np.int)
+    ground_truth_detections = np.array(ground_truth_file[:, 1:], np.int32)
 
     num_gt_detections = len(ground_truth_detections)  # numar total de adevarat pozitive
     gt_exists_detection = np.zeros(num_gt_detections)
@@ -142,16 +143,19 @@ def eval_detections_character(detections, scores, file_names,ground_truth_path,c
 def evaluate_results_task1(solution_path,ground_truth_path,verbose = 0):
 
 	#incarca detectiile + scorurile + numele de imagini	
-	detections = np.load(solution_path + "detections_all_faces.npy",allow_pickle=True,fix_imports=True,encoding='latin1')
-	print(detections.shape)
+	#detections = np.load(solution_path + "detections_all_faces.npy",allow_pickle=True,fix_imports=True,encoding='latin1')
+    detections = np.load(os.path.join(solution_path, "detections_all_faces.npy"),allow_pickle=True,fix_imports=True,encoding='latin1')
+    print(detections.shape)
 
-	scores = np.load(solution_path + "scores_all_faces.npy",allow_pickle=True,fix_imports=True,encoding='latin1')
-	print(scores.shape)
+	#scores = np.load(solution_path + "scores_all_faces.npy",allow_pickle=True,fix_imports=True,encoding='latin1')
+    scores = np.load(os.path.join(solution_path, "scores_all_faces.npy"),allow_pickle=True,fix_imports=True,encoding='latin1')
+    print(scores.shape)
 	
-	file_names = np.load(solution_path + "file_names_all_faces.npy",allow_pickle=True,fix_imports=True,encoding='latin1')
-	print(file_names.shape)
-
-	eval_detections(detections, scores, file_names, ground_truth_path)
+	#file_names = np.load(solution_path + "file_names_all_faces.npy",allow_pickle=True,fix_imports=True,encoding='latin1')
+    file_names = np.load(os.path.join(solution_path, "file_names_all_faces.npy"),allow_pickle=True,fix_imports=True,encoding='latin1')
+    print(file_names.shape)
+    
+    eval_detections(detections, scores, file_names, ground_truth_path)
 
 def evaluate_results_task2(solution_path,ground_truth_path,character, verbose = 0):
 
@@ -170,12 +174,20 @@ def evaluate_results_task2(solution_path,ground_truth_path,character, verbose = 
 verbose = 0
 
 #change this on your machine
-solution_path_root = "../fisiere_solutie/331_Alexe_Bogdan/"
-ground_truth_path_root = "../../validare/"
+solution_path_root = os.getcwd()
+solution_path_root = os.path.join(solution_path_root, 'evaluare')
+solution_path_root = os.path.join(solution_path_root, 'fisiere_solutie')
+solution_path_root = os.path.join(solution_path_root, '334_Florete_Fabian')
+#solution_path_root = "../fisiere_solutie/334_Florete_Fabian/"
+ground_truth_path_root = os.getcwd()
+ground_truth_path_root = os.path.join(ground_truth_path_root, 'validare')
+#ground_truth_path_root = "../../validare/"
 
 #task1
-solution_path = solution_path_root + "task1/"
-ground_truth_path = ground_truth_path_root + "task1_gt_validare20.txt"
+solution_path = os.path.join(solution_path_root, 'task1')
+#solution_path = solution_path_root + "task1/"
+ground_truth_path = os.path.join(ground_truth_path_root, 'task1_gt_validare20.txt')
+#ground_truth_path = ground_truth_path_root + "task1_gt_validare20.txt"
 evaluate_results_task1(solution_path, ground_truth_path, verbose)
 
 

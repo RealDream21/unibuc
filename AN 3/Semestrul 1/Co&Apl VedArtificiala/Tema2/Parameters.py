@@ -1,5 +1,7 @@
 import os
 import cv2 as cv
+import numpy as np
+from tqdm import tqdm
 
 #folder: Positive36x36
     #1.jpg
@@ -34,7 +36,10 @@ class Annotation():
         return f'Person {self.person} is in image {self.image_name}, starting at ({self.x_top_left}, {self.y_top_left}) and ending at ({self.x_bottom_right}, {self.y_bottom_right})'
 
 class Parameters:
-    def __init__(self, OX_dim_window: int, OY_dim_window: int, extract_examples: bool, dim_hog_cell: int, dim_descriptor_cell: int, overlap, threshold, use_flip_images: bool, n_negative_examples, verbose:bool = False): # L = lungime, W = inaltime
+
+    def __init__(self, OX_dim_window: int, OY_dim_window: int, extract_examples: bool, dim_hog_cell: int, dim_descriptor_cell: int, 
+                 overlap, threshold, use_flip_images: bool, use_salt_and_pepper: bool, other_augmentations: bool,
+                   n_negative_examples, verbose:bool = False): # L = lungime, W = inaltime
         self.OX_dim_window = OX_dim_window
         self.OY_dim_window = OY_dim_window
         
@@ -43,6 +48,8 @@ class Parameters:
         self.overlap = overlap
         self.threshold = threshold
         self.use_flip_images = use_flip_images
+        self.use_salt_and_pepper = use_salt_and_pepper
+        self.other_augmentations = other_augmentations
         self.n_negative_examples = n_negative_examples # so that we don't use all 500.000 examples. Some are similar
 
         self.base_dir = os.getcwd()
@@ -57,8 +64,9 @@ class Parameters:
         self.this_model_save_files = f"model_{OX_dim_window}x{OY_dim_window}"
         self.this_model_save_files_path = os.path.join(self.models_folder_path, self.this_model_save_files)
         
-        self.test_folder = 'antrenare'
+        self.test_folder = 'validare'
         self.test_folder_path = os.path.join(self.base_dir, self.test_folder)
+        self.test_folder_path = os.path.join(self.test_folder_path, 'validare')
 
         self.descriptors_folder = 'descriptors'
         self.descriptors_folder_path = os.path.join(self.my_folder, self.descriptors_folder)
@@ -73,9 +81,10 @@ class Parameters:
         os.makedirs(self.descriptors_folder_path, exist_ok=True)
 
         if self.n_negative_examples == -1:
-            self.n_negative_examples = os.listdir(self.negative_train_folder_path)
+            self.n_negative_examples = len(os.listdir(self.negative_train_folder_path))
 
         if extract_examples:
+            unused = 0
             train_folder = os.path.join(self.base_dir, 'antrenare')
             folders = [x for x in os.listdir(train_folder) if '.' not in x]
             for folder in folders:
@@ -85,6 +94,8 @@ class Parameters:
 
                 for annotation in annotations: #redraw the square so that it fits into L_window, W_window. Extract positive examples
                     image = cv.imread(os.path.join(os.path.join(train_folder, folder), annotation.image_name), cv.IMREAD_GRAYSCALE)
+                    if verbose:
+                        show_image('img', image)
                     patch = image[annotation.y_top_left: annotation.y_bottom_right, annotation.x_top_left: annotation.x_bottom_right]
                     patch = cv.resize(patch, (OY_dim_window, OX_dim_window))
                     cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.positive_train_folder), f'{annotation.person}_{folder}Dataset_{annotation.image_name}'), patch)
@@ -95,14 +106,18 @@ class Parameters:
                 for x in annotations:
                     annotation_dict[x.image_name].append(x)
  
-                step = 10
+                step = 1
                 cnt = 0
-                for image_name in os.listdir(os.path.join(train_folder, folder)):
+                for image_name in tqdm(os.listdir(os.path.join(train_folder, folder)), miniters=len(os.listdir(os.path.join(train_folder, folder)))//100):
                     image = cv.imread(os.path.join(os.path.join(train_folder, folder), image_name), cv.IMREAD_GRAYSCALE)
                     annotations = annotation_dict[image_name]
                     if verbose:
                         for an in annotations:
                             cv.rectangle(image.copy(), (an.x_top_left, an.y_top_left), (an.x_bottom_right, an.y_bottom_right), (0, 255, 255), 3)
+
+                    n_neg_ex_per_image = self.n_negative_examples // 1000
+                    patches = []
+
                     for x in range(0, image.shape[0] - OX_dim_window, step):
                         for y in range(0, image.shape[1] - OY_dim_window, step):
 
@@ -112,7 +127,7 @@ class Parameters:
                             ok = True
                             for annotation in annotations:
                                 if intersectie_dreptunghi((y, x, y + OY_dim_window, x + OX_dim_window), 
-                                                          (annotation.x_top_left, annotation.y_top_left, annotation.x_bottom_right, annotation.y_bottom_right)):
+                                                            (annotation.x_top_left, annotation.y_top_left, annotation.x_bottom_right, annotation.y_bottom_right)):
                                     ok = False
                                     break
                             if ok == False:
@@ -122,12 +137,26 @@ class Parameters:
                                 patch = image[x: x + OX_dim_window, y: y + OY_dim_window].copy()
                             except:
                                 print(x, x + OX_dim_window, image.shape)
-                            
+                                
                             if verbose:
                                 cv.rectangle(image, (y, x), (y + OY_dim_window, x + OX_dim_window), (0, 255, 0), 3)
                                 show_image('img', image)
                                 show_image('img', patch)
-
-                            cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.negative_train_folder), f'{cnt}.jpg'), patch)
+                            
+                            patches.append([x, y])
+                            #cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.negative_train_folder), f'{cnt}.jpg'), patch)
+                            #cnt += 1
+                    
+                    if(len(patches) > 0):
+                        for _ in range(n_neg_ex_per_image):
+                            index = np.random.randint(low=0, high=len(patches))
+                            x, y = patches[index]
+                            cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.negative_train_folder), f'{cnt}.jpg'), image[x: x + OX_dim_window, y: y + OY_dim_window].copy())
                             cnt += 1
+                    else:
+                        unused += 1
+                        # for annotation in annotations:
+                        #     cv.rectangle(image, (annotation.x_top_left, annotation.y_top_left), (annotation.x_bottom_right, annotation.y_bottom_right), (0, 255, 0), 3)
+                        # show_image('img', image)
 
+            print(f'Total unused: {unused}\n')

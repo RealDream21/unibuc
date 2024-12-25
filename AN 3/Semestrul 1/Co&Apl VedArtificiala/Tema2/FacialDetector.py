@@ -6,6 +6,7 @@ import pickle
 from sklearn.svm import LinearSVC
 from copy import deepcopy
 import matplotlib.pyplot as plt
+import albumentations as alb
 
 class FacialDetector:
     def __init__(self, params: Parameters):
@@ -18,12 +19,31 @@ class FacialDetector:
         positive_descriptors = []
         for i in tqdm(range(len(files)), miniters=len(files) // 100):
             img = cv.imread(os.path.join(images_path, files[i]), cv.IMREAD_GRAYSCALE)
-            features = hog(img, pixels_per_cell = (self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+            features = hog(img.copy(), pixels_per_cell = (self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
             
             positive_descriptors.append(features)
             if self.params.use_flip_images:
-                features = hog(np.fliplr(img), pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                features = hog(np.fliplr(img.copy()), pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
                 positive_descriptors.append(features)
+
+            if self.params.use_salt_and_pepper:
+                transform = alb.SaltAndPepper(p = 0.2)
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
+
+            if self.params.other_augmentations:
+                transform = alb.RandomShadow(shadow_roi=[0, 0, 1, 1])
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
+
+                transform = alb.Superpixels()
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
+
+                transform = alb.GaussNoise()
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
+
 
             #can also use other augmentations here. No need to create pictures
 
@@ -32,20 +52,16 @@ class FacialDetector:
     
     def get_negative_descriptors(self):
         images_path = self.params.negative_train_folder_path
-        original_files = os.listdir(images_path)
-        files = []
-        n = self.params.n_negative_examples
-        while n:
-            file_index = np.random.randint(0, len(original_files))
-            files.append(original_files[file_index])
-            del original_files[file_index]
-            n -= 1
+        files = os.listdir(images_path)
         negative_descriptors = []
-        print(len(files))
 
-        for i in tqdm(range(len(files)), miniters=len(files) // 100):
+        for i in range(len(files)):
+            if i % 10000 == 0:
+                print(f'{i} / {len(files)}')
             img = cv.imread(os.path.join(images_path, files[i]), cv.IMREAD_GRAYSCALE)
             descr = hog(img, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector = False)
+            negative_descriptors.append(descr.flatten())
+            descr = hog(np.fliplr(img.copy()), pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector = False)
             negative_descriptors.append(descr.flatten())
 
         negative_descriptors = np.array(negative_descriptors)
@@ -61,7 +77,8 @@ class FacialDetector:
         best_accuracy = 0
         best_c = 0
         best_model = None
-        Cs = [10 ** -5, 10 ** -4,  10 ** -3,  10 ** -2, 10 ** -1, 10 ** 0]
+        #Cs = [10 ** -5, 10 ** -4,  10 ** -3,  10 ** -2, 10 ** -1, 10 ** 0]
+        Cs = [1]
         for c in Cs:
             model = LinearSVC(C=c)
             model.fit(X, y)
@@ -77,17 +94,17 @@ class FacialDetector:
 
         scores = best_model.decision_function(X)
         self.best_model = best_model
-        positive_scores = scores[y > 0]
-        negative_scores = scores[y <= 0]
+        # positive_scores = scores[y > 0]
+        # negative_scores = scores[y <= 0]
 
-        plt.plot(np.sort(positive_scores))
-        plt.plot(np.zeros(len(positive_scores)))
-        plt.plot(np.sort(negative_scores))
-        plt.xlabel('Nr example antrenare')
-        plt.ylabel('Scor clasificator')
-        plt.title('Distributia scorurilor clasificatorului pe exemplele de antrenare')
-        plt.legend(['Scoruri exemple pozitive', '0', 'Scoruri exemple negative'])
-        plt.show()  
+        # plt.plot(np.sort(positive_scores))
+        # plt.plot(np.zeros(len(positive_scores)))
+        # plt.plot(np.sort(negative_scores))
+        # plt.xlabel('Nr example antrenare')
+        # plt.ylabel('Scor clasificator')
+        # plt.title('Distributia scorurilor clasificatorului pe exemplele de antrenare')
+        # plt.legend(['Scoruri exemple pozitive', '0', 'Scoruri exemple negative'])
+        # plt.show()  
 
     def intersection_over_union(self, bbox_a, bbox_b):
         x_a = max(bbox_a[0], bbox_b[0])
@@ -104,11 +121,11 @@ class FacialDetector:
 
         return iou
 
-    def non_maximal_suppression(self, image_detections, image_scores, image_size):
+    def non_maximal_suppression(self,image_detections, image_scores, image_size):
         # xmin, ymin, xmax, ymax
         x_out_of_bounds = np.where(image_detections[:, 2] > image_size[1])[0]
         y_out_of_bounds = np.where(image_detections[:, 3] > image_size[0])[0]
-        print(x_out_of_bounds, y_out_of_bounds)
+        #print(x_out_of_bounds, y_out_of_bounds)
         image_detections[x_out_of_bounds, 2] = image_size[1]
         image_detections[y_out_of_bounds, 3] = image_size[0]
         sorted_indices = np.flipud(np.argsort(image_scores))
@@ -116,12 +133,13 @@ class FacialDetector:
         sorted_scores = image_scores[sorted_indices]
 
         is_maximal = np.ones(len(image_detections)).astype(bool)
-        iou_threshold = 0.3
+        iou_threshold = self.params.overlap
         for i in range(len(sorted_image_detections) - 1):
             if is_maximal[i] == True:  # don't change to 'is True' because is a numpy True and is not a python True :)
                 for j in range(i + 1, len(sorted_image_detections)):
                     if is_maximal[j] == True:  # don't change to 'is True' because is a numpy True and is not a python True :)
-                        if self.intersection_over_union(sorted_image_detections[i],sorted_image_detections[j]) > iou_threshold:is_maximal[j] = False
+                        if self.intersection_over_union(sorted_image_detections[i],sorted_image_detections[j]) > iou_threshold:
+                            is_maximal[j] = False
                         else:  # verificam daca centrul detectiei este in mijlocul detectiei cu scor mai mare
                             c_x = (sorted_image_detections[j][0] + sorted_image_detections[j][2]) / 2
                             c_y = (sorted_image_detections[j][1] + sorted_image_detections[j][3]) / 2
@@ -130,7 +148,8 @@ class FacialDetector:
                                 is_maximal[j] = False
         return sorted_image_detections[is_maximal], sorted_scores[is_maximal]
 
-    def run(self):
+    def run(self, verbose = False):
+        OX_dim_window, OY_dim_window = self.params.OY_dim_window, self.params.OX_dim_window
         test_files = os.listdir(self.params.test_folder_path)
         detections = None
         scores = np.array([])
@@ -139,38 +158,52 @@ class FacialDetector:
         w = self.best_model.coef_.T
         bias = self.best_model.intercept_[0]
         descriptors_to_return = []
-        for i in range(len(test_files)):
+        for i in tqdm(range(len(test_files)), miniters=len(test_files) // 100):
             img = cv.imread(os.path.join(self.params.test_folder_path, test_files[i]), cv.IMREAD_GRAYSCALE)
+            if verbose:
+                show_image('img', img)
             image_scores = []
             image_detections = []
-            hog_descriptors = hog(img, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=False)
-            
-            num_cols = img.shape[1] // self.params.dim_hog_cell - 1
-            num_rows = img.shape[0] // self.params.dim_hog_cell - 1
-            num_cell_in_template = self.params.dim_window // self.params.dim_hog_cell - 1
 
-            for y in range(0, num_rows - num_cell_in_template):
-                for x in range(0, num_cols - num_cell_in_template):
-                    descr = hog_descriptors[y: y + num_cell_in_template, x: x + num_cell_in_template].flatten()
-                    score = np.dot(descr, w)[0] + bias
-                    if score > self.params.threshold:
-                        x_min = int(x * self.params.dim_hog_cell)
-                        y_min = int(y * self.params.dim_hog_cell)
-                        x_max = int(x * self.params.dim_hog_cell + self.params.dim_window)
-                        y_max = int(y * self.params.dim_hog_cell + self.params.dim_window)
-                        image_detections.append([x_min, y_min, x_max, y_max])
-                        image_scores.append(score)
-                if len(image_scores) > 0:
-                    image_detections, image_scores = self.non_maximal_suppression(np.array(image_detections), np.array(image_scores), img.shape)
+            scales = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+            for scale in scales:
+                img_resized = cv.resize(img.copy(), (0, 0), fx=scale, fy=scale)
+
+                hog_descriptors = hog(img_resized, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=False)
+
+                num_cols = img_resized.shape[1] // self.params.dim_hog_cell - 1
+                num_rows = img_resized.shape[0] // self.params.dim_hog_cell - 1
+                OX_num_cell_in_template = OX_dim_window // self.params.dim_hog_cell - 1
+                OY_num_cell_in_template = OY_dim_window // self.params.dim_hog_cell - 1
+
+                for y in range(0, num_rows - OY_num_cell_in_template):
+                    for x in range(0, num_cols - OX_num_cell_in_template):
+                        descr = hog_descriptors[y:y + OY_num_cell_in_template, x:x + OX_num_cell_in_template].flatten()
+                        score = np.dot(descr, w)[0] + bias
+                        if score > self.params.threshold:
+                            x_min = int((x * self.params.dim_hog_cell) / scale)
+                            y_min = int((y * self.params.dim_hog_cell) / scale)
+                            x_max = int((x * self.params.dim_hog_cell + OX_dim_window) / scale)
+                            y_max = int((y * self.params.dim_hog_cell + OY_dim_window) / scale)
+                            image_detections.append([x_min, y_min, x_max, y_max])
+                            image_scores.append(score)
+
+            if len(image_scores) > 0:
+                image_detections, image_scores = self.non_maximal_suppression(np.array(image_detections), np.array(image_scores), img.shape)
                     
-                if len(image_scores) > 0:
-                    if detections is None:
-                        detections = image_detections
-                    else:
-                        detections = np.concatenate((detections, image_detections))
-                    scores = np.append(scores, image_scores)
-                    short_name = test_files[i]
-                    image_names = [short_name for _ in range(len(image_scores))]
-                    file_names = np.append(file_names, image_names)
+            if len(image_scores) > 0:
+                if detections is None:
+                    detections = image_detections
+                else:
+                    detections = np.concatenate((detections, image_detections))
+                scores = np.append(scores, image_scores)
+                short_name = test_files[i]
+                image_names = [short_name for _ in range(len(image_scores))]
+                file_names = np.append(file_names, image_names)
+
+            if verbose:
+                for detection in image_detections:
+                    cv.rectangle(img, (detection[0], detection[1]), (detection[2], detection[3]), (255, 255, 255), 3)
+                show_image('img', img)
 
         return detections, scores, file_names

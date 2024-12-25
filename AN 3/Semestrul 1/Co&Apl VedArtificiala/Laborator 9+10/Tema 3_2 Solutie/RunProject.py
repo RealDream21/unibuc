@@ -3,7 +3,7 @@ from FacialDetector import *
 import pdb
 from Visualize import *
 
-
+BrașovBrașovLupeni, 335600
 params: Parameters = Parameters()
 params.dim_window = 36  # exemplele pozitive (fete de oameni cropate) au 36x36 pixeli
 params.dim_hog_cell = 6  # dimensiunea celulei
