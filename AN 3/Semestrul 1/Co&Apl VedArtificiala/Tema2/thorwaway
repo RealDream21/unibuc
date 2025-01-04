@@ -1,157 +1,225 @@
-                    # image = cv.imread(os.path.join(os.path.join(train_folder, folder), annotation.image_name), cv.IMREAD_GRAYSCALE)
-                    # middle_x = (annotation.x_bottom_right + annotation.x_top_left) // 2
-                    # middle_y = (annotation.y_bottom_right + annotation.y_top_left) // 2
-                    # new_x_top_left = middle_x - (W_window // 2)
-                    # new_y_top_left = middle_y - (L_window // 2)
-                    # new_x_bottom_right = middle_x + (W_window // 2)
-                    # new_y_bottom_right = middle_y + (L_window // 2)
-                    # if verbose:
-                    #     cv.rectangle(image, (new_x_top_left, new_y_top_left), (new_x_bottom_right, new_y_bottom_right), (0, 255, 255), 3)
-                    #     show_image('img', image.copy())
-                    # patch = image[new_y_top_left:new_y_bottom_right, new_x_top_left:new_x_bottom_right].copy()
-                    # if verbose:
-                    #     show_image('img', patch)
-                    # cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.positive_train_folder), f'{annotation.person}_{folder}Dataset_{annotation.image_name}'), patch)
-import os
-import cv2 as cv
+from Parameters import *
+from skimage.feature import hog
+import numpy as np
+from tqdm import tqdm
+import pickle
+from sklearn.svm import LinearSVC
+from copy import deepcopy
+import matplotlib.pyplot as plt
+import albumentations as alb
 
-#folder: Positive36x36
-    #1.jpg
-    #2.jpg
-    #3.jpg
+class FacialDetector:
+    def __init__(self, params: Parameters):
+        self.params = params
+        self.best_model = None
 
-def show_image(title, image):
-    image = cv.resize(image, (0, 0), fx=0.5, fy=0.5)
-    cv.imshow(title, image)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
+    def get_positive_descriptors(self):
+        images_path = self.params.positive_train_folder_path
+        files = os.listdir(images_path)
+        positive_descriptors = []
+        for i in tqdm(range(len(files)), miniters=len(files) // 100):
+            img = cv.imread(os.path.join(images_path, files[i]), cv.IMREAD_GRAYSCALE)
+            features = hog(img.copy(), pixels_per_cell = (self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+            
+            positive_descriptors.append(features)
+            if self.params.use_flip_images:
+                features = hog(np.fliplr(img.copy()), pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
 
-def intersectie_dreptunghi(d1, d2):
-    d1_x_top_left, d1_y_top_left, d1_x_bottom_right, d1_y_bottom_right = d1
-    d2_x_top_left, d2_y_top_left, d2_x_bottom_right, d2_y_bottom_right = d2
+            if self.params.use_salt_and_pepper:
+                transform = alb.SaltAndPepper(p = 0.2)
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
 
-    return (d1_x_top_left <= d2_x_bottom_right 
-            and d1_x_bottom_right >= d2_x_top_left
-            and d1_y_top_left <= d2_y_bottom_right
-            and d1_y_bottom_right >= d2_y_top_left)
+            if self.params.other_augmentations:
+                transform = alb.RandomShadow(shadow_roi=[0, 0, 1, 1])
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
 
-class Annotation():
-    def __init__(self, image_name, x_top_left, y_top_left, x_bottom_right, y_bottom_right, person):
-        self.image_name = image_name
-        self.x_top_left = int(x_top_left)
-        self.y_top_left = int(y_top_left)
-        self.x_bottom_right = int(x_bottom_right)
-        self.y_bottom_right = int(y_bottom_right)
-        self.person = person
+                transform = alb.Superpixels()
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
 
-    def __str__(self):
-        return f'Person {self.person} is in image {self.image_name}, starting at ({self.x_top_left}, {self.y_top_left}) and ending at ({self.x_bottom_right}, {self.y_bottom_right})'
+                transform = alb.GaussNoise()
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
 
-class Parameters:
 
-    def __init__(self, OX_dim_window: int, OY_dim_window: int, extract_examples: bool, dim_hog_cell: int, dim_descriptor_cell: int, 
-                 overlap, threshold, use_flip_images: bool, use_salt_and_pepper: bool, n_negative_examples, verbose:bool = False): # L = lungime, W = inaltime
-        self.OX_dim_window = OX_dim_window
-        self.OY_dim_window = OY_dim_window
-        
-        self.dim_hog_cell = dim_hog_cell
-        self.dim_descriptor_cell = dim_descriptor_cell
-        self.overlap = overlap
-        self.threshold = threshold
-        self.use_flip_images = use_flip_images
-        self.use_salt_and_pepper = use_salt_and_pepper
-        self.n_negative_examples = n_negative_examples # so that we don't use all 500.000 examples. Some are similar
+            #can also use other augmentations here. No need to create pictures
 
-        self.base_dir = os.getcwd()
-        self.my_folder = 'proprii'
-        self.positive_train_folder = f'Positive{OX_dim_window}x{OY_dim_window}' #folder cu exemple positive de dimensiune L_window x W_window
-        self.negative_train_folder = f'Negative{OX_dim_window}x{OY_dim_window}' #folder cu exemple negative de dimensiune L_window x W_window
-        self.positive_train_folder_path = os.path.join(os.path.join(self.base_dir, self.my_folder), self.positive_train_folder)
-        self.negative_train_folder_path = os.path.join(os.path.join(self.base_dir, self.my_folder), self.negative_train_folder)
-       
-        self.models_folder = 'model_saves'
-        self.models_folder_path = os.path.join(self.my_folder, self.models_folder)
-        self.this_model_save_files = f"model_{OX_dim_window}x{OY_dim_window}"
-        self.this_model_save_files_path = os.path.join(self.models_folder_path, self.this_model_save_files)
-        
-        self.test_folder = 'validare'
-        self.test_folder_path = os.path.join(self.base_dir, self.test_folder)
-        self.test_folder_path = os.path.join(self.test_folder_path, 'validare')
+        positive_descriptors = np.array(positive_descriptors)
+        return positive_descriptors
+    
+    def get_negative_descriptors(self):
+        images_path = self.params.negative_train_folder_path
+        files = os.listdir(images_path)
+        negative_descriptors = []
 
-        self.descriptors_folder = 'descriptors'
-        self.descriptors_folder_path = os.path.join(self.my_folder, self.descriptors_folder)
-        self.positive_descriptors_path = os.path.join(self.descriptors_folder_path, f'descriptoriPozitivi_{self.dim_hog_cell}_{self.dim_descriptor_cell}_{self.OX_dim_window}x{self.OY_dim_window}.npy')
-        self.negative_descriptors_path = os.path.join(self.descriptors_folder_path, f'descriptoriNegativi_{self.dim_hog_cell}_{self.dim_descriptor_cell}_{self.OX_dim_window}x{self.OY_dim_window}.npy')
-        
-        os.makedirs(self.my_folder, exist_ok=True)
-        os.makedirs(os.path.join(self.my_folder, self.positive_train_folder), exist_ok=True)
-        os.makedirs(os.path.join(self.my_folder, self.negative_train_folder), exist_ok=True)
-        os.makedirs(self.models_folder_path, exist_ok=True)
-        os.makedirs(self.this_model_save_files_path, exist_ok=True)
-        os.makedirs(self.descriptors_folder_path, exist_ok=True)
+        for i in range(len(files)):
+            if i % 10000 == 0:
+                print(f'{i} / {len(files)}')
+            img = cv.imread(os.path.join(images_path, files[i]), cv.IMREAD_GRAYSCALE)
+            descr = hog(img, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector = False)
+            negative_descriptors.append(descr.flatten())
 
-        if self.n_negative_examples == -1:
-            self.n_negative_examples = len(os.listdir(self.negative_train_folder_path))
+        negative_descriptors = np.array(negative_descriptors)
+        return negative_descriptors
 
-        if extract_examples:
-            train_folder = os.path.join(self.base_dir, 'antrenare')
-            folders = [x for x in os.listdir(train_folder) if '.' not in x]
-            for folder in folders:
-                g = open(os.path.join(train_folder, folder)+'_annotations.txt', 'r')
-                annotations = [x.strip().split() for x in g.readlines()]
-                annotations = [Annotation(x[0], x[1], x[2], x[3], x[4], x[5]) for x in annotations]
+    def train_classifier(self, X, y):
+        svm_file_name = os.path.join(self.params.this_model_save_files_path, 
+                                    f'best_model_{self.params.dim_hog_cell}_{self.params.n_negative_examples}')
+        if os.path.exists(svm_file_name):
+            self.best_model = pickle.load(open(svm_file_name, 'rb'))
+            return
 
-                for annotation in annotations: #redraw the square so that it fits into L_window, W_window. Extract positive examples
-                    image = cv.imread(os.path.join(os.path.join(train_folder, folder), annotation.image_name), cv.IMREAD_GRAYSCALE)
-                    show_image('img', image)
-                    patch = image[annotation.y_top_left: annotation.y_bottom_right, annotation.x_top_left: annotation.x_bottom_right]
-                    patch = cv.resize(patch, (OY_dim_window, OX_dim_window))
-                    cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.positive_train_folder), f'{annotation.person}_{folder}Dataset_{annotation.image_name}'), patch)
-                    if verbose:
-                        show_image('img', patch.copy())
+        best_accuracy = 0
+        best_c = 0
+        best_model = None
+        #Cs = [10 ** -5, 10 ** -4,  10 ** -3,  10 ** -2, 10 ** -1, 10 ** 0]
+        Cs = [1]
+        for c in Cs:
+            model = LinearSVC(C=c)
+            model.fit(X, y)
+            acc = model.score(X, y)
+            print(acc)
+            if acc > best_accuracy:
+                best_accuracy = acc
+                best_c = c
+                best_model = deepcopy(model)
                 
-                annotation_dict = dict([(x.image_name, []) for x in annotations])
-                for x in annotations:
-                    annotation_dict[x.image_name].append(x)
- 
-                step = 10
-                cnt = 0
-                for image_name in os.listdir(os.path.join(train_folder, folder)):
-                    image = cv.imread(os.path.join(os.path.join(train_folder, folder), image_name), cv.IMREAD_GRAYSCALE)
-                    annotations = annotation_dict[image_name]
-                    if verbose:
-                        for an in annotations:
-                            cv.rectangle(image.copy(), (an.x_top_left, an.y_top_left), (an.x_bottom_right, an.y_bottom_right), (0, 255, 255), 3)
+        print('Performanta clasificatorului optim pt c = %f' % best_c)
+        pickle.dump(best_model, open(svm_file_name, 'wb'))
 
-                    n_neg_ex_per_image = self.n_negative_examples // 4000
+        scores = best_model.decision_function(X)
+        self.best_model = best_model
+        # positive_scores = scores[y > 0]
+        # negative_scores = scores[y <= 0]
 
-                
-                    for x in range(0, image.shape[0] - OX_dim_window, step):
-                        for y in range(0, image.shape[1] - OY_dim_window, step):
+        # plt.plot(np.sort(positive_scores))
+        # plt.plot(np.zeros(len(positive_scores)))
+        # plt.plot(np.sort(negative_scores))
+        # plt.xlabel('Nr example antrenare')
+        # plt.ylabel('Scor clasificator')
+        # plt.title('Distributia scorurilor clasificatorului pe exemplele de antrenare')
+        # plt.legend(['Scoruri exemple pozitive', '0', 'Scoruri exemple negative'])
+        # plt.show()  
 
-                            if verbose:
-                                patch1 = image[x: x + OX_dim_window, y: y + OY_dim_window].copy()
-                                show_image('patch extras', patch1)
-                            ok = True
-                            for annotation in annotations:
-                                if intersectie_dreptunghi((y, x, y + OY_dim_window, x + OX_dim_window), 
-                                                          (annotation.x_top_left, annotation.y_top_left, annotation.x_bottom_right, annotation.y_bottom_right)):
-                                    ok = False
-                                    break
-                            if ok == False:
-                                continue
+    def intersection_over_union(self, bbox_a, bbox_b):
+        x_a = max(bbox_a[0], bbox_b[0])
+        y_a = max(bbox_a[1], bbox_b[1])
+        x_b = min(bbox_a[2], bbox_b[2])
+        y_b = min(bbox_a[3], bbox_b[3])
 
-                            try:
-                                patch = image[x: x + OX_dim_window, y: y + OY_dim_window].copy()
-                            except:
-                                print(x, x + OX_dim_window, image.shape)
-                            
-                            if verbose:
-                                cv.rectangle(image, (y, x), (y + OY_dim_window, x + OX_dim_window), (0, 255, 0), 3)
-                                show_image('img', image)
-                                show_image('img', patch)
+        inter_area = max(0, x_b - x_a + 1) * max(0, y_b - y_a + 1)
 
-                            cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.negative_train_folder), f'{cnt}.jpg'), patch)
-                            cnt += 1
+        box_a_area = (bbox_a[2] - bbox_a[0] + 1) * (bbox_a[3] - bbox_a[1] + 1)
+        box_b_area = (bbox_b[2] - bbox_b[0] + 1) * (bbox_b[3] - bbox_b[1] + 1)
 
+        iou = inter_area / float(box_a_area + box_b_area - inter_area)
 
+        return iou
+
+    def non_maximal_suppression(self,image_detections, image_scores, image_size):
+        # xmin, ymin, xmax, ymax
+        x_out_of_bounds = np.where(image_detections[:, 2] > image_size[1])[0]
+        y_out_of_bounds = np.where(image_detections[:, 3] > image_size[0])[0]
+        #print(x_out_of_bounds, y_out_of_bounds)
+        image_detections[x_out_of_bounds, 2] = image_size[1]
+        image_detections[y_out_of_bounds, 3] = image_size[0]
+        sorted_indices = np.flipud(np.argsort(image_scores))
+        sorted_image_detections = image_detections[sorted_indices]
+        sorted_scores = image_scores[sorted_indices]
+
+        is_maximal = np.ones(len(image_detections)).astype(bool)
+        iou_threshold = self.params.overlap
+        for i in range(len(sorted_image_detections) - 1):
+            if is_maximal[i] == True:  # don't change to 'is True' because is a numpy True and is not a python True :)
+                for j in range(i + 1, len(sorted_image_detections)):
+                    if is_maximal[j] == True:  # don't change to 'is True' because is a numpy True and is not a python True :)
+                        if self.intersection_over_union(sorted_image_detections[i],sorted_image_detections[j]) > iou_threshold:
+                            is_maximal[j] = False
+                        else:  # verificam daca centrul detectiei este in mijlocul detectiei cu scor mai mare
+                            c_x = (sorted_image_detections[j][0] + sorted_image_detections[j][2]) / 2
+                            c_y = (sorted_image_detections[j][1] + sorted_image_detections[j][3]) / 2
+                            if sorted_image_detections[i][0] <= c_x <= sorted_image_detections[i][2] and \
+                                    sorted_image_detections[i][1] <= c_y <= sorted_image_detections[i][3]:
+                                is_maximal[j] = False
+        return sorted_image_detections[is_maximal], sorted_scores[is_maximal]
+
+    def run(self, verbose = False):
+        OX_dim_window, OY_dim_window = self.params.OY_dim_window, self.params.OX_dim_window
+        test_files = os.listdir(self.params.test_folder_path)
+        detections = None
+        scores = np.array([])
+        file_names = np.array([])
+        
+        w = self.best_model.coef_.T
+        bias = self.best_model.intercept_[0]
+        descriptors_to_return = []
+        for i in tqdm(range(len(test_files)), miniters=len(test_files) // 100):
+            img = cv.imread(os.path.join(self.params.test_folder_path, test_files[i]), cv.IMREAD_GRAYSCALE)
+            if verbose:
+                show_image('img', img)
+            image_scores = []
+            image_detections = []
+
+            scales = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1]
+            for scale in scales:
+                img_resized = cv.resize(img.copy(), (0, 0), fx=scale, fy=scale)
+
+                hog_descriptors = hog(img_resized, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=False)
+
+                # show_image('img', img_resized)
+
+                num_cols = img_resized.shape[1] // self.params.dim_hog_cell - 1
+                num_rows = img_resized.shape[0] // self.params.dim_hog_cell - 1
+                OX_num_cell_in_template = OX_dim_window // self.params.dim_hog_cell - 1
+                OY_num_cell_in_template = OY_dim_window // self.params.dim_hog_cell - 1
+
+                current_detections = []
+                current_scores = []
+
+                for y in range(0, num_rows - OY_num_cell_in_template):
+                    for x in range(0, num_cols - OX_num_cell_in_template):
+                        descr = hog_descriptors[y:y + OY_num_cell_in_template, x:x + OX_num_cell_in_template].flatten()
+                        score = np.dot(descr, w)[0] + bias
+                        if score > self.params.threshold:
+                            x_min = int((x * self.params.dim_hog_cell) / scale)
+                            y_min = int((y * self.params.dim_hog_cell) / scale)
+                            x_max = int((x * self.params.dim_hog_cell + OX_dim_window) / scale)
+                            y_max = int((y * self.params.dim_hog_cell + OY_dim_window) / scale)
+                            # image_detections.append([x_min, y_min, x_max, y_max])
+                            # image_scores.append(score)
+
+                            current_detections.append([x_min, y_min, x_max, y_max])
+                            current_scores.append(score)
+
+                if len(current_detections) > 0:
+                    current_detections, current_scores = self.non_maximal_suppression(np.array(current_detections), np.array(current_scores), img_resized.shape)
+                    for det, score in zip(current_detections, current_scores):
+                        image_detections.append(det)
+                        image_scores.append(score)
+
+                # for detection in current_detections:
+                #     cv.rectangle(img_resized, (detection[0], detection[1]), (detection[2], detection[3]), (0, 255, 0), 3)
+                # show_image('img', img_resized)
+
+            if len(image_scores) > 0:
+                image_detections, image_scores = self.non_maximal_suppression(np.array(image_detections), np.array(image_scores), img.shape)
+                    
+            if len(image_scores) > 0:
+                if detections is None:
+                    detections = image_detections
+                else:
+                    detections = np.concatenate((detections, image_detections))
+                scores = np.append(scores, image_scores)
+                short_name = test_files[i]
+                image_names = [short_name for _ in range(len(image_scores))]
+                file_names = np.append(file_names, image_names)
+
+            if verbose:
+                for detection in image_detections:
+                    cv.rectangle(img, (detection[0], detection[1]), (detection[2], detection[3]), (255, 255, 255), 3)
+                show_image('img', img)
+
+        return detections, scores, file_names

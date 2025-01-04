@@ -8,6 +8,7 @@ from copy import deepcopy
 import matplotlib.pyplot as plt
 import albumentations as alb
 
+
 class FacialDetector:
     def __init__(self, params: Parameters):
         self.params = params
@@ -36,13 +37,21 @@ class FacialDetector:
                 features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
                 positive_descriptors.append(features)
 
-                transform = alb.Superpixels()
-                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
-                positive_descriptors.append(features)
+                # transform = alb.Superpixels()
+                # features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                # positive_descriptors.append(features)
 
                 transform = alb.GaussNoise()
                 features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
                 positive_descriptors.append(features)
+
+                transform = alb.SafeRotate()
+                features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                positive_descriptors.append(features)
+
+                # transform = alb.RandomGravel(gravel_roi=[0, 0, 1, 1])
+                # features = hog(transform(image=img.copy())["image"], pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=True)
+                # positive_descriptors.append(features)
 
 
             #can also use other augmentations here. No need to create pictures
@@ -60,8 +69,6 @@ class FacialDetector:
                 print(f'{i} / {len(files)}')
             img = cv.imread(os.path.join(images_path, files[i]), cv.IMREAD_GRAYSCALE)
             descr = hog(img, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector = False)
-            negative_descriptors.append(descr.flatten())
-            descr = hog(np.fliplr(img.copy()), pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector = False)
             negative_descriptors.append(descr.flatten())
 
         negative_descriptors = np.array(negative_descriptors)
@@ -165,16 +172,21 @@ class FacialDetector:
             image_scores = []
             image_detections = []
 
-            scales = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+            scales = [0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1]
             for scale in scales:
                 img_resized = cv.resize(img.copy(), (0, 0), fx=scale, fy=scale)
 
                 hog_descriptors = hog(img_resized, pixels_per_cell=(self.params.dim_hog_cell, self.params.dim_hog_cell), cells_per_block=(2, 2), feature_vector=False)
 
+                # show_image('img', img_resized)
+
                 num_cols = img_resized.shape[1] // self.params.dim_hog_cell - 1
                 num_rows = img_resized.shape[0] // self.params.dim_hog_cell - 1
                 OX_num_cell_in_template = OX_dim_window // self.params.dim_hog_cell - 1
                 OY_num_cell_in_template = OY_dim_window // self.params.dim_hog_cell - 1
+
+                current_detections = []
+                current_scores = []
 
                 for y in range(0, num_rows - OY_num_cell_in_template):
                     for x in range(0, num_cols - OX_num_cell_in_template):
@@ -187,6 +199,19 @@ class FacialDetector:
                             y_max = int((y * self.params.dim_hog_cell + OY_dim_window) / scale)
                             image_detections.append([x_min, y_min, x_max, y_max])
                             image_scores.append(score)
+
+                            # current_detections.append([x_min, y_min, x_max, y_max])
+                            # current_scores.append(score)
+
+                # if len(current_detections) > 0:
+                #     current_detections, current_scores = self.non_maximal_suppression(np.array(current_detections), np.array(current_scores), img_resized.shape)
+                #     for det, score in zip(current_detections, current_scores):
+                #         image_detections.append(det)
+                #         image_scores.append(score)
+
+                # for detection in current_detections:
+                #     cv.rectangle(img_resized, (detection[0], detection[1]), (detection[2], detection[3]), (0, 255, 0), 3)
+                # show_image('img', img_resized)
 
             if len(image_scores) > 0:
                 image_detections, image_scores = self.non_maximal_suppression(np.array(image_detections), np.array(image_scores), img.shape)

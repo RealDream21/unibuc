@@ -87,6 +87,7 @@ class Parameters:
             unused = 0
             train_folder = os.path.join(self.base_dir, 'antrenare')
             folders = [x for x in os.listdir(train_folder) if '.' not in x]
+            cnt = 0
             for folder in folders:
                 g = open(os.path.join(train_folder, folder)+'_annotations.txt', 'r')
                 annotations = [x.strip().split() for x in g.readlines()]
@@ -107,7 +108,6 @@ class Parameters:
                     annotation_dict[x.image_name].append(x)
  
                 step = 1
-                cnt = 0
                 for image_name in tqdm(os.listdir(os.path.join(train_folder, folder)), miniters=len(os.listdir(os.path.join(train_folder, folder)))//100):
                     image = cv.imread(os.path.join(os.path.join(train_folder, folder), image_name), cv.IMREAD_GRAYSCALE)
                     annotations = annotation_dict[image_name]
@@ -115,7 +115,7 @@ class Parameters:
                         for an in annotations:
                             cv.rectangle(image.copy(), (an.x_top_left, an.y_top_left), (an.x_bottom_right, an.y_bottom_right), (0, 255, 255), 3)
 
-                    n_neg_ex_per_image = self.n_negative_examples // 1000
+                    n_neg_ex_per_image = self.n_negative_examples // 4000
                     patches = []
 
                     for x in range(0, image.shape[0] - OX_dim_window, step):

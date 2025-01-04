@@ -1,6 +1,9 @@
 from Parameters import *
 from FacialDetector import *
+import ray
+ray.init()
 
+@ray.remote
 def generate_annotations(params: Parameters):
     facialDetector = FacialDetector(params)
     positive_features_path = params.positive_descriptors_path
@@ -21,7 +24,7 @@ def generate_annotations(params: Parameters):
     y = np.concatenate((np.ones(positive_features.shape[0]), np.zeros(negative_features.shape[0])))
     facialDetector.train_classifier(X, y)
     detections, scores, file_names = facialDetector.run()
-    return detections, scores, file_names
+    return [detections, scores, file_names]
 
 def write_to_file(detections, scores, file_names, params:Parameters):
     g = open(f"Output_{params.OX_dim_window}x{params.OY_dim_window}", "x")
@@ -30,14 +33,23 @@ def write_to_file(detections, scores, file_names, params:Parameters):
     g.close()
 
 
-params1 = Parameters(OX_dim_window=64, OY_dim_window=128, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, other_augmentations=True, use_salt_and_pepper = True, n_negative_examples=150000)
-params2 = Parameters(OX_dim_window=128, OY_dim_window=128, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=150000)
-params3 = Parameters(OX_dim_window=128, OY_dim_window=64, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations=True, n_negative_examples=150000)
+params1 = Parameters(OX_dim_window=48, OY_dim_window=96, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, other_augmentations = True, use_salt_and_pepper = True, n_negative_examples=100000)
+params2 = Parameters(OX_dim_window=64, OY_dim_window=64, extract_examples=True, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=100000)
+params3 = Parameters(OX_dim_window=96, OY_dim_window=48, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=100000)
 
+workers = []
 a = [params1, params2, params3]
 for params in a:
-    detections, scores, file_names = generate_annotations(params)
-    write_to_file(detections, scores, file_names, params)
+    #detections, scores, file_names = generate_annotations(params)
+    workers.append(generate_annotations.remote(params))
+    #write_to_file(detections, scores, file_names, params)
+result = ray.get(workers)
+for (detections, scores, file_names), params in zip(result,a):
+    print(detections, scores, file_names, params)
+    try:
+        write_to_file(detections, scores, file_names, params)
+    except:
+        print(f'Error on {params.OX_dim_window, params.OY_dim_window}')
 
 lookup = dict()#{'image_name': ([rectangles], [scores])}
 for params in a:
@@ -49,23 +61,22 @@ for params in a:
         lookup[line[0]][0].append([int(line[1]), int(line[2]), int(line[3]), int(line[4])])
         lookup[line[0]][1].append(float(line[5]))
 
-
-x = FacialDetector(Parameters(OX_dim_window=64, OY_dim_window=128, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.7, threshold=7, use_flip_images=True, use_salt_and_pepper=True, n_negative_examples=-1))
+x = FacialDetector(Parameters(OX_dim_window=64, OY_dim_window=128, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.7, threshold=7, use_flip_images=True, use_salt_and_pepper=True, other_augmentations=False, n_negative_examples=-1))
 
 detections_to_save = []
 file_names_to_save = []
 scores_to_save = []
 for image in lookup.keys():
     img = cv.imread(os.path.join(params1.test_folder_path, image), cv.IMREAD_GRAYSCALE)
-    #show_image('img', img)
+    show_image('img', img)
     detections, scores = x.non_maximal_suppression(np.array(lookup[image][0]), np.array(lookup[image][1]), img.shape)
     for detection, score in zip(detections, scores):
         detections_to_save.append(np.array([detection[0], detection[1], detection[2], detection[3]]))
         scores_to_save.append(score)
         file_names_to_save.append(image)
-        # cv.putText(img, str(score), (detection[0], detection[1] - 10), cv.FONT_HERSHEY_COMPLEX, 0.9, (0, 255, 255), 2)
-        # cv.rectangle(img, (detection[0], detection[1]), (detection[2], detection[3]), (0, 255, 255), 3)
-    #show_image('img', img)
+        cv.putText(img, str(score), (detection[0], detection[1] - 10), cv.FONT_HERSHEY_COMPLEX, 0.9, (0, 255, 255), 2)
+        cv.rectangle(img, (detection[0], detection[1]), (detection[2], detection[3]), (0, 255, 255), 3)
+    show_image('img', img)
 
 output_folder = os.path.join(params1.base_dir, 'output')
 os.makedirs(output_folder, exist_ok=True)
@@ -73,6 +84,5 @@ np.save(os.path.join(output_folder, 'detections_all_faces.npy'), detections_to_s
 np.save(os.path.join(output_folder, 'file_names_all_faces'), file_names_to_save)
 np.save(os.path.join(output_folder, 'scores_all_faces.npy'), scores_to_save)
 
-import evaluare.cod_evaluare.evalueaza_solutie
 
 
