@@ -33,16 +33,14 @@ def write_to_file(detections, scores, file_names, params:Parameters):
     g.close()
 
 
-params1 = Parameters(OX_dim_window=48, OY_dim_window=96, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, other_augmentations = True, use_salt_and_pepper = True, n_negative_examples=100000)
-params2 = Parameters(OX_dim_window=64, OY_dim_window=64, extract_examples=True, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=100000)
-params3 = Parameters(OX_dim_window=96, OY_dim_window=48, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=100000)
+params1 = Parameters(OX_dim_window=100, OY_dim_window=120, extract_examples=True, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, other_augmentations = True, use_salt_and_pepper = True, n_negative_examples=200000)
+params2 = Parameters(OX_dim_window=100, OY_dim_window=100, extract_examples=True, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=200000)
+params3 = Parameters(OX_dim_window=120, OY_dim_window=100, extract_examples=True, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper = True, other_augmentations = True, n_negative_examples=200000)
 
 workers = []
 a = [params1, params2, params3]
 for params in a:
-    #detections, scores, file_names = generate_annotations(params)
     workers.append(generate_annotations.remote(params))
-    #write_to_file(detections, scores, file_names, params)
 result = ray.get(workers)
 for (detections, scores, file_names), params in zip(result,a):
     print(detections, scores, file_names, params)
@@ -61,7 +59,7 @@ for params in a:
         lookup[line[0]][0].append([int(line[1]), int(line[2]), int(line[3]), int(line[4])])
         lookup[line[0]][1].append(float(line[5]))
 
-x = FacialDetector(Parameters(OX_dim_window=64, OY_dim_window=128, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.7, threshold=7, use_flip_images=True, use_salt_and_pepper=True, other_augmentations=False, n_negative_examples=-1))
+x = FacialDetector(Parameters(OX_dim_window=64, OY_dim_window=128, extract_examples=False, dim_hog_cell=6, dim_descriptor_cell=36, overlap=0.5, threshold=5, use_flip_images=True, use_salt_and_pepper=True, other_augmentations=False, n_negative_examples=-1))
 
 detections_to_save = []
 file_names_to_save = []

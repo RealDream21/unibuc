@@ -102,7 +102,7 @@ class Parameters:
                     cv.imwrite(os.path.join(os.path.join(os.path.join(self.base_dir, 'proprii'), self.positive_train_folder), f'{annotation.person}_{folder}Dataset_{annotation.image_name}'), patch)
                     if verbose:
                         show_image('img', patch.copy())
-                
+
                 annotation_dict = dict([(x.image_name, []) for x in annotations])
                 for x in annotations:
                     annotation_dict[x.image_name].append(x)
