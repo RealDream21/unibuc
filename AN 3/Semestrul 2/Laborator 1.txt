@@ -1,0 +1,56 @@
+Ex 1
+
+(A) Adversar -> 3
+(B) Securitate -> 1
+(C) Risc -> 5
+(D) Vulnerabilitate -> 2
+(E) Securitate cibernetica -> 4
+
+Ex 2
+
+
+
+Ex 3
+
+binar -> 0,1
+hexa -> 0-9, A-E
+
+31 = 00011111 pe 8 biti
+
+0xABCD -> 1010101111001101
+
+
+
+Ex 4
+
+Fabian -> 70 65 66 73 65 78
+66 82 65 86 79 -> B R A V O
+
+
+
+Ex 5
+
+Fabian in base64 -> RmFiaWFu
+
+U3VudCBzdHVkZW50IGxhIEZNSS4= -> Sunt student la FMI.
+
+
+
+Ex 6
+
+
+malware = program cu scop malitios
+virus = program malitios aflat in calculator ce se multiplica si se raspandeste la alte calculatoare dintr-o retea prin ajutorul fisierelor.
+dropper = program care faciliteaza transmiterea si instalarea de malware
+downloader = program malware care descarca alte programe malware
+spyware = program care spioneaza utilizatorul, monitorizeaza activitatea(apasari de tastatura, camera video, etc.)
+riskware = programe legitime, dar care au vulnerabilitati 
+ransomware = program care tine utilizatorul ostatic, cripteaza fisierele si opreste accesul la sistem pana cand o suma este platita
+adware = program care lanseaza popup-uri/ reclame nedorite/ in locuri nedorite(random pe ecran).
+worm = program malware de sine statator(nu se ascunde sub un alt fisier) care se raspandeste singur intr-o retea
+obfuscare = Ascunderea codului de le decompilare prin tehnici speciale(ex schimbarea numelui functiilor)
+
+
+
+Ex 7
+
