@@ -1,0 +1,51 @@
+Ex 1
+
+A - 4
+B - 2
+C - 5
+D - 1
+E - 6
+F - 3
+
+
+
+Ex 2
+
+1. Salariile angajaților nu trebuie făcute publice. 									-> Confidentialitate
+2. Biroul casierie trebuie să aibă acces la salariile angajaților (pentru a realiza plățile) 				-> Disponibilitate
+3. Un angajat nu își poate modifica singur suma primită ca salariu pe luna în curs.					-> Integritate
+4. Un angajat nu ar trebui să afle cât câștiga un coleg fără acordul acestuia (ex. să îi spună direct). 		-> Confidentialitate
+5. Biroul casierie trebuie să aibă certitudinea că suma pe care o înmânează angajatului de plată este cea corectă. 	-> Integritate
+
+Dați exemplu de primitive criptografice care se folosesc pentru a satisfacere o 
+proprietate criptografică. Spre exemplu, ce primitivă criptografică oferă confidențialitate? Dar integritate? 
+
+Confidentialitate -> algoritmi de criptare de ex Advanced Encryption Standard
+Integritate -> SHA256, facem hash inainte de transfer/etc si dupa si vedem ca sunt la fel
+
+
+
+Ex 3 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
