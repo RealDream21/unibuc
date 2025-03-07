@@ -1,0 +1,14 @@
+Analiza statica -> nu rulam, doar ne uitam
+Analiza dinamica -> rula
+
+Ex 1
+
+a) Codul da output la numele facultatii si un link spre youtube
+si linkul e rickroll :((((((((((((((((((
+codul pare fi trecut prin JSFuck 
+
+b) seamana cu Brainfuck, si am cautat pe net, am gasit JSFuck
+
+c)
+
+Ex 2 

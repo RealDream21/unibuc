@@ -3,8 +3,35 @@
 Ex 1
 
 A - 4
-B - 5
+B - 2
 C - 1
 D - 3
 E - 6
-F - 2
+F - 5
+
+2
+
+Email suspect(si nume suspect), inregistrare la un cont nesolicitata, titlu suspect, email deja identificat ca junk,
+erori de scriere, numele recipientului nu este mentionat in mail(dovada ca atacatorul nu detine user info precum 
+ar detine ing-ul)
+
+3
+
+SPF = Sender Policy Framework : lista de servere autorizate care pot trimite mail-uri pt un anumit domeniu @fmi.unibuc.ro
+DKIM = DomainKeys Identified Mail : semneaza digital mail-ul pentru ca omul care primeste sa stie ca este alterat
+DMARC = Domain-Based message authentication , reporting and conformance : spune serverelor ce sa faca cand nu trece de SPF si DKIM
+
+campul SPF ======> oftfail (domain of transitioninggmail.com does not designate 114.29.236.247 as permitted sender),
+
+campul DKIM = unknown
+
+diferenta cu un mail legitim
+
+dkim = unknow vs dkim = pass
+spf = softfail vs spf = pass(domain of bounce.linkedin.com designates 108.174.6.157 as permitted sender)
+
+spune ca este permited sender
+
+
+ 
+
