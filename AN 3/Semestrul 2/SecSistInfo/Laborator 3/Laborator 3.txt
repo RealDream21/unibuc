@@ -113,8 +113,18 @@ Y				F
 
 Ex 1
 
+7 martie 1941
 
+rotors: 1, 2, 5
+Ring: 16, 19, 22 (O, R, U)
+Initial: A, A, A
 
+Fabian -> UVRBSC
+
+pentru a decripta, resetam rotorul la AAA si scriem mesajul criptat
+
+ex de text criptat de ac lungime:
+FABIAN. Din cate inteleg rotorul acela se schimba a fiecare litera, deci un text criptat ca fiind FABIAN nu are cum sa fie decrpitat ca fiind tot FABIAN. De fiecare data trebuie obligatoriu schimbata o litera
 
 
 
