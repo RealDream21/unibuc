@@ -9,6 +9,55 @@ codul pare fi trecut prin JSFuck
 
 b) seamana cu Brainfuck, si am cautat pe net, am gasit JSFuck
 
-c)
+c)Mesaj ascuns: 18367622009998665
+Ajutor: https://stackoverflow.com/questions/31862135/how-to-decode-a-jsfuck-script
+
+d)https://jsfuck.com/# probabil, sau un obfuscator
+
+
 
 Ex 2 
+
+a) Acest cod pare ca genereaza cod recursiv. Pare ca dispune la final de diferite
+comenzi/cuvinte/bucati de cod pe care le foloseste cand il genereaza
+
+b) Da. Fisierul vrea acces neautorizat la calculator pentru a scrie fisiere text si a da comenzi WScript.Echo
+
+c) nu stiu
+
+
+
+Ex 3
+
+a) Ruleaza cod javascript, luandu-si stringurile dintr-o variabila obfuscata si stringuri sub forma hexa
+
+b) \x$$ sunt caractere ascii
+
+c) Diferenta dintre cele doua sample-uri este usurinta cu care poate fi inteles codul prin analiza statica.
+Daca la primul mai erau cuvinte vizibile si variabile, la al doilea este greu sa intelegi ce se intampla la prima vedere
+
+La primu pe virustotal mi-a recunoscut 1 malware,
+La al doilea pe virustotal imi spune ca este clean. Consider ca un avantaj al obfuscarii numelor de variabile si 
+al stringurilor este scaderea detectiei de programele de malware.
+
+
+
+Ex 4
+
+a) Ruleaza hello.exe, incaraca libmingwex-0.dll pentru a rula hello.exe
+ruleaza functia JSZQ92 un input mare. Functia, din ce observ, vrea sa scrie un document DOM. este rulata si functia JSZQ93 care deschide un shell.
+Pare ca tot ce se va creea aici se va creea in %temp%
+
+
+b) ?
+
+c) Da. Executa cod neautorizat
+
+d)24/61 spun ca este malwhare. Label de trojan.cbum/xibow / downloader
+
+e)5/62 au scazut flagg-urile ca fiind malware. Este considerat doar trojan.
+Acest lucru se intampla, deoarece similaritatea cu alti virusi scade prin obfuscare.
+
+
+
+
