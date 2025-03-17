@@ -16,12 +16,13 @@ erori de scriere, numele recipientului nu este mentionat in mail(dovada ca ataca
 ar detine ing-ul)
 
 3
+Ce beneficii ar obtine? acces la calculatorul meu printr-un virus
 
 SPF = Sender Policy Framework : lista de servere autorizate care pot trimite mail-uri pt un anumit domeniu @fmi.unibuc.ro
 DKIM = DomainKeys Identified Mail : semneaza digital mail-ul pentru ca omul care primeste sa stie ca este alterat
 DMARC = Domain-Based message authentication , reporting and conformance : spune serverelor ce sa faca cand nu trece de SPF si DKIM
 
-campul SPF ======> oftfail (domain of transitioninggmail.com does not designate 114.29.236.247 as permitted sender),
+campul SPF ======> softfail (domain of transitioninggmail.com does not designate 114.29.236.247 as permitted sender),
 
 campul DKIM = unknown
 
