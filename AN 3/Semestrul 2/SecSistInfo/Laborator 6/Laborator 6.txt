@@ -1,0 +1,18 @@
+Ex 1
+
+Candidate 1: pt orice seed a, urmatorul seed e a XOR a = 0
+	0 XOR 0 => 0 si deja se repeta
+
+Candidate 2: nu e distribuit uniform, numerele cu - raman cu -
+
+Candidate 3: nu e distribuit uniform, urmatorul seed nu este setat
+
+
+
+Ex 2
+
+almost done
+
+
+
+
