@@ -9,8 +9,6 @@
 \def\nrParticipantiValidare{0}
 \def\nrParticipantiTestare{0}
 
-\usepackage{float}
-
 \chapter{Metodologia}
 
 \section{Setul de date}
@@ -56,7 +54,7 @@ Literatura de specialitate sugerează să filtram datele astfel încât să păs
     \label{fig:vizualizare_filtru}
 \end{figure}
 
-Urmatoarea preprocesare aplicată este interpolarea canalelor corupte. Semnalul canalelor marcate ca fiind corupte este înlocuit prin interpolarea canalelor vecine acestuia. Mai departe, am aplicat tehnica de ICA(Independent Component Analysis) pentru a elimina clipirile din canalele Fp1 și Fp2 ce aveau reverberații și asupra celorlalte canale. Tehnica se bazeaza pe descompunerea semnalelor într-un număr de componente specificate. Pe urmă, componentele ce se află în zona ochilor sau trec de un anumit threshold sunt eliminate, fie manual, prin selecția componentelor ce indica activitate în zona ochilor, fie automat printr-un threshold selectat.
+Urmatoarea preprocesare aplicată este interpolarea canalelor corupte. Semnalul canalelor marcate ca fiind corupte este înlocuit prin interpolarea canalelor vecine acestuia. Mai departe, am aplicat tehnica de ICA(Independent Component Analysis) pentru a elimina clipirile din canalele Fp1 și Fp2 ce aveau reverberații și asupra celorlalte canale. Tehnica se bazeaza pe descompunerea semnalelor într-un număr de componente specificate. Pe urmă, componentele ce se află în zona ochilor sau trec de un anumit prag sunt eliminate, fie manual, prin selecția componentelor ce indica activitate în zona ochilor, fie automat printr-un threshold selectat.
 
 \vspace{1em}
 \begin{figure}[h]
@@ -164,7 +162,17 @@ O altă abordare a extragerii caracteristicilor o reprezintă datele statistice 
 ------------TO BE CONTINUED AICI------------
 
 \subsection{Datele drept feature-uri geometrice Riemann}
-Alte modalități, care au recâștigat popularitate recent, constau în folosirea geometriei Riemann. Asupra datelor este aplicat algoritmul de denoising XDAWN\cite{xdawn}, urmând, pe urmă, ca semnalul să fie transpus într-un spațiu geometric Riemann. Pentru a implementa acești algoritmi m-am folosit de librăria pyRiemann\cite{pyriemann}. Algoritmii ce se folosesc de acest principiu și pe care i-am implementat și testat la rândul meu sunt: XDAWNCov + TS + SVM\cite{xdawncovtssvm} și XDAWN + LDA\cite{xdawnlda}. Benchmark-urile MOABB\cite{moabb}  arată ca aceaste două metode obțin cele mai bune performanțe pentru stimulii de tip P300. Pornind de la acești algoritmi, am adapatat unii pași, obținând, pe cazuri specifice, rezultate mai bune.
+Alte modalități, care au recâștigat popularitate recent, constau în folosirea geometriei Riemann. Asupra datelor este aplicat algoritmul de denoising XDAWN\cite{xdawn}, urmând, pe urmă, ca semnalul să fie transpus într-un spațiu geometric Riemann. Pentru a implementa acești algoritmi m-am folosit de librăria pyRiemann\cite{pyriemann}. Algoritmii ce se folosesc de acest principiu și pe care i-am implementat și testat la rândul meu sunt: XDAWNCov + TS + SVM\cite{xdawncovtssvm}, pe care ulterior l-am modificat si am utilizat Linear Discriminant Analysis(LDA) din scikit-learn, XDAWN + LDA\cite{xdawnlda}, și, derivat din aceste concepte XDAWN + Cov + TS + LDA. Benchmark-urile MOABB\cite{moabb}  arată că XDAWNCov + TS + SVM și XDAWNCov + MDM obțin cele mai bune performanțe pentru stimulii de tip P300. Rezultatele obținute de mine sunt următoarele:
+
+\vspace{1em}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{comparison_xdawn.png}
+    \caption{Performanța algoritmilor XDAWN}
+    \label{fig:enter-label}
+\end{figure}
+
+-----ACEASTA PARTE PROBABIL AR TREBUI MUTATA IN SECTIUNEA 2.4-----
 
 \section{Modele de clasificare}
 Privind abordarea modelelor am ales să încerc cât mai multe modele, pornind de la simple clasificatoare liniare, precum SVM-uri din scikit-learn\cite{scikit-learn} și până la rețelele convoluționale din braindecode\cite{braindecode}. De asemenea, am creat, utilizând keras\cite{keras}, și modele proprii pentru un mai bun control asupra complexității și funcționalității modelului.
@@ -181,7 +189,6 @@ Pentru a evalua modelele clasice, prima dată am trecut datele de dimensiune(7, 
 
 Utilizând acest pipeline, am putut să compar sistematic mai multe tipuri de modele. Pentru a evalua performanța modelelor, am utilizat f1-score și accuracy. Pentru a lua în calcul imbalansul claselor, am creat date sintetice utilizând metoda de oversampling SMOTE. %Pentru cel mai bun model din punctul de vedere al f1-score și accuracy am făcut mai departe un classification report. %
 
-\clearpage
 \vspace{1em}
 \begin{figure}[h]
     \centering
@@ -195,7 +202,7 @@ Mai departe, pentru a încerca abordarea bazată pe caracteristici statistice ș
 ------------DE ADAUGAT AICI REZULTATELE RULARII ALG GENETIC------------
 
 \subsection{Braindecode}
-Pentru a avea acces la rețele neuronale adânci, create special pentru domeniul analizei EEG-urilor, am utilizat librăria Braindecode. Ele primesc ca input direct semnalul de dimensiune (8, 601). Fiecare model din braindecode trebuie trimis mai departe unui wrapper, fie de regresie fie de clasificare. În cazul meu l-am folosit pe cel de clasificare. Pentru a mări viteza de procesare, dispunând de o placă video, am rulat antrenarea epocilor pe placa video folosind cuda.
+Pentru a avea acces la arhitecturi neuronale convolutionale sau recurente, create special pentru domeniul analizei EEG-urilor, am utilizat librăria Braindecode. Ele primesc drept intrare direct semnalul de dimensiune (8, 601). Fiecare model din braindecode trebuie trimis mai departe unui wrapper, fie de regresie fie de clasificare. În cazul meu l-am folosit pe cel de clasificare. Pentru a mări viteza de procesare, dispunând de o placă video, am rulat antrenarea epocilor pe placa video folosind cuda.
 
 \vspace{1em}
 \begin{figure}[h]
@@ -213,8 +220,9 @@ La nivelul acestuia am setat loss-ul ca fiind CrossEntropyLoss din librăria pyt
 
 Putem observa că formula pentru CrossEntropyLoss conține un \(w_{y_n}\). Acesta reprezintă un parametru legat de imbalansul claselor. Astfel, modelul îmi permite să abordez ambele modalități de rezolvare a problemei de balansare a claselor. Evaluarea modelelor am făcut-o asemănător cu cea a modelelor clasice, în funcție de f1-score și accuracy.
 
-------------DE ADAUGAT GRAFIC AICI CU SCORURILE------------
+Din dorința de a avea o analiză amplă a acestei tehnici, am utilizat toate modelele disponibile din librărie ce au fost dezvoltate în direcția din care provin datele testate. Astfel, am comparat următoarele modele: TSceptionV1, EEGNetv4\cite{eegnetv4}, EEGInceptionERP\cite{eeginceptionerp}, ATCNet \cite{atcnet1}\cite{atcnet2}\cite{atcnet3}, EEGTCNet\cite{tcnet}, TIDNet\cite{tidnet}, ShallowFBCSPNet\cite{ShallowFBCSPNet}, 
 
+------------DE ADAUGAT GRAFIC AICI CU SCORURILE------------
 
 \subsection{Modele personale}
 Pentru a creea modele personale am utilizat keras, deoarece aduce conceptele din domeniul de Machine Learning la un nivel înalt și ușor de utilizat. Modelele mele au abordat atât paradigma învățării feature-urilor statistice și spectrale extrase din semnal, cât și a semnalului ca feature în sine.
