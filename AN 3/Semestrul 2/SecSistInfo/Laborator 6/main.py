@@ -38,6 +38,7 @@ def check_password(password, hashed_password):
     return bcrypt.checkpw(password.encode(), hashed_password.encode())
 
 print(hash_password('salutare'))
-hashed_password, salt = hash_password('salutre')
+hashed_password, salt = hash_password('salutare')
 print(f'Parola hashed:{hashed_password}')
-print(f'Verificare parola: {check_password('salutare', hash_password)}')
+print(f'Verificare parola: {check_password('salutare', hashed_password)}')
+

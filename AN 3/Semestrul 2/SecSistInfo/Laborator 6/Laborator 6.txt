@@ -11,7 +11,14 @@ Candidate 3: nu e distribuit uniform, urmatorul seed nu este setat
 
 Ex 2
 
-almost done
+Cel cu stocatul de parole ??
+
+
+
+Ex 3
+
+cwe id 
+
 
 
 

@@ -11,25 +11,9 @@ Prima dată, opțiunile de preprocesare și de formatare în epoci sunt setate u
 
 \section{Alte librării folosite}
 \subsection{Optimizarea încărcării datelor folosind Ray}
-Pentru a încărca eficient cei 26 de participanți am utilizat librăria Ray\cite{Ray}. Ray este o librărie specializată în paralelizarea programelor Python, având ca scop principal programele din domeniul de Machine Learning. Modul de paralelizare a constat prin decorarea functiilor de încarcare a datelor cu @ray.remote și așteptarea rezultatului cu ray.get. Am folosit astfel toate cele 8 core-uri de care dispune calculatorul meu. De asemenea, timpul a fost redus de la $\timpInainteDeRay$ secunde la $\timpDupaRay$ secunde.
+Pentru a încărca eficient cei 26 de participanți am utilizat librăria Ray\cite{Ray}. Ray este o librărie specializată în paralelizarea programelor Python, având ca scop principal programele din domeniul de Machine Learning. Modul de paralelizare a constat prin decorarea functiilor de încarcare a datelor cu @ray.remote și așteptarea rezultatului cu ray.get. Am folosit astfel toate cele 8 core-uri de care dispune calculatorul meu. De asemenea, timpul de încărcare a datelor a fost redus semnificativ de la $\timpInainteDeRay$ secunde la $\timpDupaRay$ secunde. Paralelizarea folosind Ray poate fi observată în figura \ref{fig:paralelizare_ray}.
 
-\setlength{\abovecaptionskip}{0pt}
-\setlength{\belowcaptionskip}{0pt}
-\clearpage
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=1\linewidth]{images/ray.png}
-    \caption{Paralelizare utilizând Ray}
-    \label{fig:enter-label}
-\end{figure}
+Dupa cum putem observa în figura \ref{fig:load_calculator}, paralelizarea a funcționat, ducând load-ul calculatorului la 100\%.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\linewidth]{task_manager.png}
-    \caption{Load-ul pe calculator}
-    \label{fig:enter-label}
-\end{figure}
-
-\subsection{Căutarea hiperparametrilor folosind optuna}
-
-Căutarea celor mai buni hiperparametrii am făcut-o utilizând Optuna\cite{optuna_2019}. 
+\subsection{Căutarea hiperparametrilor folosind Optuna}
+Optuna\cite{optuna_2019} este o librărie ce se ocupă de căutarea hiperparametrilor. Parametrii căutați au fost cei legați de EEGPipelineOptions. Scopul a fost să înțeleg ce preprocesări trebuiesc executate pentru performanță maximă. Pentru a rula pipeline-ul meu folosind optuna, am definit o funcție obiectiv, și anume f1 score-ul obținut în urma cross-validation-ului. Mai departe, am setat hiperparametrii pe care ar trebui să-i caute librăria. Am salvat cei mai buni parametrii într-un pickle în funcție de f1-score. Astfel, am putut să caut sistematic cei mai buni hiperparametrii de preprocesare. Întreg procesul poate fi văzut în detaliu în figura \ref{fig:optuna_search}.
