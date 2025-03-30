@@ -17,7 +17,24 @@ Cel cu stocatul de parole ??
 
 Ex 3
 
-cwe id 
+CWE id asociat: CWE-336 si CWE-335(e parinte pe CWE-336). De fiecare data cand este initializata aplicatia avem aceleasi valori random,
+deci acelasi account id -> daca ar fi sa folosim id-ul drept cheie in baa de date am avea chei duplicate.
+La al doilea exemplu generam un session id in functie de userid, deci mereu vom avea acelasi rezultat.
+
+spatiu seed-uri posibile mic -> CWE-339. Ce se intampla? Un atacator ar putea prelua output-urile PRNG-ului si ar putea
+sa faca brute-force la un seed. Fiind un spatiu mic, ar afla imediat seed-ul, precum si urmatoarele output-uri
+
+CAPEC-112. Da. gasesc o referinta la seed.Periodicity, the need for seed values, or weaknesses in the generator all can result in a significantly smaller secret space. 
+Am gasit si o mentiune la CWE-ID 330(care e parinte la 335 si 335 e parinte la 336)
+
+CWE-342. Urmatorul numar random poate fi prezis in functie de valorile trecute.
+Este asociat, de ex, cu CVE-1999-0074. (porturile TCP sunt alocate secvential -> atacuri de spoofing)
+
+am gasit 8 detectate in 2025. https://www.cve.org/CVERecord/SearchResults?query=prng
+
+
+
+
 
 
 
