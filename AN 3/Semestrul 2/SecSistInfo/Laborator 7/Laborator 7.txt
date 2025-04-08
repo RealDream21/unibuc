@@ -12,6 +12,31 @@ g) F
 
 Ex 2
 
+309 cycles per byte
+
+nu am gasit nicio coliziune
+
+ma asteptam sa nu gasesc, deoarce am generat doar 10000000 valori iar spatiul total al functiei 
+hash este de 2^80
+
+
+
+Ex 3
+
+1)cheia secreta este usor de ghicit si este pusa in plaintext si hardcodata, parola este 
+stocata in plaintext(user.getPassword => este stocata in plaintext), parola este criptata mereu la fel,
+nu are un salt. Also, parola daca este criptata poate fi si decriptata, ea trebuie sa fie hashed
+
+2)parola este retinuta fara salt, 
+
+3)parola nu are salt, 
+
+4)saltul este hardcodat => inutil, security password hash hardcodat 
+
+5)foloseste md5 si nu mai e secure, face hash doar pe ascii, hashul este calculat dar nu este retinut
+nicaieri, nu are salt
+
+
 
 
 

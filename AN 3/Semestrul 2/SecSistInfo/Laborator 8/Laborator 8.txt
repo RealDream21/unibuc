@@ -1,0 +1,6 @@
+Ex 1
+
+a) Nup. nu am nicio eroare
+b) Observ secvente de cod %compare, wcout, short unsigned int, etc. C:/Users/Marian/Desktop/Teaching SSI/malware/wow�c:/mingw/include�c:/mingw/lib/gcc/mingw32/6.3.0/include/c++�c:/mingw/lib/gcc/mingw32/6.3.0/include/c++/bits�c
+c) 2/60 detectii ca virus. Google -> Trojan, 
+d) ???
