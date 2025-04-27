@@ -37,8 +37,24 @@ Page 4:
 the sensations moves around the centroid and not randomly (participants felt the same sensation near the same spot and not in a totally different place)
 they found the 'finger' axes by projecting the electrodes int 2d and 1d. They could chose each finger by moving along a straight line either perpendicular or the other way
 
+Page 5:
+they used patients with residual sensation to map PF -> somatotopic homunculus locatin. Compared RF with PF
+RF is 6.5 times larger than PF. PF size scales with RF size(only for 1 participant)
+conclusion: PF of an electrode is determined by RF o fthe neurons arount the electrode tip
 
- 
+Page 6:
+amplitude increased PF area more than frequency
+more neuron activation => more sensation
+they interweaved single and multi-electrode signals to find which is more stimualant. 
+they added the individual PFs and compared to multi PF => good match of 0.61 correlation
+Conclusion: when you stimulate multiple electrodes => same feeling as stimulating individual electrodes and ADDING up the feelings
+
+Page 7:
+users wanted more stimulation to confirm sensation position when linked to a bionic arm
+single electrode stimulation => 30% failure to feel vs multiple electrode => 0% failure to feel
+when feeling, single electrode => 42% failure to WHERE they feel vs multiple elctrode => 7% failure to WHERE they fel
+same conclusion: single electrode bad, more electrode good
+
 
 
 
@@ -53,7 +69,7 @@ What is cervical spinal cord injury? How does it affect the human? Does it make 
 What is an electrode ? What is the procedure of inserting an electrode ? Talk about advancements, maybe the neuralink surgeon robot. What is the width of the electrode and how does that affect it.
 What is Brodmanns area 1 ? Why is it important ? Why there?
 What is an electrodes receptive field ? (RF)
-What is PF and waht is RF ? 
+What is PF and what is RF ? 
 What is biomimicry ? What can ppl do with it ? Limitations ? Achivements ?
 
 
