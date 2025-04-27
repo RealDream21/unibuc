@@ -1,0 +1,69 @@
+Paper points:
+
+Page 1:
+tacticle feedback can be restored by ICMS(intercortical microstimulation) of the somatosensory cortex
+location percepts depends on electrode positioning + freuency + amplitude.
+tests done on patients with cervical spinal cord injury
+only 1 electrode => weak and confusing perception
+more electrodes => localised and intense perception
+manual interactions rely on tactile feedback
+amputees dont like myoelectric limbs that do not provide feedback
+adding feedback may improve brian connectivity with limb
+contact location of bionic limb -> electrode position on S1(somatosensory cortext)
+force of contact -> amplitude intensity
+
+Page 2:
+it is unknown if repeated calibrations are needed. Some studies say the mappings are stable
+study has 3 objectives  -> quantify spatial and distribution of sensations evoked by ICMS
+			-> compare range of electrode intensity with that of natural touch
+			-> quanitfy functional implications on real patients
+microelectrode arrays implanted in Brodmanns area 1 of somatosensory cortex
+they leveraged the residual sensation of participants to find where the electrodes Receptive Fields are
+the electrodes PF(perceptive field) matches the RF(receptive field) of the neuron (basically it sends similar signals to the ones sent by the neuron)
+they found that the size and intensity of PF can be shaped by amplitude OR frequency
+when electrodes had overlapping PF => more intense and localized stim
+1 electrode => weak sensaton
+more electrodes => powerful, localized sensation, similar to natural touch
+4 electrode arrays were planted => 2 in the arm area of the motor cortext, 2 in the Brodmans area of S1
+participants drew where they felt the stimulus
+study was done over several years
+fig 2a shows for example how the participant drew where they felt the stim
+fig 2b shows all of the drawings
+fig 2c shows average of all of the drawings over the years
+they tested over the years 2-7 years and found that the location of evoked response remains the same. Therefore having reliable mappings that do not need to be remaped
+changes in PF reported in 1 day was equivalent to changes of PF recorder over the years => this means that the change of PF is because of trial errors
+
+Page 4:
+the sensations moves around the centroid and not randomly (participants felt the same sensation near the same spot and not in a totally different place)
+they found the 'finger' axes by projecting the electrodes int 2d and 1d. They could chose each finger by moving along a straight line either perpendicular or the other way
+
+
+ 
+
+
+
+
+
+
+
+Points to talk about or explain
+What is somatosensory cortex ?
+What is and how does ICMS work ?
+What is cervical spinal cord injury? How does it affect the human? Does it make the limbs numb and unable to move?
+What is an electrode ? What is the procedure of inserting an electrode ? Talk about advancements, maybe the neuralink surgeon robot. What is the width of the electrode and how does that affect it.
+What is Brodmanns area 1 ? Why is it important ? Why there?
+What is an electrodes receptive field ? (RF)
+What is PF and waht is RF ? 
+What is biomimicry ? What can ppl do with it ? Limitations ? Achivements ?
+
+
+
+
+
+
+
+
+
+
+
+
