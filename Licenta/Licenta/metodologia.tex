@@ -1,23 +1,22 @@
-
-\def\totalEpoci{0}
+\def\totalEpoci{5598}
 \def\totalEpociTestare{0}
-\def\totalEpociValentaPozitiva{0}
-\def\totalEpociValentaNegativa{0}
-\def\totalEpociValentaNeutra{0}
-\def\crestereAcurateteAutoReject{0}
-\def\nrParticipantiAntrenare{0}
-\def\nrParticipantiValidare{0}
-\def\nrParticipantiTestare{0}
+\def\totalEpociValentaPozitiva{1014}
+\def\totalEpociValentaNegativa{942}
+\def\totalEpociValentaNeutra{3642}
+\def\crestereAcurateteAutoReject{10}
+\def\nrParticipantiAntrenare{21}
+\def\nrParticipantiValidare{2}
+\def\nrParticipantiTestare{3}
 
 \chapter{Metodologia}
 
 \section{Setul de date}
 \subsection{Preluarea datelor și formatul lor}
-Datele constau în 26 de fișiere excel reprezentând subiecții experimentului.
-Experimentul a constat într-un grup de arhitecți care au privit imagini generate cu inteligența artificială reprezentând coloane. Imaginile au fost prezentate timp de 0.4 secunde pe ecran, în incercarea de a captura o reacție subconștientă a participanților.
+Datele constau în 26 de fișiere excel reprezentând citirile electrozilor subiecților experimentului.
+Experimentul a constat într-un grup de arhitecți care au privit imagini generate cu inteligența artificială reprezentând coloane. Imaginile au fost prezentate timp de 0.4 secunde pe ecran, în încercarea de a captura o reacție subconștientă a participanților.
 Ulterior, imaginile  privite sunt notate pe 3 criterii: V(Valence/Valență), A(Arousal/Excitare) și D(Dominance/Dominanță). 
 Notele stimulilor sunt discretizate in 3 categorii: stimul negativ (note de la 1 la 3), stimul neutru (note de la 4 la 6) și stimul pozitiv (note de la 7-10). 
-Scopul este astfel prezicerea categoriei de stimul provocat de o imagine.
+Scopul este astfel prezicerea categoriei de stimul provocat de o imagine. Deși fiecare imagine a fost arătată de mai multe ori, astfel încât participanții să noteze cele 3 categorii, am optat să consider fiecare eveniment în care era afișată o imagine ca fiind una independentă. Motivul principal pentru care am ales această abordare a fost faptul că notele acordate nu au rămas constante de-a lungul przentării aceleiași imagini.
 
 \setlength{\abovecaptionskip}{0pt}
 \setlength{\belowcaptionskip}{0pt}
@@ -32,23 +31,20 @@ Fiecare fișier conține înregistrările corespunzătoare a 21 de electrozi pla
 Ei au măsurat activitatea creierului cu o frecvență de 300 Hz. 
 Există și un canal de referință Pz care a fost folosit pentru a calibra măsurătorile. 
 Astfel, el nu apare în setul de date. 
-Corespunzător fiecarui fișier, mai există un fișier de quizz care reprezintă notele acordate de subiect fiecărei imagini văzute. 
+Corespunzător fiecărui fișier, mai există un fișier de quizz care reprezintă notele acordate de subiect fiecărei imagini văzute. 
 
 \setlength{\abovecaptionskip}{0pt}
 \setlength{\belowcaptionskip}{0pt}
-\clearpage
 \begin{figure}[h]
     \centering
     \includegraphics[width=8cm]{images/Sensor_positions_(eeg).png}
     \caption{Pozițiile electrozilor la nivelul capului}
     \label{fig:sensor_positions}
 \end{figure}
-Datele din formatul brut sunt încărcate folosind libraria Pandas \cite{reback2020pandas} din Python. Pe urmă, am mai adăugat coloane specifice lable-urilor experimentului. Mai departe, am transformat datele în format .FIF și le-am încărcat în format de EEG-uri Raw utilizând MNE \cite{MNE}.
+Datele din formatul brut sunt încărcate folosind librăria Pandas \cite{reback2020pandas} din Python. Pe urmă, am mai adăugat coloane specifice lable-urilor experimentului. Mai departe, am transformat datele în format .FIF și le-am încărcat în format de EEG-uri Raw utilizând MNE \cite{MNE}.
 
 \section{Preprocesarea datelor}
-Înainte de introduce datele în modele, acestea trebuie curățate. În primul rând, nu toate frecvențele sunt relevante pentru task-urile de clasificare. Multe pot proveni din zgomot de fond sau interferențe electrice, precum zgomotul generat de rețeaua electrică sau imperfecțiunea electrozilor. 
-
-% Toata partea de preprocesare este parametrizată pentru a permite cautarea valorilor optime.
+Înainte de a introduce datele în modele, acestea trebuiesc curățate. În primul rând, nu toate frecvențele sunt relevante pentru problemele de clasificare. Multe pot proveni din zgomot de fundal, mișcarea fizică a electrozilor sau interferențe electrice, precum zgomotul generat de rețeaua electrică sau imperfecțiunea electrozilor la capturarea semnalelor. Toata partea de preprocesare este parametrizată pentru a permite cautarea valorilor optime(fig \ref{fig:parametrizare}).
 
 % \setlength{\abovecaptionskip}{0pt}
 % \setlength{\belowcaptionskip}{0pt}
@@ -62,7 +58,7 @@ Datele din formatul brut sunt încărcate folosind libraria Pandas \cite{reback2
 
 \subsection{Filtrare, interpolare, ICA}
 
-Literatura de specialitate sugerează să filtram datele astfel încât să păstram doar frecvențele între 4-40 Hz. Am folosit astfel un filtru bandpass. Filtrul a îmbunătățit semnificativ datele. Cu ajutorul acestuia am eliminat frecvențele înalte cauzate de zgomotul electric al aparatului de măsurare, precum și drift-ul semnalului cauzat de modul în care aparatura a fost montată, neavând contact perfect cu scalpul.  %Modul de functionare al acestuia este următorul: este creeat un filtru în domeniul frecvențelor. Acest filtru este transpus în domeniul timp. Din semnalul original sunt luate bucăți segmentate. Ele sunt înmulțite cu o fereastră hamming pentru a elimina fenomenul de spectral leakage. Bucata segmentată este trecută prin operația de convoluție cu filtrul original și astfel este obținut un semnal filtrat.
+Literatura de specialitate sugerează să filtrăm datele astfel încât să păstrăm doar frecvențele între 4-40 Hz. Am folosit astfel un filtru bandpass. Filtrul a îmbunătățit semnificativ datele. Cu ajutorul acestuia am eliminat frecvențele înalte cauzate de zgomotul electric al aparatului de măsurare, precum și drift-ul semnalului cauzat de modul în care aparatura a fost montată, neavând contact perfect cu scalpul.  %Modul de functionare al acestuia este următorul: este creeat un filtru în domeniul frecvențelor. Acest filtru este transpus în domeniul timp. Din semnalul original sunt luate bucăți segmentate. Ele sunt înmulțite cu o fereastră hamming pentru a elimina fenomenul de spectral leakage. Bucata segmentată este trecută prin operația de convoluție cu filtrul original și astfel este obținut un semnal filtrat.
 
 \setlength{\abovecaptionskip}{0pt}
 \setlength{\belowcaptionskip}{0pt}
@@ -74,7 +70,7 @@ Literatura de specialitate sugerează să filtram datele astfel încât să păs
     \label{fig:vizualizare_filtru}
 \end{figure}
 
-Urmatoarea preprocesare aplicată este interpolarea canalelor corupte. Semnalul canalelor marcate ca fiind corupte este înlocuit prin interpolarea canalelor vecine acestuia. Mai departe, am aplicat tehnica de ICA(Independent Component Analysis) pentru a elimina clipirile din canalele Fp1 și Fp2 ce aveau reverberații și asupra celorlalte canale. Tehnica se bazeaza pe descompunerea semnalelor într-un număr de componente specificate. Pe urmă, componentele ce se află în zona ochilor sau trec de un anumit prag sunt eliminate, fie manual, prin selecția componentelor ce indica activitate în zona ochilor, fie automat printr-un threshold selectat.
+Urmatoarea preprocesare aplicată este interpolarea canalelor corupte. Semnalul canalelor marcate ca fiind corupte este înlocuit prin interpolarea canalelor vecine acestuia. Mai departe, am aplicat tehnica de ICA(Independent Component Analysis) pentru a elimina clipirile din canalele Fp1 și Fp2 ce aveau reverberații și asupra celorlalte canale. Tehnica se bazează pe descompunerea semnalelor într-un număr de componente specificate. Pe urmă, componentele ce se află în zona ochilor sau trec de un anumit prag sunt eliminate, fie manual, prin selecția componentelor ce indica activitate în zona ochilor, fie automat printr-un threshold selectat.
 
 \vspace{1em}
 \begin{figure}[h]
@@ -110,7 +106,7 @@ Calitatea datelor a fost semnificativ îmbunătățită. Am eliminat zgomotul ca
 
 \subsection{Separare în epoci, AutoReject}
 
-Mai departe, pentru a avea date pentru clasificare, am împărțit semnalul continuu în epoci. O epocă reprezintă o fereastră mai mică din semnalul original. Aceasta este extrasa din semnalul continuu cu ajutorul unui canal auxiliar ce conține indexul stimulului prezentat sau 0 daca în acel moment nu este prezentat niciun stimul. Pentru a elimina eventualele probleme cauzate de mărimi diferite ale datelor, pentru fiecare epocă am luat și 0.2 secunde de semnal de dinaintea evenimentului de trigger(afișarea imaginii). Pe acesta le-am folosit pe post de baseline pentru a scădea din restul semnalului valoarea lor. Centrând astfel începutul și sfârșitul epocii în jurul lui 0.
+Mai departe, pentru a avea date pentru clasificare, am împărțit semnalul continuu în epoci. O epocă reprezintă o fereastră mai mică din semnalul original. Aceasta este extrasă din semnalul continuu cu ajutorul unui canal auxiliar ce conține indexul stimulului prezentat sau 0 daca în acel moment nu este prezentat niciun stimul. Pentru a elimina eventualele probleme cauzate de mărimi diferite ale datelor, pentru fiecare epocă am luat și 0.2 secunde de semnal de dinaintea evenimentului de trigger(afișarea imaginii). Această porțiune a fost folosită pe post de baseline, valoarea acesteia fiind scăzută din restul semnalului. În acest fel, începutul și sfârșitul fiecărei epoci au fost centrate în jurul valorii zero.
 
 \setlength{\abovecaptionskip}{0pt}
 \setlength{\belowcaptionskip}{0pt}
@@ -119,30 +115,30 @@ Mai departe, pentru a avea date pentru clasificare, am împărțit semnalul cont
     \centering
     \includegraphics[width=17cm]{epoca_valenta_pozitiva.png}
     \caption{Raspunsul mediu al tuturor subiecților pentru o imagine cu valență pozitivă}
-    \label{fig:enter-label}
+    \label{fig:raspuns_mediu}
 \end{figure}
 
-Totuși, nu toate epocile sunt bune. Unele dintre ele încă au imperfecțiuni și pot contamina datele de antrenare, așa că ele trebuie aruncate. Pentru a automatiza procesul de găsire și eliminare a epocilor corupte am folosit AutoReject\cite{AutoReject}. Această librarie găsește atât epoci corupte cât și canale corupte în epocile valide. Epocile selectate sunt eliminate complect, iar canalele considerate corupte sutn înlocuite prin interpolare. Impactul aplicării acestui proces a fost creșterea acurateții cu $\crestereAcurateteAutoReject$\% pentru cel mai bun model folosit.
+Totuși, nu toate epocile sunt bune. Unele dintre ele încă au imperfecțiuni și pot contamina datele de antrenare, așa că ele trebuie aruncate. Pentru a automatiza procesul de găsire și eliminare a epocilor corupte am folosit AutoReject\cite{AutoReject}. Această librarie găsește atât epoci corupte cât și canale corupte în epocile valide. Epocile selectate sunt eliminate complect, iar canalele considerate corupte sunt înlocuite prin interpolare. Impactul aplicării acestui proces a fost scăderea acurateții cu $\crestereAcurateteAutoReject$\%. Motivul pentru care performanța a scăzut este deoarece și datele de antrenare au scăzut semnificativ. Din figura \ref{fig:autoreject} reiese faptul că AutoReject găsește multe probleme în semnalul original. Există posibilitatea ca AutoReject să depisteze probleme exact acolo unde se află răspunsul creierului la stimul și prin urmare să scoată informația folositoare. Această teorie este susținută și de faptul că răspunsurile creierului nu sunt în conformitate cu restul semnalului. Figura \ref{fig:raspuns_mediu} ne indică faptul că amplitudinea semnalului este în afara mediei celorlalte canale. Prin urmare, AutoReject poate interpreta aceste vârfuri ca fiind date corupte.
 
 \vspace{1em}
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/rezultat_autoreject.png}
     \caption{Epocile eliminate de AutoReject}
-    \label{fig:vizualizare_filtru}
+    \label{fig:autoreject}
 \end{figure}
 
 \subsection{Balansarea claselor și modul de testare}
 
-În total am dispus de $\totalEpoci$ epoci provenite din cei 26 de subiecți. Din rândul tuturor epocilor, $\totalEpociValentaNegativa$ au valență negativă, $\totalEpociValentaNeutra$ neutră și $\totalEpociValentaPozitiva$ pozitivă. Numărul poate varia, deoarece AutoReject conține și componente non-deterministe. Pentru a testa performanța modelelor, am utilizat cross-validation asupra celor 26 participanți în felul următor: $\nrParticipantiAntrenare$ de participanți au fost extrași pentru antrenare, $\nrParticipantiValidare$ pentru validare și încă $\nrParticipantiTestare$ pentru testare.
+În total am dispus de $\totalEpoci$ epoci provenite din cei 26 de subiecți. Din rândul tuturor epocilor, $\totalEpociValentaNegativa$ au valență negativă, $\totalEpociValentaNeutra$ neutră și $\totalEpociValentaPozitiva$ pozitivă. Numărul poate varia, deoarece AutoReject conține și componente non-deterministe. Pentru a testa performanța modelelor, am utilizat cross-validation asupra celor 26 participanți în felul următor: $\nrParticipantiAntrenare$ de participanți au fost extrași pentru antrenare, $\nrParticipantiValidare$ pentru validare și încă $\nrParticipantiTestare$ pentru testare. În total am trecut prin câte 8 subseturi pentru fiecare model în parte.
 
-Putem observa rapid faptul că epocile nu sunt distribuite după etichetă în mod egal. Dacă modelul ar prezice numai valență neutră, ar avea acuratețe mai mare decât dacă ar prezice la întâmplare. Pentru a aborda problema imbalansului claselor am folosit 2 abordări. Prima este de a calcula weight-urile claselor, transmițându-le mai departe la clasificator. A doua este de a utiliza metoda SMOTE\cite{imblearn} pentru a genera date sintetice.
+Constatăm faptul că epocile nu sunt distribuite după etichetă în mod egal. Dacă modelul ar prezice numai valență neutră, ar avea acuratețe mai mare decât dacă ar prezice la întâmplare. Pentru a aborda problema imbalansului claselor am folosit 2 abordări. Prima este de a calcula weight-urile claselor, transmițându-le mai departe la funcția de pierdere a clasificatorului. A doua este de a utiliza metoda SMOTE\cite{imblearn} pentru a genera date sintetice.
 
 \section{Extragerea caractersiticilor}
-În domeniul clasificării semnalelor EEG există 2 paradigme pentru extragerea caracteristicilor. Prima este de a trata semnalul EEG ca fiind o serie de timp. Datele de eșantioanare ale semnalului fiind trimise mai departe spre model ca input. A doua este de a extrage caracteristici statistice și geometrice din semnal. Acestea sunt sub forma de medii, proprietăți spectrale, sau date din geometria Riemann, care mai apoi sunt transmise unui model.
+În domeniul clasificării semnalelor EEG există 2 paradigme pentru extragerea caracteristicilor. Prima este de a trata semnalul EEG ca fiind o serie de timp. Datele de eșantioanare ale semnalului fiind trimise mai departe spre model ca input. A doua este de a extrage caracteristici statistice și geometrice din semnal. Acestea sunt sub forma de medii, proprietăți spectrale, caracteristici geometrice Riemann, care mai apoi sunt transmise unui model.
 
 \subsection{Datele drept semnale EEG}
-După cum am spus, semnalul EEG are 20 de canale. Totuși, dintre acestea, nu toate sunt relevante. Pentru a găsi cele mai relevante canale, în primul rand am transpus semnalul in domeniul timp-frecvență utilizând morlet wavelets. Am aplicat asta pentru toate epocile și astfel am obținut inter-trial coherence-ul(ITC). ITC ul îmi arată asemănarea în descompunerea din domeniul timp-frecvență a epocilor.
+După cum am spus, semnalul EEG are 20 de canale. Totuși, dintre acestea, nu toate sunt relevante. Pentru a găsi cele mai relevante canale, în primul rând am transpus semnalul in domeniul timp-frecvență utilizând implementarea din MNE\cite{MNE} a morlet wavelets. Am aplicat asta pentru toate epocile și astfel am obținut inter-trial coherence-ul(ITC). ITC ul îmi arată asemănarea în descompunerea din domeniul timp-frecvență a epocilor.
 
 \setlength{\abovecaptionskip}{0pt}
 \setlength{\belowcaptionskip}{0pt}
@@ -154,7 +150,7 @@ După cum am spus, semnalul EEG are 20 de canale. Totuși, dintre acestea, nu to
     \label{fig:enter-label}
 \end{figure}
 
-Putem observa că diagrama are o dispunere asemănătoare cu cea a plotării electrozilor pe creier, figura \ref{fig:sensor_positions}. Din această diagramă observăm importanța fiecărui canal în timpul unei epoci. Astfel, de exemplu, canalele Fp1 și Fp2 nu oferă la fel de multă informație comparativ cu O1 sau O2. Canalele alese de mine ca fiind relevante au fost: O1, O2, P3, P4, A1, A2, T5, T6. Alegând un subset de canale din cele inițiale, am mărit viteza cu care am procesat datele cu 36\%, precum și acuratețea modelului cu 3-4\%.
+Putem remarca faptul că diagrama are o dispunere asemănătoare cu cea a plotării electrozilor pe creier, figura \ref{fig:sensor_positions}. Din această diagramă observăm importanța fiecărui canal în timpul unei epoci. Astfel, de exemplu, canalele Fp1 și Fp2 nu oferă la fel de multă informație comparativ cu O1 sau O2. Canalele alese de mine ca fiind relevante au fost: O1, O2, P3, P4, A1, A2, T5, T6. Alegând un subset de canale din cele inițiale, am mărit viteza cu care am procesat datele cu 36\%, precum și acuratețea modelului cu 3-4\%.
 
 \vspace{1em}
 \begin{figure}[!h]
@@ -174,15 +170,14 @@ Un alt rezultat al alegerii unui subset de canale a fost faptul că, am reușit 
     \label{fig:enter-label}
 \end{figure}
 
+Am confirmat că într-adevăr există diferențe între fiecare tip de stimuli unind toți participanții și realizând un grafic al mediei răspunsurilor celor trei tipuri de stimuli. Graficul poate fi văzut în figura \ref{fig:average_response_by_event}.
 
 \subsection{Datele drept caracteristici statistice și descompuneri în domeniul frecvențelor}
 
-O altă abordare a extragerii caracteristicilor o reprezintă datele statistice și spectrale din semnalul EEG. Pentru a extrage caracteristicile semnalului am utilizat mne-features\cite{mne-features}. Librăria are în total 30 de tipuri de feature-uri. Pentru a le extrage pe cele mai bune am utilizat ideea prezentă în http://refhub.elsevier.com/S0957-4174(15)00753-8/sbref0009. Și anume folosirea algoritmilor genetici împreuă cu un clasificator liniar pentru a alege o submulțime de caracteristici din cea inițiala.
-
-------------TO BE CONTINUED AICI------------
+O altă abordare a extragerii caracteristicilor o reprezintă datele statistice și spectrale din semnalul EEG. Pentru a extrage caracteristicile semnalului am utilizat mne-features\cite{mne-features}. Librăria are în total 30 de tipuri de feature-uri. Pentru a le extrage pe cele mai bune am utilizat ideea prezentă în http://refhub.elsevier.com/S0957-4174(15)00753-8/sbref0009. Și anume folosirea algoritmilor genetici împreuă cu un clasificator liniar SVM pentru a alege o submulțime de caracteristici din cea inițială. 
 
 \subsection{Datele drept caracteristici geometrice Riemann}
-Alte modalități, care au recâștigat popularitate recent, constau în folosirea geometriei Riemann. Asupra datelor este aplicat algoritmul de denoising XDAWN\cite{xdawn}, urmând, pe urmă, ca semnalul să fie transpus într-un spațiu geometric Riemann. Pentru a implementa acești algoritmi m-am folosit de librăria pyRiemann\cite{pyriemann}. Algoritmii ce se folosesc de acest principiu și pe care i-am implementat și testat la rândul meu sunt: XDAWNCov + TS + SVM\cite{xdawncovtssvm}, pe care ulterior l-am modificat si am utilizat Linear Discriminant Analysis(LDA) din scikit-learn, XDAWN + LDA\cite{xdawnlda}, și, derivat din aceste concepte XDAWN + Cov + TS + LDA. Benchmark-urile MOABB\cite{moabb}  arată că XDAWNCov + TS + SVM și XDAWNCov + MDM obțin cele mai bune performanțe pentru stimulii de tip P300. Rezultatele obținute de mine sunt următoarele:
+Alte modalități, care au recâștigat popularitate recent, constau în folosirea geometriei Riemann. Asupra datelor este aplicat algoritmul de denoising XDAWN\cite{xdawn}, urmând, pe urmă, ca semnalul să fie transpus într-un spațiu geometric Riemann. Pentru a implementa acești algoritmi m-am folosit de librăria pyRiemann\cite{pyriemann}. Algoritmii ce se folosesc de acest principiu și pe care i-am implementat și testat la rândul meu sunt: XDAWNCov + TS + SVM\cite{xdawncovtssvm}, pe care ulterior l-am modificat si am utilizat Linear Discriminant Analysis(LDA) din scikit-learn\cite{scikit-learn}, XDAWN + LDA\cite{xdawnlda}, și, derivat din aceste concepte XDAWN + Cov + TS + LDA. Benchmark-urile MOABB\cite{moabb}  arată că XDAWNCov + TS + SVM și XDAWNCov + MDM obțin cele mai bune performanțe pentru stimulii de tip P300. Rezultatele obținute de mine sunt următoarele:
 
 \vspace{1em}
 \begin{figure}[h]
@@ -195,7 +190,7 @@ Alte modalități, care au recâștigat popularitate recent, constau în folosir
 \section{Modele de clasificare}
 Privind abordarea modelelor am ales să încerc cât mai multe modele, pornind de la simple clasificatoare liniare, precum SVM-uri din scikit-learn\cite{scikit-learn} și până la rețelele convoluționale din braindecode\cite{braindecode}. De asemenea, am creat, utilizând keras\cite{keras}, și modele proprii pentru un mai bun control asupra complexității și funcționalității modelului.
 \subsection{Modele clasice din scikit-learn}
-Pentru a evalua modelele clasice, prima dată am trecut datele de dimensiune(8, 601) adică 8 canale, fiecare canal având 601 puncte de discretizare. Aceste 601 puncte provin de la frecvența înregistrărilor de 300 x 2 secunde ce reprezintă durata unei epoci. Datale au trecut mai departe prin operația de flatten, astfel încât input-ul meu să fie 1-dimensional. Pe urmă, am normalizat datele și le-am încadrat în intervalul (0, 1) utilizând StandardScaler. În final, fiecare input reprezintă un vector cu 4808 caracteristici.
+Pentru a evalua modelele clasice, prima dată am trecut datele de dimensiune(8, 601) adică 8 canale, fiecare canal având 601 puncte de discretizare, aceste 601 puncte provin de la frecvența înregistrărilor de 300 x 2 secunde ce reprezintă durata unei epoci, prin operația de flatten, astfel încât input-ul meu să fie 1-dimensional. Pe urmă, am normalizat datele și le-am încadrat în intervalul (0, 1) utilizând StandardScaler din scikit-learn\cite{scikit-learn}. În final, fiecare input reprezintă un vector cu 4808 caracteristici.
 
 % \setlength{\abovecaptionskip}{0pt}
 % \setlength{\belowcaptionskip}{0pt}
@@ -207,7 +202,7 @@ Pentru a evalua modelele clasice, prima dată am trecut datele de dimensiune(8, 
 %     \label{fig:enter-label}
 % \end{figure}
 
-Utilizând acest pipeline, am putut să compar sistematic mai multe tipuri de modele. Pentru a evalua performanța modelelor, am utilizat f1-score și accuracy. Pentru a lua în calcul imbalansul claselor, am creat date sintetice utilizând metoda de oversampling SMOTE. %Pentru cel mai bun model din punctul de vedere al f1-score și accuracy am făcut mai departe un classification report. %
+Utilizând acest pipeline, am putut să compar sistematic mai multe tipuri de modele. Pentru a evalua performanța modelelor, am utilizat f1-score și accuracy. Pentru a lua în calcul imbalansul claselor, am creat date sintetice utilizând metoda de oversampling SMOTE\cite{imblearn}. %Pentru cel mai bun model din punctul de vedere al f1-score și accuracy am făcut mai departe un classification report. %
 
 \vspace{1em}
 \begin{figure}[h]
@@ -217,26 +212,58 @@ Utilizând acest pipeline, am putut să compar sistematic mai multe tipuri de mo
     \label{fig:enter-label}
 \end{figure}
 
-Mai departe, pentru a încerca abordarea bazată pe caracteristici statistice și spectrale, am utilizat mne-features. Pentru a extrage un subset din feature-urile totale, am utilizat o librărie specializată în rularea algoritmilor genetici, și anume pygad \cite{pygad}. Pentru funcția de fitness, am folosit un tuplu format din f1-score și balanced-accuracy.
+Mai departe, pentru a încerca abordarea bazată pe caracteristici statistice și spectrale, am utilizat mne-features\cite{mne-features}. Pentru a extrage un subset din feature-urile totale, am utilizat o librărie specializată în rularea algoritmilor genetici, și anume pygad \cite{pygad}. Funcția de fitness a fost calculată folosind un tuplu format din f1-score și balanced-accuracy. Configurația specifică poate fi văzută în figura \ref{fig:pygad_configuration}. 
 
-------------DE ADAUGAT AICI REZULTATELE RULARII ALG GENETIC------------
+Un rezultat intermediar a indicat o acuratețe de 35\% și un scor F1 de 38\%. Având în vedere performanțele modeste și dimensiunea ridicată a spațiului de căutare, am decis să întrerup rularea experimentului în această configurație. Continuarea optimizării în aceste condiții nu era justificată, întrucât rezultatele obținute nu indicau un potențial de îmbunătățire semnificativă. Rezultatele lucrării care implementeaza această idee \cite{ATKINSON201635}, indică faptul că algoritmul genetic a făcut ca acuratețea să varieze cu un maxim de 5\%, rezultat care în continuare l-ar plasa sub performanța celorlalte modele încercate. 
 
 \subsection{Braindecode}
-Pentru a avea acces la arhitecturi neuronale convolutionale sau recurente, create special pentru domeniul analizei EEG-urilor, am utilizat librăria Braindecode. Ele primesc drept intrare direct semnalul de dimensiune (8, 601). Fiecare model din braindecode trebuie trimis mai departe unui wrapper, fie de regresie fie de clasificare. Apelul wrapper-ului poate fi văzut în figura \ref{fig:wrapper_braindecode}. În cazul meu l-am folosit pe cel de clasificare. Pentru a mări viteza de procesare, dispunând de o placă video, am rulat antrenarea epocilor pe placa video folosind cuda.
+Pentru a avea acces la arhitecturi neuronale avansate, create special pentru domeniul analizei EEG-urilor, am utilizat librăria Braindecode\cite{braindecode}. Ele primesc drept intrare direct semnalul de dimensiune (8, 601). Fiecare model din braindecode trebuie trimis mai departe unui wrapper, fie de regresie fie de clasificare. Apelul wrapper-ului poate fi văzut în figura \ref{fig:wrapper_braindecode}. În cazul meu l-am folosit pe cel de clasificare. Pentru a mări viteza de procesare, dispunând de o placă video, am rulat antrenarea epocilor pe placa video folosind cuda.
 
-La nivelul acestuia am setat loss-ul ca fiind CrossEntropyLoss din librăria pytorch \cite{pytorch}, precum și EarlyStopping și LRScheduler drept callback-uri din librăria skorch \cite{skorch}. Astfel, modelul evită overfitting-ul prin oprirea antrenării în momentul în care nu a mai progresat din punctul de vedere al loss-ului pe setul devalidare timp de 20 de epoci. De asemenea, acesta dispune și de un learning rate variabil ce îl ajută sa converarga rapid la o soluție. 
+La nivelul acestuia am setat loss-ul ca fiind CrossEntropyLoss din librăria pytorch \cite{pytorch}, precum și EarlyStopping și LRScheduler drept callback-uri din librăria skorch \cite{skorch}. Astfel, modelul evită overfitting-ul prin oprirea antrenării în momentul în care nu a mai progresat din punctul de vedere al loss-ului pe setul de validare timp de 20 de epoci. De asemenea, acesta dispune și de un learning rate variabil ce îl ajută sa conveargă rapid la o soluție. 
 
 \begin{equation}
     \text{loss}(x, y) = -\frac{1}{N} \sum_{n=1}^{N} w_{y_n} \cdot \log\left(\frac{\exp(x_{n,y_n})}{\sum_{c=1}^{C} \exp(x_{n,c})}\right) \times \mathbb{1}\{y_n \neq \text{ignore\_index}\}
 \end{equation}
 
-Putem observa că formula pentru CrossEntropyLoss conține un \(w_{y_n}\). Acesta reprezintă un parametru legat de imbalansul claselor. Astfel, modelul îmi permite să abordez ambele modalități de rezolvare a problemei de balansare a claselor. Evaluarea modelelor am făcut-o asemănător cu cea a modelelor clasice, în funcție de f1-score și accuracy.
+Putem remarca faptul că formula pentru CrossEntropyLoss conține un \(w_{y_n}\). Acesta reprezintă un parametru legat de imbalansul claselor. Astfel, modelul îmi permite să abordez ambele modalități de rezolvare a problemei de balansare a claselor. Evaluarea modelelor am făcut-o asemănător cu cea a modelelor clasice, în funcție de f1-score și accuracy.
 
-Din dorința de a avea o analiză amplă a acestei tehnici, am utilizat toate modelele disponibile din librărie ce au fost dezvoltate în direcția din care provin datele testate. Astfel, am comparat următoarele modele: TSceptionV1, EEGNetv4\cite{eegnetv4}, EEGInceptionERP\cite{eeginceptionerp}, ATCNet \cite{atcnet1}\cite{atcnet2}\cite{atcnet3}, EEGTCNet\cite{tcnet}, TIDNet\cite{tidnet}, ShallowFBCSPNet\cite{ShallowFBCSPNet}, 
+Cu scopul de a avea o analiză amplă a acestei tehnici, am utilizat toate modelele disponibile din librărie ce au fost dezvoltate în direcția interpretării evenimentelor de tip P300. Astfel, am comparat următoarele modele: TSceptionV1\cite{TSception}, EEGNetv4\cite{eegnetv4}, EEGInceptionERP\cite{eeginceptionerp}, ATCNet \cite{atcnet1}\cite{atcnet2}\cite{atcnet3}, EEGTCNet\cite{tcnet}, TIDNet\cite{tidnet}, ShallowFBCSPNet\cite{ShallowFBCSPNet}.
 
-------------DE ADAUGAT GRAFIC AICI CU SCORURILE------------
+De asemenea, am creeat noi date folosind augmentări. Observând că studii din trecut au obținut rezultate mai bune după ce le-au aplicat \cite{Wang2018}. Augmentările folosite au fost: deplasarea întregului semnal cu până la 20 de secunde înainte și înapoi, zgomot gaussian, și setarea semnalului la valoarea 0 pentru diverse perioade.
+
+\vspace{1em}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/comparison_class_weights_augment_False.png}
+    \caption{Performanța modelelor din braindecode}
+    \label{fig:performanta_braindecode}
+\end{figure}
+
+Este evident din figura \ref{fig:performanta_braindecode}, faptul că EEGTCNet\cite{tcnet} a obținut cele mai bune rezultate. Acestea au fost obținute atunci când modul de tratare a imbalansului claselor a constat în calcularea weight-urilor claselor, trimis mai departe la funcția de loss și atunci când nu au fost aplicate augmentări pe date. Rezultatul celorlalte abordări privind imbalansul claselor și augmentări se află în figurile \ref{fig:performance_class_weights_augment_true}, \ref{fig:smote_augment_false} și \ref{fig:smote_augment_true}.
+
 
 \subsection{Model personal}
-Pentru a creea modele personale am utilizat keras, deoarece aduce conceptele din domeniul de Machine Learning la un nivel înalt și ușor de utilizat. Paradigma pe care am abordat-o a fost cea în care trimit modelului semnalul în sine, urmând ca în cadrul modelului să extragem proprietăți ale semnalului folosind rețele convoluționale. Arhitectura modelului meu constă în 3 straturi de convoluție, între ele aflându-se straturi de MaxPooling. La final am aplatizat rezultatul convoluțiilor și am terminat modelul cu 3 straturi dense. Pentru a preveni problem overfitting-ului am aplicat regularizarea L1 și L2, am introdus dropout în straturile dense și am augmentat datele la intrarea în model cu zgomot gausian. Drept optimizator am folosit Adam. Neuronilor de output le-am aplicat funția softmax pentru a fi compatibil cu funcția de loss CategoricalCrossEntropyLoss. Pentru restul neuronilor am utilizat funcțiile de activare ReLU și ELU. Arhitectura modelului detaliată este reprezentată în figurile \ref{fig:model_part1} și \ref{fig:model_part2}.
+Am creeat modele personale utilizând librăria Keras\cite{keras}. Am ales să folosesc această bibliotecă în defavoarea PyTorch, deoarece Keras oferă un nivel mai ridicat de abstractizare, ceea ce simplifică considerabil procesul de dezvoltare a modelelor. Un alt motiv pentru care am utilizat Keras este faptul că pașii de antrenare, optimizare și validare sunt deja integrați și gestionați bine de bibliotecă. În contextul acestei lucrări, nu a fost necesară personalizarea acestor pași sau implementarea unor mecanisme avansate de calculare a funcției de loss sau de control de date. 
 
-------------POZA CU REZULTATELE------------
+Paradigma pe care am abordat-o a fost cea în care trimit modelului semnalul în sine, urmând ca în cadrul modelului să extragem proprietăți ale semnalului folosind rețele convoluționale. Arhitectura modelului meu constă în 3 straturi de convoluție, între ele aflându-se straturi de MaxPooling. La final am aplatizat rezultatul convoluțiilor și am terminat modelul cu 3 straturi dense. Pentru a preveni problem overfitting-ului am aplicat regularizarea L1 și L2, am introdus dropout în straturile dense și am augmentat datele la intrarea în model cu zgomot gausian. Drept optimizator am folosit Adam. Neuronilor de output le-am aplicat funția de activare softmax pentru a fi compatibil cu funcția de loss CategoricalCrossEntropyLoss. Pentru restul neuronilor am utilizat funcțiile de activare ReLU și ELU. Arhitectura modelului detaliată este reprezentată în figurile \ref{fig:model_part1} și \ref{fig:model_part2}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{images/comparison_fold7.png}
+    \caption{Evoluția funției de pierdere și a acurateții de-a lungul epocilor.}
+    \label{fig:model_train}
+\end{figure}
+
+Figura \ref{fig:model_train} ne arată evoluția funcției de pierdere, precum și a acurateții modelului pe parcursul epocilor. Putem observa că modelul reușește să învețe până ajunge la o acuratețe de sub 50\%. În evaluarea finală în care am combinat toate rezultatele din urma cross-validation-ului modelul a avut o acuratețe de 47\%. Din matricea de confuzie prezentată în figura \ref{fig:conf_matrix} observăm că modelul în continuare are o predispoziție în a prezice valența neutra (2).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{conf_matrix_personal_model.png}
+    \caption{Matricea de confuzie rezultată în urma validărilor.}
+    \label{fig:conf_matrix}
+\end{figure}
+
+Lipsa capacității modelului de a învăța diferențe clare între clase poate fi atribuită metodelor de balansare a acestora. În cazul balansării prin calcularea weight-urilor, modelul acordă o importanță mai mare instanțelor în care subiecții au spus că le place/ nu le place imaginea (acestea fiind cele mai rare). Astfel, deși modelul ajunge să învețe bine exemplele din timpul antrenării, performanța sa pe date noi scade, întrucât răspunsul creierului variază semnificativ atât în intensitate, cât și în timp. Punând un accent mai mare pe exemplele rare dintr-un set de date limitat ca dimensiune, modelul nu reușește să surprindă variabilitatea naturală a activității cerebrale nici la nivel intra-subiect (același participant), nici inter-subiect (între participanți diferiți).
+
+
+Fenomenul acesta este observat și în cadrul balansării folosind SMOTE\cite{imblearn}. Algoritmul de generare al datelor sintetice încearcă să umple golul dintre sample-uri prin interpolare. Totuși, aceste instanțe nu introduc informație nouă, ci doar reflectă o medie a celorlalte doua puncte din vecinătatea exemplului sintetic. Mecanismul de generare de date sintetice nu reproduce modul natural de funcționare al creierlului uman. Chiar și in condiții de expunere repetată la același stimul, variația răspunsului cerebral nu este rezultatul unei medii liniare între două stări, ci al unui proces complex de interpretare și adaptare.

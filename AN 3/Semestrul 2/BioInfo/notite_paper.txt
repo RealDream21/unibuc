@@ -54,8 +54,10 @@ users wanted more stimulation to confirm sensation position when linked to a bio
 single electrode stimulation => 30% failure to feel vs multiple electrode => 0% failure to feel
 when feeling, single electrode => 42% failure to WHERE they feel vs multiple elctrode => 7% failure to WHERE they fel
 same conclusion: single electrode bad, more electrode good
+sensation scales with ICMS amplitude but only to a certain extent. It scales liniarly
+But real world sensatrions scale like a power function(fast at the start, slow at the heaviest force)
 
-
+Page 8:
 
 
 
