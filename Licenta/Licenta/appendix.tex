@@ -3,14 +3,14 @@
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{images/average_response_each_erp.png}
-    \caption{Raspunsul mediu pentru fiecare tip de eveniment.}
+    \caption{Răspunsul mediu pentru fiecare tip de eveniment.}
     \label{fig:average_response_by_event}
 \end{figure}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{images/comparison_class_weights_augment_True.png}
-    \caption{Performanta modelelor cu weight-uri de clase si augmentari.}
+    \caption{Performanța modelelor cu weight-uri de clase și augmentari.}
     \label{fig:performance_class_weights_augment_true}
 \end{figure}
 
@@ -133,7 +133,7 @@ def callback(study, trial):
 study = optuna.create_study(direction="maximize")
 study.optimize(objective, n_trials = 64, callbacks=[callback])
 \end{lstlisting}
-\caption{Cautarea hiperparametrilor folosind optuna.}
+\caption{Căutarea hiperparametrilor folosind optuna.}
 \label{fig:optuna_search}
 \end{figure}
 

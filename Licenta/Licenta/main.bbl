@@ -541,6 +541,7 @@
       \strng{authornamehash}{5366cde337de1cb32d549878c093b4e3}
       \strng{authorfullhash}{ba9ee98f8329bf8694316400d9f8e724}
       \strng{authorfullhashraw}{ba9ee98f8329bf8694316400d9f8e724}
+      \field{extraname}{1}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{labelnamesource}{author}
@@ -558,6 +559,54 @@
       \verb{url}
       \verb https://doi.org/10.5281/zenodo.593816
       \endverb
+    \endentry
+    \entry{xdawncov_mdm}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=30e7efb101f748da20650e9fc7cd0b5e}{%
+           family={Barachant},
+           familyi={B\bibinitperiod},
+           given={Alexandre},
+           giveni={A\bibinitperiod}}}%
+        {{hash=7b74d55cbbd15676741c133431f4ac2a}{%
+           family={Bonnet},
+           familyi={B\bibinitperiod},
+           given={Stéphane},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e1579135f2873103724cffa2fcfd3aef}{%
+           family={Congedo},
+           familyi={C\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+        {{hash=d7194e5254fc9433118927b6b1a94949}{%
+           family={Jutten},
+           familyi={J\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{5366cde337de1cb32d549878c093b4e3}
+      \strng{fullhash}{e7546b0bba993ff73069d9e5405c8865}
+      \strng{fullhashraw}{e7546b0bba993ff73069d9e5405c8865}
+      \strng{bibnamehash}{e7546b0bba993ff73069d9e5405c8865}
+      \strng{authorbibnamehash}{e7546b0bba993ff73069d9e5405c8865}
+      \strng{authornamehash}{5366cde337de1cb32d549878c093b4e3}
+      \strng{authorfullhash}{e7546b0bba993ff73069d9e5405c8865}
+      \strng{authorfullhashraw}{e7546b0bba993ff73069d9e5405c8865}
+      \field{extraname}{2}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Biomedical Engineering}
+      \field{number}{4}
+      \field{title}{Multiclass Brain–Computer Interface Classification by Riemannian Geometry}
+      \field{volume}{59}
+      \field{year}{2012}
+      \field{pages}{920\bibrangedash 928}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1109/TBME.2011.2172210
+      \endverb
+      \keyw{Covariance matrix;Manifolds;Symmetric matrices;Electroencephalography;Geometry;Silicon;Matrix decomposition;Brain computer interfaces;classification algorithms;covariance matrix;electroencephalography;information geometry}
     \endentry
     \entry{xdawncovtssvm}{inproceedings}{}{}
       \name{author}{8}{}{%
