@@ -2,6 +2,7 @@
 *.in
 *.out
 *.o
+.DS_Store
 ############# MY STUFF ###########
 
 
