@@ -1,0 +1,69 @@
+parent(ion, maria).
+parent(ana,maria).
+parent(ana,dan).
+parent(maria,elena).
+parent(maria,radu).
+parent(elena,nicu).
+parent(radu,george).
+parent(radu,dragos).
+
+child(X, Y):-parent(Y, X).
+brother(X, Y):-parent(Z, Y), parent(Z, X), X\==Y.
+grandparent(X,Y):-parent(X,Z), parent(Z, Y).
+pred(X,Y):-parent(X,Y).
+pred(X,Z):-parent(X,Y), pred(Y,Z).
+pred(X,Y):-grandparent(X,Y).
+
+% bagof(X,P,L) collects in the list L the items X that satisfy P. If there is no such element, 
+% the answer is no.
+% setof(X,P,L) similar as bagof, but it eliminates duplicates and the resulting list is sorted
+% findall(X, P, L) if there is no element satisfying P the result is yes and L=. 
+% It ignores variables that appear in P and do not appear in X.
+
+boy(alin,  21).
+boy(alex, 24).
+
+ageboys(L):- findall(Age, boy(_, Age), L).
+sum(S):- ageboys(L), sum(L, S).
+sum([], 0).
+sum([H|T], S):-sum(T, S1), S is S1 + H.
+
+f(X,0):-X =< 3,!.
+f(X,2):-X =< 6,!.
+f(_,4).
+
+% 1) Write the max predicate that calculates the maximum between 2 values.
+
+max(A, B, R):-A =< B, R is B.
+max(A, B, R):-B =< A, R is A.
+
+% 2) Write the member and concat predicates.
+member(_, []):-false.
+member(A, [A|_]):-true.
+member(A, [_|L]):-member(A, L).
+
+concat([], L, L).
+concat(A, [], [A]).
+concat([H|T], L, [H|R]):-concat(T, L, R).
+
+% 3) Calculate the alternate sum of the elements of a list.
+altsum([], _, 0).
+altsum([A|[]], 1, A).
+altsum([A|[]], -1, -A).
+altsum([A|L], 1, R):-altsum(L, -1, R1), R is R1 + A.
+altsum([A|L], -1, R):-altsum(L, 1, R1), R is R1 - A.
+
+% 4) Eliminate an element from a list (one/all the occurrences of that element).
+
+
+
+
+
+
+
+
+
+
+
+
+
