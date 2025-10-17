@@ -1,0 +1,27 @@
+%Ex 1
+gcd(0, X, X):-!.
+gcd(X, 0, X):-!.
+gcd(A, B, C):-A =< B, D is B-A, gcd(D, A, C), !.
+gcd(A, B, C):-D is A - B, gcd(D, A, C), !.
+
+%Ex 2
+split([], _, [], []).
+split([H1|T], H, [H1|A], B):-H1=<H, split(T, H, A, B), !.
+split([H1|T], H, A, [H1|B]):-split(T, H, A, B), !.
+
+%Ex 3
+%insert an element into its corect position
+insert(X, [], [X]):- !.
+insert(X, [X1|L1], [X, X1|L1]):- X=<X1, !.
+insert(X, [X1|L1], [X1|L]):- insert(X, L1, L).
+
+insertsort([], []).
+insertsort([X|T], S):-insertsort(T, ST), insert(X, ST, S).
+
+quick([], []).
+quick([X], [X]):- !.
+quick([H|T], L):-split(T, H, A, B), quick(A, A1), quick(B, B1), append(A1, [H|B1], L).
+
+%Ex 4
+queen([]).
+queen([[X, Y]|S]):-queen(S), member(Y, [1,2,3,4,5,6,7,8]), not(atack([X, Y], S)).
